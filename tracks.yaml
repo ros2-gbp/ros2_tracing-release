@@ -21,7 +21,7 @@ tracks:
     release_tag: :{version}
     ros_distro: dashing
     vcs_type: git
-    vcs_uri: https://gitlab.com/ros-tracing/ros2_tracing.git
+    vcs_uri: https://github.com/ros2/ros2_tracing.git
     version: 0.2.8
   eloquent:
     actions:
@@ -45,7 +45,7 @@ tracks:
     release_tag: :{version}
     ros_distro: eloquent
     vcs_type: git
-    vcs_uri: https://gitlab.com/ros-tracing/ros2_tracing.git
+    vcs_uri: https://github.com/ros2/ros2_tracing.git
     version: :{auto}
   foxy:
     actions:
@@ -69,7 +69,7 @@ tracks:
     release_tag: :{version}
     ros_distro: foxy
     vcs_type: git
-    vcs_uri: https://gitlab.com/ros-tracing/ros2_tracing.git
+    vcs_uri: https://github.com/ros2/ros2_tracing.git
     version: :{auto}
   galactic:
     actions:
@@ -95,7 +95,7 @@ tracks:
     release_tag: :{version}
     ros_distro: galactic
     vcs_type: git
-    vcs_uri: https://gitlab.com/ros-tracing/ros2_tracing.git
+    vcs_uri: https://github.com/ros2/ros2_tracing.git
     version: :{auto}
   humble:
     actions:
@@ -121,7 +121,7 @@ tracks:
     release_tag: :{version}
     ros_distro: humble
     vcs_type: git
-    vcs_uri: https://gitlab.com/ros-tracing/ros2_tracing.git
+    vcs_uri: https://github.com/ros2/ros2_tracing.git
     version: :{auto}
   rolling:
     actions:
@@ -138,7 +138,7 @@ tracks:
       :{release_inc} --os-name fedora
     - git-bloom-generate -y rosrpm --prefix release/:{ros_distro} :{ros_distro} -i
       :{release_inc} --os-name rhel --skip-keys python3-babeltrace
-    devel_branch: master
+    devel_branch: rolling
     last_version: 4.1.0
     name: ros2_tracing
     patches: null
@@ -147,5 +147,5 @@ tracks:
     release_tag: :{version}
     ros_distro: rolling
     vcs_type: git
-    vcs_uri: https://gitlab.com/ros-tracing/ros2_tracing.git
+    vcs_uri: https://github.com/ros2/ros2_tracing.git
     version: :{auto}
