@@ -2,14 +2,10 @@
 Changelog for package test_tracetools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-6.4.1 (2023-05-11)
+6.3.1 (2023-05-11)
 ------------------
-* Improve test coverage of rclcpp_callback_register in test_tracetools (`#69 <https://github.com/ros2/ros2_tracing/issues/69>`_)
-* Disable tracing on Android (`#71 <https://github.com/ros2/ros2_tracing/issues/71>`_)
-* Contributors: Christophe Bedard, Przemysław Dąbrowski
-
-6.4.0 (2023-04-28)
-------------------
+* Disable tracing on Android (`#72 <https://github.com/ros2/ros2_tracing/issues/72>`_)
+* Contributors: Przemysław Dąbrowski
 
 6.3.0 (2023-04-18)
 ------------------

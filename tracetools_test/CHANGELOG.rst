@@ -2,12 +2,7 @@
 Changelog for package tracetools_test
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-6.4.1 (2023-05-11)
-------------------
-* Switch <depend> to <exec_depend> in pure Python packages (`#67 <https://github.com/ros2/ros2_tracing/issues/67>`_)
-* Contributors: Christophe Bedard
-
-6.4.0 (2023-04-28)
+6.3.1 (2023-05-11)
 ------------------
 
 6.3.0 (2023-04-18)
