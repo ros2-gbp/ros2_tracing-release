@@ -2,10 +2,18 @@
 Changelog for package tracetools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-6.3.1 (2023-05-11)
+7.0.0 (2023-06-09)
 ------------------
-* Disable tracing on Android (`#72 <https://github.com/ros2/ros2_tracing/issues/72>`_)
+* Add TRACETOOLS\_ prefix to tracepoint-related public macros (`#56 <https://github.com/ros2/ros2_tracing/issues/56>`_)
+* Contributors: Christophe Bedard
+
+6.4.1 (2023-05-11)
+------------------
+* Disable tracing on Android (`#71 <https://github.com/ros2/ros2_tracing/issues/71>`_)
 * Contributors: Przemysław Dąbrowski
+
+6.4.0 (2023-04-28)
+------------------
 
 6.3.0 (2023-04-18)
 ------------------
@@ -103,7 +111,7 @@ Changelog for package tracetools
 
 0.2.10 (2019-11-17)
 -------------------
-* Add new rclcpp_subscription_init tracepoint to support new intra-process comms
+* Add new rclcpp_subscription_init tracepoint to support new intra-process comms 
 * Contributors: Christophe Bedard
 
 0.2.9 (2019-10-18)

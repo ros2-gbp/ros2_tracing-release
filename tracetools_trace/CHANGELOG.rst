@@ -2,7 +2,15 @@
 Changelog for package tracetools_trace
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-6.3.1 (2023-05-11)
+7.0.0 (2023-06-09)
+------------------
+
+6.4.1 (2023-05-11)
+------------------
+* Detect issue with LTTng and Docker and report error when tracing (`#66 <https://github.com/ros2/ros2_tracing/issues/66>`_)
+* Contributors: Christophe Bedard
+
+6.4.0 (2023-04-28)
 ------------------
 
 6.3.0 (2023-04-18)
