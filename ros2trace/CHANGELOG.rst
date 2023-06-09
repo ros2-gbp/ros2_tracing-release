@@ -2,6 +2,9 @@
 Changelog for package ros2trace
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+7.0.0 (2023-06-09)
+------------------
+
 6.4.1 (2023-05-11)
 ------------------
 * Switch <depend> to <exec_depend> in pure Python packages (`#67 <https://github.com/ros2/ros2_tracing/issues/67>`_)
