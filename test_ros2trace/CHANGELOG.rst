@@ -2,6 +2,11 @@
 Changelog for package test_ros2trace
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+8.0.0 (2024-01-23)
+------------------
+* Switch to custom lttng-ctl Python bindings (`#81 <https://github.com/ros2/ros2_tracing/issues/81>`_)
+* Contributors: Christophe Bedard
+
 7.1.0 (2023-08-23)
 ------------------
 
