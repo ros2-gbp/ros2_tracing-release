@@ -1,0 +1,12 @@
+Source: ros-rolling-tracetools-trace
+Section: misc
+Priority: optional
+Maintainer: Christophe Bedard <bedard.christophe@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), python3-pytest <!nocheck>, ros-rolling-ament-copyright <!nocheck>, ros-rolling-ament-flake8 <!nocheck>, ros-rolling-ament-mypy <!nocheck>, ros-rolling-ament-pep257 <!nocheck>, ros-rolling-ament-xmllint <!nocheck>, ros-rolling-ros-workspace, python3-all, python3-setuptools, dh-python
+Homepage: https://index.ros.org/p/tracetools_trace/
+Standards-Version: 3.9.2
+
+Package: ros-rolling-tracetools-trace
+Architecture: any
+Depends: ${python3:Depends}, ${misc:Depends}, ros-rolling-lttngpy, ros-rolling-ros-workspace
+Description: Tools for setting up tracing sessions.
