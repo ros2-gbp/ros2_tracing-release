@@ -1,4 +1,5 @@
 # Copyright 2021 Christophe Bedard
+# Copyright 2024 TIER IV, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -20,12 +21,12 @@ from tracetools_trace.tools.lttng import is_lttng_installed
 
 
 @unittest.skipIf(not is_lttng_installed(minimum_version='2.9.0'), 'LTTng is required')
-class TestPubSub(TraceTestCase):
+class TestGenericPubSub(TraceTestCase):
 
     def __init__(self, *args) -> None:
         super().__init__(
             *args,
-            session_name_prefix='session-test-pub-sub',
+            session_name_prefix='session-test-generic-pub-sub',
             events_ros=[
                 tp.rmw_publisher_init,
                 tp.rcl_publisher_init,
@@ -41,7 +42,7 @@ class TestPubSub(TraceTestCase):
                 tp.callback_end,
             ],
             package='test_tracetools',
-            nodes=['test_ping', 'test_pong'],
+            nodes=['test_generic_ping', 'test_generic_pong'],
         )
 
     def test_all(self):

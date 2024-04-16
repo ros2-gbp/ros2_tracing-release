@@ -1,6 +1,7 @@
 # Copyright 2019 Robert Bosch GmbH
 # Copyright 2019 Apex.AI, Inc.
 # Copyright 2021 Christophe Bedard
+# Copyright 2024 TIER IV, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -22,12 +23,12 @@ from tracetools_trace.tools.lttng import is_lttng_installed
 
 
 @unittest.skipIf(not is_lttng_installed(minimum_version='2.9.0'), 'LTTng is required')
-class TestSubscription(TraceTestCase):
+class TestGenericSubscription(TraceTestCase):
 
     def __init__(self, *args) -> None:
         super().__init__(
             *args,
-            session_name_prefix='session-test-subscription',
+            session_name_prefix='session-test-generic-subscription',
             events_ros=[
                 tp.rcl_node_init,
                 tp.rmw_subscription_init,
@@ -43,7 +44,7 @@ class TestSubscription(TraceTestCase):
                 tp.callback_end,
             ],
             package='test_tracetools',
-            nodes=['test_ping', 'test_pong'],
+            nodes=['test_generic_ping', 'test_generic_pong'],
         )
 
     def test_all(self):
@@ -117,7 +118,7 @@ class TestSubscription(TraceTestCase):
         # Check that the node handle matches the node_init event
         node_init_events = self.get_events_with_name(tp.rcl_node_init)
         test_sub_node_init_events = self.get_events_with_procname(
-            'test_ping',
+            'test_generic_ping',
             node_init_events,
         )
         self.assertNumEventsEqual(test_sub_node_init_events, 1)
@@ -160,7 +161,7 @@ class TestSubscription(TraceTestCase):
         # Check that callback pointer matches between callback_added and callback_register
         callback_handle = self.get_field(callback_added_matching_event, 'callback')
         test_sub_node_callback_register_events = self.get_events_with_procname(
-            'test_ping',
+            'test_generic_ping',
             callback_register_events,
         )
         callback_register_matching_event = self.get_event_with_field_value_and_assert(
@@ -208,8 +209,8 @@ class TestSubscription(TraceTestCase):
         )
 
         # Check that each start:end pair has a common callback handle
-        ping_events = self.get_events_with_procname('test_ping')
-        pong_events = self.get_events_with_procname('test_pong')
+        ping_events = self.get_events_with_procname('test_generic_ping')
+        pong_events = self.get_events_with_procname('test_generic_pong')
         ping_events_start = self.get_events_with_name(tp.callback_start, ping_events)
         pong_events_start = self.get_events_with_name(tp.callback_start, pong_events)
         for ping_start in ping_events_start:
