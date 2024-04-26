@@ -2,6 +2,9 @@
 Changelog for package test_ros2trace
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+8.3.0 (2024-04-26)
+------------------
+
 8.2.0 (2024-04-16)
 ------------------
 * Add explicit context fields test to test_ros2trace (`#107 <https://github.com/ros2/ros2_tracing/issues/107>`_)
