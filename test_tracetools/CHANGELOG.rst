@@ -2,6 +2,9 @@
 Changelog for package test_tracetools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+6.3.2 (2024-07-11)
+------------------
+
 6.3.1 (2023-05-11)
 ------------------
 * Disable tracing on Android (`#72 <https://github.com/ros2/ros2_tracing/issues/72>`_)
