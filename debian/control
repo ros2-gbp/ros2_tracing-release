@@ -1,0 +1,12 @@
+Source: ros-iron-tracetools-test
+Section: misc
+Priority: optional
+Maintainer: Christophe Bedard <bedard.christophe@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), python3-pytest <!nocheck>, ros-iron-ament-copyright <!nocheck>, ros-iron-ament-flake8 <!nocheck>, ros-iron-ament-mypy <!nocheck>, ros-iron-ament-pep257 <!nocheck>, ros-iron-ament-xmllint <!nocheck>, ros-iron-launch, ros-iron-launch-ros, ros-iron-tracetools-launch, ros-iron-tracetools-read, ros-iron-tracetools-trace, ros-iron-ros-workspace, python3-all, python3-setuptools, dh-python
+Homepage: https://index.ros.org/p/tracetools_test/
+Standards-Version: 3.9.2
+
+Package: ros-iron-tracetools-test
+Architecture: any
+Depends: ${python3:Depends}, ${misc:Depends}, ros-iron-launch, ros-iron-launch-ros, ros-iron-tracetools-launch, ros-iron-tracetools-read, ros-iron-tracetools-trace, ros-iron-ros-workspace
+Description: Utilities for tracing-related tests.
