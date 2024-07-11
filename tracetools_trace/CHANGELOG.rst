@@ -2,39 +2,10 @@
 Changelog for package tracetools_trace
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-8.2.1 (2024-06-27)
+6.3.2 (2024-07-11)
 ------------------
 
-8.2.0 (2024-04-16)
-------------------
-* Replace all occurences of index.ros.org (`#114 <https://github.com/ros2/ros2_tracing/issues/114>`_)
-* Contributors: Chris Lalancette
-
-8.1.0 (2024-03-27)
-------------------
-* Improve tracing configuration error reporting (`#85 <https://github.com/ros2/ros2_tracing/issues/85>`_)
-* Add a space in between not and parentheses. (`#88 <https://github.com/ros2/ros2_tracing/issues/88>`_)
-* Contributors: Chris Lalancette, Christophe Bedard
-
-8.0.0 (2024-01-23)
-------------------
-* Switch to custom lttng-ctl Python bindings (`#81 <https://github.com/ros2/ros2_tracing/issues/81>`_)
-* Contributors: Christophe Bedard
-
-7.1.0 (2023-08-23)
-------------------
-* Create start/pause/resume/stop sub-commands for 'ros2 trace' (`#70 <https://github.com/ros2/ros2_tracing/issues/70>`_)
-* Contributors: Christophe Bedard
-
-7.0.0 (2023-06-09)
-------------------
-
-6.4.1 (2023-05-11)
-------------------
-* Detect issue with LTTng and Docker and report error when tracing (`#66 <https://github.com/ros2/ros2_tracing/issues/66>`_)
-* Contributors: Christophe Bedard
-
-6.4.0 (2023-04-28)
+6.3.1 (2023-05-11)
 ------------------
 
 6.3.0 (2023-04-18)

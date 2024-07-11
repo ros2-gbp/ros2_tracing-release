@@ -516,7 +516,9 @@ For normal inter-process publishing, this then passes that on to `rcl`, which it
 
 **Important information**:
 * Link to publisher handle(s)
-* Message being published, with its timestamp
+* Message being published, with timestamp
+* TODO
+    * Source timestamp of message being published
 
 ```mermaid
 sequenceDiagram
@@ -534,7 +536,7 @@ sequenceDiagram
     Publisher->>rcl: rcl_publish(rcl_publisher_t *, msg *)
     rcl-->>tracetools: TP(rcl_publish, rcl_publisher_t *, msg *)
     rcl->>rmw: rmw_publish(rmw_publisher_t *, msg *)
-    rmw-->>tracetools: TP(rmw_publish, rmw_publisher_t *, msg *, timestamp)
+    rmw-->>tracetools: TP(rmw_publish, msg *)
     Note over rmw: calls middleware
     Note over node: keeps, returns, or destroys msg
 ```

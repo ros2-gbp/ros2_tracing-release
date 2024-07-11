@@ -2,45 +2,15 @@
 Changelog for package tracetools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-8.2.1 (2024-06-27)
+6.3.2 (2024-07-11)
 ------------------
-* Fix type for buffer index argument in tracepoint event declaration. (`#117 <https://github.com/ros2/ros2_tracing/issues/117>`_) (`#119 <https://github.com/ros2/ros2_tracing/issues/119>`_)
-  (cherry picked from commit 7e8d42e3816dc9f7dc268109a2bb9cc66cc4d4ee)
-  Co-authored-by: Mattis Kieffer <62772198+mat-kie@users.noreply.github.com>
-* Contributors: mergify[bot]
+* Fix type for buffer index argument in tracepoint event declaration. (`#121 <https://github.com/ros2/ros2_tracing/issues/121>`_)
+* Contributors: Mattis Kieffer
 
-8.2.0 (2024-04-16)
+6.3.1 (2023-05-11)
 ------------------
-* Replace all occurences of index.ros.org (`#114 <https://github.com/ros2/ros2_tracing/issues/114>`_)
-* Switch to ament_generate_version_header for tracetools (`#112 <https://github.com/ros2/ros2_tracing/issues/112>`_)
-* Fixes for newer uncrustify (`#101 <https://github.com/ros2/ros2_tracing/issues/101>`_)
-* Contributors: Chris Lalancette, Christophe Bedard
-
-8.1.0 (2024-03-27)
-------------------
-* Update tests and docs after new rmw_publish timestamp field (`#90 <https://github.com/ros2/ros2_tracing/issues/90>`_)
-* Contributors: Christophe Bedard
-
-8.0.0 (2024-01-23)
-------------------
-* Add timestamp to rmw_publish tracepoint (`#74 <https://github.com/ros2/ros2_tracing/issues/74>`_)
-* Contributors: Christopher Wecht
-
-7.1.0 (2023-08-23)
-------------------
-
-7.0.0 (2023-06-09)
-------------------
-* Add TRACETOOLS\_ prefix to tracepoint-related public macros (`#56 <https://github.com/ros2/ros2_tracing/issues/56>`_)
-* Contributors: Christophe Bedard
-
-6.4.1 (2023-05-11)
-------------------
-* Disable tracing on Android (`#71 <https://github.com/ros2/ros2_tracing/issues/71>`_)
+* Disable tracing on Android (`#72 <https://github.com/ros2/ros2_tracing/issues/72>`_)
 * Contributors: Przemysław Dąbrowski
-
-6.4.0 (2023-04-28)
-------------------
 
 6.3.0 (2023-04-18)
 ------------------

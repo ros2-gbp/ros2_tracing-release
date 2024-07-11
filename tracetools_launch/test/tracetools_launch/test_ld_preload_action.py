@@ -18,7 +18,8 @@ import platform
 import unittest
 from unittest import mock
 
-import launch
+from launch import LaunchDescription
+from launch import LaunchService
 
 from tracetools_launch.actions.ld_preload import LdPreload
 
@@ -27,8 +28,8 @@ from tracetools_launch.actions.ld_preload import LdPreload
 class TestLdPreloadAction(unittest.TestCase):
 
     def _assert_launch_no_errors(self, actions):
-        ld = launch.LaunchDescription(actions)
-        ls = launch.LaunchService(debug=True)
+        ld = LaunchDescription(actions)
+        ls = LaunchService(debug=True)
         ls.include_launch_description(ld)
         assert 0 == ls.run()
 

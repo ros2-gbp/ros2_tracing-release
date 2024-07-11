@@ -32,8 +32,6 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "tracetools/version.h"
-
 /// See RMW_GID_STORAGE_SIZE in rmw.
 #define TRACETOOLS_GID_STORAGE_SIZE 24u
 
@@ -45,7 +43,7 @@ TRACEPOINT_EVENT(
   ),
   TP_FIELDS(
     ctf_integer_hex(const void *, context_handle, context_handle_arg)
-    ctf_string(version, TRACETOOLS_VERSION_STR)
+    ctf_string(version, tracetools_VERSION)
   )
 )
 
@@ -139,14 +137,10 @@ TRACEPOINT_EVENT(
   TRACEPOINT_PROVIDER,
   rmw_publish,
   TP_ARGS(
-    const void *, rmw_publisher_handle_arg,
-    const void *, message_arg,
-    int64_t, timestamp_arg
+    const void *, message_arg
   ),
   TP_FIELDS(
-    ctf_integer_hex(const void *, rmw_publisher_handle, rmw_publisher_handle_arg)
     ctf_integer_hex(const void *, message, message_arg)
-    ctf_integer(int64_t, timestamp, timestamp_arg)
   )
 )
 

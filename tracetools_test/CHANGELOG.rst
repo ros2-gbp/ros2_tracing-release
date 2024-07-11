@@ -2,40 +2,10 @@
 Changelog for package tracetools_test
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-8.2.1 (2024-06-27)
+6.3.2 (2024-07-11)
 ------------------
 
-8.2.0 (2024-04-16)
-------------------
-* Replace all occurences of index.ros.org (`#114 <https://github.com/ros2/ros2_tracing/issues/114>`_)
-* Improve tracetools_test and simplify test_tracetools code (`#109 <https://github.com/ros2/ros2_tracing/issues/109>`_)
-* Improve assertEventOrder failure output (`#106 <https://github.com/ros2/ros2_tracing/issues/106>`_)
-* Contributors: Chris Lalancette, Christophe Bedard
-
-8.1.0 (2024-03-27)
-------------------
-* Allow tracing tests to be run in parallel with other tests (`#95 <https://github.com/ros2/ros2_tracing/issues/95>`_)
-* Fix interference between test_tracetools and ros2lifecycle tests (`#96 <https://github.com/ros2/ros2_tracing/issues/96>`_)
-* Make tracing test assert messages more descriptive (`#93 <https://github.com/ros2/ros2_tracing/issues/93>`_)
-* Contributors: Christophe Bedard
-
-8.0.0 (2024-01-23)
-------------------
-* Fix use of mutable default arg in tracetools_test (`#84 <https://github.com/ros2/ros2_tracing/issues/84>`_)
-* Contributors: Christophe Bedard
-
-7.1.0 (2023-08-23)
-------------------
-
-7.0.0 (2023-06-09)
-------------------
-
-6.4.1 (2023-05-11)
-------------------
-* Switch <depend> to <exec_depend> in pure Python packages (`#67 <https://github.com/ros2/ros2_tracing/issues/67>`_)
-* Contributors: Christophe Bedard
-
-6.4.0 (2023-04-28)
+6.3.1 (2023-05-11)
 ------------------
 
 6.3.0 (2023-04-18)

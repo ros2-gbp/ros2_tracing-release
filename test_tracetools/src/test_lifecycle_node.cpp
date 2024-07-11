@@ -16,7 +16,6 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "rclcpp_lifecycle/lifecycle_node.hpp"
-#include "test_tracetools/mark_process.hpp"
 
 class LifecycleNode : public rclcpp_lifecycle::LifecycleNode
 {
@@ -67,8 +66,6 @@ public:
 
 int main(int argc, char ** argv)
 {
-  test_tracetools::mark_trace_test_process();
-
   rclcpp::init(argc, argv);
 
   rclcpp::executors::SingleThreadedExecutor exec;

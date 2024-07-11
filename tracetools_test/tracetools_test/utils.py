@@ -17,8 +17,8 @@
 import os
 import shutil
 from typing import List
-from typing import Optional
 from typing import Tuple
+from typing import Union
 
 from launch import Action
 from launch import LaunchDescription
@@ -37,8 +37,7 @@ def run_and_trace(
     kernel_events: List[str],
     package_name: str,
     node_names: List[str],
-    namespace: Optional[str],
-    additional_actions: List[Action],
+    additional_actions: Union[List[Action], Action] = [],
 ) -> Tuple[int, str]:
     """
     Run a node while tracing.
@@ -49,14 +48,15 @@ def run_and_trace(
     :param kernel_events: the list of kernel events to enable
     :param package_name: the name of the package to use
     :param node_names: the names of the nodes to execute
-    :param namespace: the ROS namespace for the node(s)
-    :param additional_actions: the list of additional actions to append
+    :param additional_actions: the list of additional actions to prepend
     :return: exit code, full generated path
     """
     session_name = append_timestamp(session_name_prefix)
     full_path = os.path.join(base_path, session_name)
+    if not isinstance(additional_actions, list):
+        additional_actions = [additional_actions]
 
-    launch_actions = []
+    launch_actions = additional_actions
     # Add trace action
     launch_actions.append(
         Trace(
@@ -72,13 +72,9 @@ def run_and_trace(
         n = Node(
             package=package_name,
             executable=node_name,
-            namespace=namespace,
             output='screen',
-            # Explicitly request to use the current environment
-            env=None,
         )
         launch_actions.append(n)
-    launch_actions.extend(additional_actions)
     ld = LaunchDescription(launch_actions)
     ls = LaunchService()
     ls.include_launch_description(ld)
