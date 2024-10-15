@@ -2,7 +2,7 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>test_tracetools</name>
-  <version>8.3.0</version>
+  <version>8.4.0</version>
   <description>Tests for the tracetools package.</description>
   <maintainer email="bedard.christophe@gmail.com">Christophe Bedard</maintainer>
   <maintainer email="ingo.luetkebohle@de.bosch.com">Ingo Luetkebohle</maintainer>
@@ -40,6 +40,7 @@
   <test_depend>rclcpp</test_depend>
   <test_depend>rclcpp_lifecycle</test_depend>
   <test_depend>rcpputils</test_depend>
+  <test_depend>rmw_implementation_cmake</test_depend>
   <test_depend>std_msgs</test_depend>
   <test_depend>std_srvs</test_depend>
   <test_depend>tracetools</test_depend>
