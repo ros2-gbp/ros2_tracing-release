@@ -3,7 +3,7 @@ on:
   pull_request:
   push:
     branches:
-      - jazzy
+      - rolling
   schedule:
     - cron: "0 5 * * *"
 defaults:
@@ -19,9 +19,9 @@ jobs:
       fail-fast: false
       matrix:
         distro:
-          - jazzy
+          - rolling
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         path: ws/src/ros2/ros2_tracing
     - uses: ros-tooling/setup-ros@master
@@ -64,9 +64,9 @@ jobs:
       fail-fast: false
       matrix:
         distro:
-          - jazzy
+          - rolling
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
       with:
         path: ws/src/ros2/ros2_tracing
     - uses: ros-tooling/setup-ros@master

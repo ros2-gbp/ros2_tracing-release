@@ -2,20 +2,15 @@
 Changelog for package test_tracetools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-8.2.2 (2024-09-06)
+8.4.0 (2024-10-15)
 ------------------
-* Run relevant test_tracetools tests with all instrumented rmw impls (`#134 <https://github.com/ros2/ros2_tracing/issues/134>`_)
-* Make test_tracetools ping pubs/subs transient_local (`#125 <https://github.com/ros2/ros2_tracing/issues/125>`_) (`#135 <https://github.com/ros2/ros2_tracing/issues/135>`_)
-  This will make sure that the initial `/ping` message is received no
-  matter the launch order of the `*ping` and `*pong` executables.
-  Also, given this guarantee, cancel the timer after the initial `/ping`
-  message.
-  Finally, add some helpful debug logs.
-  (cherry picked from commit 00a4e99c461e005d093689e1bdbb6b6caa3f5960)
-  Co-authored-by: Christophe Bedard <christophe.bedard@apex.ai>
-* Contributors: Christophe Bedard, mergify[bot]
+* Change expected rmw GID array size to 16 bytes (`#138 <https://github.com/ros2/ros2_tracing/issues/138>`_)
+* Run test_tracetools tests against rmw_fastrtps_dynamic_cpp too (`#127 <https://github.com/ros2/ros2_tracing/issues/127>`_)
+* Make test_tracetools ping pubs/subs transient_local (`#125 <https://github.com/ros2/ros2_tracing/issues/125>`_)
+* Run relevant test_tracetools tests with all instrumented rmw impls (`#116 <https://github.com/ros2/ros2_tracing/issues/116>`_)
+* Contributors: Christophe Bedard
 
-8.2.1 (2024-06-27)
+8.3.0 (2024-04-26)
 ------------------
 
 8.2.0 (2024-04-16)
