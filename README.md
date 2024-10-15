@@ -1,3 +1,38 @@
+## ros2_tracing (rolling) - 8.4.0-1
+
+The packages in the `ros2_tracing` repository were released into the `rolling` distro by running `/usr/bin/bloom-release --rosdistro rolling ros2_tracing` on `Tue, 15 Oct 2024 16:11:42 -0000`
+
+These packages were released:
+- `lttngpy`
+- `ros2trace`
+- `tracetools`
+- `tracetools_launch`
+- `tracetools_read`
+- `tracetools_test`
+- `tracetools_trace`
+
+These packages were explicitly ignored:
+- `test_ros2trace`
+- `test_tracetools`
+- `test_tracetools_launch`
+
+Version of package(s) in repository `ros2_tracing`:
+
+- upstream repository: https://github.com/ros2/ros2_tracing.git
+- release repository: https://github.com/ros2-gbp/ros2_tracing-release.git
+- rosdistro version: `8.3.0-1`
+- old version: `8.3.0-1`
+- new version: `8.4.0-1`
+
+Versions of tools used:
+
+- bloom version: `0.12.0`
+- catkin_pkg version: `1.0.0`
+- rosdep version: `0.24.0`
+- rosdistro version: `0.9.1`
+- vcstools version: `0.1.42`
+
+
 ## ros2_tracing (jazzy) - 8.2.2-1
 
 The packages in the `ros2_tracing` repository were released into the `jazzy` distro by running `/usr/bin/bloom-release ros2_tracing --track jazzy --rosdistro jazzy` on `Fri, 06 Sep 2024 18:29:55 -0000`
