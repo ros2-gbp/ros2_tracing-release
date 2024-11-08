@@ -2,6 +2,11 @@
 Changelog for package test_tracetools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+6.3.3 (2024-11-09)
+------------------
+* Run relevant test_tracetools tests with all instrumented rmw impls (`#132 <https://github.com/ros2/ros2_tracing/issues/132>`_)
+* Contributors: Christophe Bedard
+
 6.3.2 (2024-07-11)
 ------------------
 
