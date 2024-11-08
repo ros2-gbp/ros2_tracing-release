@@ -16,7 +16,6 @@
 """Module for a tracing-specific unittest.TestCase extension."""
 
 import os
-import tempfile
 import time
 from typing import Any
 from typing import List
@@ -27,18 +26,12 @@ import unittest
 
 from launch import Action
 from tracetools_read import DictEvent
+from tracetools_read import get_event_name
 from tracetools_read import get_event_timestamp
-from tracetools_read import get_events_with_field_value
-from tracetools_read import get_events_with_name
 from tracetools_read import get_field
 from tracetools_read import get_procname
-from tracetools_read import get_tid
 from tracetools_read.trace import get_trace_events
 
-from .mark_process import get_corresponding_trace_test_events
-from .mark_process import get_trace_test_id
-from .mark_process import TRACE_TEST_ID_ENV_VAR
-from .mark_process import TRACE_TEST_ID_TP_NAME
 from .utils import cleanup_trace
 from .utils import get_event_names
 from .utils import run_and_trace
@@ -67,59 +60,45 @@ class TraceTestCase(unittest.TestCase):
         events_ros: List[str],
         package: str,
         nodes: List[str],
-        base_path: Optional[str] = None,
+        base_path: str = '/tmp',
         events_kernel: List[str] = [],
-        additional_actions: Optional[List[Action]] = None,
-        namespace: Optional[str] = None,
+        additional_actions: Union[List[Action], Action] = [],
     ) -> None:
         """Create a TraceTestCase."""
         super().__init__(methodName=args[0])
-        self._base_path = base_path or tempfile.gettempdir()
-        # Append rmw implementation name to session name if one is explicitly set
-        rmw_implementation = os.environ.get('RMW_IMPLEMENTATION', None)
-        self._session_name_prefix = \
-            session_name_prefix + ('__' + rmw_implementation if rmw_implementation else '')
-        self._events_ros = events_ros + [TRACE_TEST_ID_TP_NAME]
+        self._base_path = base_path
+        self._session_name_prefix = session_name_prefix
+        self._events_ros = events_ros
         self._events_kernel = events_kernel
         self._package = package
         self._nodes = nodes
-        self._additional_actions = additional_actions or []
-        self._namespace = namespace
+        self._additional_actions = additional_actions
 
     def setUp(self):
         # Get timestamp before trace (ns)
         timestamp_before = int(time.time() * 1000000000.0)
 
-        # Set trace test ID env var for spawned processes
-        trace_test_id = get_trace_test_id(self._session_name_prefix)
-        os.environ[TRACE_TEST_ID_ENV_VAR] = trace_test_id
-        exit_code, self._full_path = run_and_trace(
+        exit_code, full_path = run_and_trace(
             self._base_path,
             self._session_name_prefix,
             self._events_ros,
             self._events_kernel,
             self._package,
             self._nodes,
-            self._namespace,
             self._additional_actions,
         )
 
-        print(f'TRACE DIRECTORY: {self._full_path}')
+        print(f'TRACE DIRECTORY: {full_path}')
+        self._exit_code = exit_code
+        self._full_path = full_path
 
         # Check that setUp() ran fine
-        self.assertEqual(exit_code, 0)
+        self.assertEqual(self._exit_code, 0)
 
         # Read events once
-        events_all = get_trace_events(self._full_path)
-        self.assertGreater(len(events_all), 0, 'no events found in trace')
-        # Only keep events from processes that have the same marker ID
-        self._events = get_corresponding_trace_test_events(events_all, trace_test_id)
-        self.assertGreater(
-            len(self._events),
-            0,
-            f'no matching trace test events found in trace amongst events: {events_all}',
-        )
+        self._events = get_trace_events(self._full_path)
         self._event_names = get_event_names(self._events)
+        self.assertGreater(len(self._events), 0, 'no events found in trace')
 
         # Check the timestamp of the first event
         self.assertEventAfterTimestamp(self._events[0], timestamp_before)
@@ -153,7 +132,7 @@ class TraceTestCase(unittest.TestCase):
         names: List[str],
     ) -> None:
         """
-        Check that the processes with the given names exist.
+        Check that the given processes exist.
 
         :param names: the node names to look for
         """
@@ -161,10 +140,7 @@ class TraceTestCase(unittest.TestCase):
         for name in names:
             # Procnames have a max length of 15
             name_trimmed = name[:15]
-            self.assertTrue(
-                name_trimmed in procnames,
-                f"process name '{name}' not found in processes: {procnames}",
-            )
+            self.assertTrue(name_trimmed in procnames, 'node name not found in tracepoints')
 
     def assertFieldType(  # noqa: N802
         self,
@@ -186,80 +162,57 @@ class TraceTestCase(unittest.TestCase):
             self.assertIsInstance(
                 field_value,
                 field_type,
-                (
-                    f"expected '{field_name}' field type {field_type.__name__}, "
-                    f'got {type(field_value).__name__} for event: {event}'
-                ),
-            )
+                f'expected {field_name} field type {field_type.__name__}, '
+                f'got {type(field_value).__name__}')
 
     def assertValidHandle(  # noqa: N802
         self,
         event: DictEvent,
         handle_field_names: Union[str, List[str]],
-        *,
-        can_be_null: bool = False,
     ) -> None:
         """
         Check that the handle associated to a field name is valid.
 
         :param event: the event which has a handle field
         :param handle_field_names: the handle field name(s) to check
-        :param can_be_null: whether the handle can be null
         """
         self.assertValidPointer(
             event,
             handle_field_names,
-            can_be_null=can_be_null,
         )
 
     def assertValidPointer(  # noqa: N802
         self,
         event: DictEvent,
         pointer_field_names: Union[str, List[str]],
-        *,
-        can_be_null: bool = False,
     ) -> None:
         """
         Check that the pointer associated to a field name is valid.
 
         :param event: the event which has a pointer field
         :param pointer_field_names: the pointer field name(s) to check
-        :param can_be_null: whether the pointer can be null
         """
         if not isinstance(pointer_field_names, list):
             pointer_field_names = [pointer_field_names]
         for field_name in pointer_field_names:
-            self.assertFieldType(event, field_name, int)
             pointer_value = self.get_field(event, field_name)
-            if can_be_null:
-                self.assertGreaterEqual(
-                    pointer_value,
-                    0,
-                    f"invalid '{field_name}' pointer value '{field_name}' for event: {event}",
-                )
-            else:
-                self.assertGreater(
-                    pointer_value,
-                    0,
-                    f"invalid '{field_name}' pointer value '{field_name}' for event: {event}",
-                )
+            self.assertIsInstance(pointer_value, int, 'pointer value not int')
+            self.assertGreater(pointer_value, 0, f'invalid pointer value: {field_name}')
 
-    def assertValidStaticArray(  # noqa: N802
+    def assertValidArray(  # noqa: N802
         self,
         event: DictEvent,
         array_field_names: Union[str, List[str]],
         array_type: Optional[Type] = None,
-        array_length: Optional[int] = None,
     ) -> None:
         """
-        Check that the static array associated to a field name is valid.
+        Check that the array associated to a field name is valid.
 
-        Optionally check its length and the type of its elements.
+        Optionally check the type of its elements.
 
-        :param event: the event which has a static array field
-        :param array_field_names: the static array field name(s) to check
-        :param array_type: the expected type of elements in the array, or `None`
-        :param array_length: the expected length of the array, or `None`
+        :param event: the event which has has an array field
+        :param array_field_names: the aray field name(s) to check
+        :param array_type: the expected type of elements in the array
         """
         if not isinstance(array_field_names, list):
             array_field_names = [array_field_names]
@@ -268,24 +221,12 @@ class TraceTestCase(unittest.TestCase):
             self.assertIsInstance(
                 array_value,
                 list,
-                f"'{field_name}' value '{array_value}' not array for event: {event}",
-            )
-            if array_length:
-                self.assertEqual(
-                    array_length,
-                    len(array_value),
-                    f"'{field_name}' array '{array_value}' length invalid for event: {event}",
-                )
+                f'{field_name} value not array: {array_value}')
             if array_type and len(array_value) > 0:
-                array_element = array_value[0]
                 self.assertIsInstance(
-                    array_element,
+                    array_value[0],
                     array_type,
-                    (
-                        f"'{field_name}' array element '{array_element}' "
-                        f"not '{array_type.__name__}' for event: {event}"
-                    ),
-                )
+                    f'{field_name} array element not {array_type.__name__}: {array_value}')
 
     def assertValidQueueDepth(  # noqa: N802
         self,
@@ -298,13 +239,9 @@ class TraceTestCase(unittest.TestCase):
         :param event: the event with the queue depth field
         :param queue_depth_field_name: the field name for queue depth
         """
-        self.assertFieldType(event, queue_depth_field_name, int)
         queue_depth_value = self.get_field(event, queue_depth_field_name)
-        self.assertGreater(
-            queue_depth_value,
-            0,
-            f"invalid queue depth '{queue_depth_field_name}' value for event: {event}",
-        )
+        self.assertIsInstance(queue_depth_value, int, 'invalid queue depth type')
+        self.assertGreater(queue_depth_value, 0, 'invalid queue depth')
 
     def assertStringFieldNotEmpty(  # noqa: N802
         self,
@@ -318,11 +255,7 @@ class TraceTestCase(unittest.TestCase):
         :param string_field_name: the field name of the string field
         """
         string_field = self.get_field(event, string_field_name)
-        self.assertGreater(
-            len(string_field),
-            0,
-            f"empty string for field '{string_field_name}' of event: {event}",
-        )
+        self.assertGreater(len(string_field), 0, 'empty string')
 
     def assertEventAfterTimestamp(  # noqa: N802
         self,
@@ -335,34 +268,24 @@ class TraceTestCase(unittest.TestCase):
         :param event: the event to check
         :param timestamp: the reference timestamp
         """
-        event_timestamp = get_event_timestamp(event)
-        self.assertGreater(
-            event_timestamp,
-            timestamp,
-            f"event not after timestamp '{timestamp}': {event}",
-        )
+        self.assertGreater(get_event_timestamp(event), timestamp, 'event not after timestamp')
 
     def assertEventOrder(  # noqa: N802
         self,
         events: List[DictEvent],
     ) -> None:
         """
-        Check that the events are ordered (from their timestamps).
+        Check that the first event was generated before the second event.
 
         :param events: the events in the expected order
         """
-        events_ordered = sorted(events, key=lambda event: get_event_timestamp(event))
-        self.assertListEqual(
-            events,
-            events_ordered,
-            f'unexpected events order: {events}',
-        )
+        self.assertTrue(self.are_events_ordered(events), 'unexpected events order')
 
     def assertNumEventsEqual(  # noqa: N802
         self,
         events: List[DictEvent],
         expected_number: int,
-        msg: Optional[str] = None,
+        msg: str = 'wrong number of events',
     ) -> None:
         """
         Check number of events.
@@ -371,15 +294,13 @@ class TraceTestCase(unittest.TestCase):
         :param expected_number: the expected number of events
         :param msg: the message to display on failure
         """
-        if msg is None:
-            msg = f'unexpected number of events: {events}'
         self.assertEqual(len(events), expected_number, msg)
 
     def assertNumEventsGreaterEqual(  # noqa: N802
         self,
         events: List[DictEvent],
         min_expected_number: int,
-        msg: Optional[str] = None,
+        msg: str = 'wrong number of events',
     ) -> None:
         """
         Check that the number of events is greater of equal.
@@ -388,8 +309,6 @@ class TraceTestCase(unittest.TestCase):
         :param min_expected_number: the minimum expected number of events
         :param msg: the message to display on failure
         """
-        if msg is None:
-            msg = f'unexpected number of events: {events}'
         self.assertGreaterEqual(len(events), min_expected_number, msg)
 
     def assertMatchingField(  # noqa: N802
@@ -419,14 +338,12 @@ class TraceTestCase(unittest.TestCase):
         matches = self.get_events_with_field_value(
             field_name,
             field_value,
-            events,
-        )
+            events)
         # Check that there is at least one
         self.assertGreaterEqual(
             len(matches),
             1,
-            f"no corresponding event with '{field_name}' field value '{field_value}': {events}",
-        )
+            f'no corresponding {field_name}')
         if check_order:
             # Check order
             # Since matching pairs might repeat, we need to check
@@ -435,15 +352,14 @@ class TraceTestCase(unittest.TestCase):
             self.assertGreaterEqual(
                 len(matches_ordered),
                 1,
-                f"matching '{field_name}' field event not after initial event: {initial_event}",
-            )
+                'matching field event not after initial event')
 
     def assertFieldEquals(  # noqa: N802
         self,
         event: DictEvent,
         field_name: str,
         value: Any,
-        msg: Optional[str] = None,
+        msg: str = 'wrong field value',
     ) -> None:
         """
         Check the value of a field.
@@ -453,8 +369,6 @@ class TraceTestCase(unittest.TestCase):
         :param value: to value to compare the field value to
         :param msg: the message to display on failure
         """
-        if msg is None:
-            msg = f"wrong field '{field_name}' value for event: {event}"
         actual_value = self.get_field(event, field_name)
         self.assertEqual(actual_value, value, msg)
 
@@ -472,9 +386,9 @@ class TraceTestCase(unittest.TestCase):
         """
         try:
             value = get_field(event, field_name, default=None, raise_if_not_found=True)
-        except AttributeError:
+        except AttributeError as e:
             # Explicitly failing here
-            self.fail(f"event does not contain field '{field_name}': {event}")
+            self.fail(str(e))
         else:
             return value
 
@@ -490,18 +404,6 @@ class TraceTestCase(unittest.TestCase):
         """
         return get_procname(event)
 
-    def get_tid(
-        self,
-        event: DictEvent,
-    ) -> str:
-        """
-        Get TID.
-
-        :param event: the event
-        :return: the TID of the event
-        """
-        return get_tid(event)
-
     def get_events_with_name(
         self,
         event_name: str,
@@ -516,7 +418,7 @@ class TraceTestCase(unittest.TestCase):
         """
         if events is None:
             events = self._events
-        return get_events_with_name(event_name, events)
+        return [e for e in events if get_event_name(e) == event_name]
 
     def get_events_with_procname(
         self,
@@ -551,43 +453,11 @@ class TraceTestCase(unittest.TestCase):
         :param events: the events to check (or `None` to check all events)
         :return: the events with the given field:value pair
         """
+        if not isinstance(field_values, list):
+            field_values = [field_values]
         if events is None:
             events = self._events
-        return get_events_with_field_value(field_name, field_values, events)
-
-    def get_event_with_field_value_and_assert(
-        self,
-        field_name: str,
-        field_values: Any,
-        events: Optional[List[DictEvent]] = None,
-        *,
-        allow_multiple: bool = False,
-    ) -> DictEvent:
-        """
-        Assert that an event with the given field:value exists and return it.
-
-        Can expect to get >=1 matching event, but always returns the first matching one.
-
-        :param field_name: the name of the field to check
-        :param field_values: the value(s) of the field to check
-        :param events: the events to check (or `None` to check all events)
-        :param allow_multiple: whether to allow multiple event matches
-        :return: the (first) event with the given field:value pair
-        """
-        matching_events = self.get_events_with_field_value(field_name, field_values, events)
-        if allow_multiple:
-            self.assertNumEventsGreaterEqual(
-                matching_events,
-                1,
-                f'expected >=1 events matching {field_name}={field_values} in events: {events}',
-            )
-        else:
-            self.assertNumEventsEqual(
-                matching_events,
-                1,
-                f'expected 1 event matching {field_name}={field_values} in events: {events}',
-            )
-        return matching_events[0]
+        return [e for e in events if get_field(e, field_name, None) in field_values]
 
     def get_events_with_field_not_value(
         self,
@@ -603,7 +473,7 @@ class TraceTestCase(unittest.TestCase):
         :param events: the events to check (or `None` to check all events)
         :return: the events with the given field:value pair
         """
-        if not isinstance(field_values, (list, set)):
+        if not isinstance(field_values, list):
             field_values = [field_values]
         if events is None:
             events = self._events
@@ -618,7 +488,8 @@ class TraceTestCase(unittest.TestCase):
 
         :param events: the events in the expected order
         """
-        return all(
+        orders = [
             get_event_timestamp(events[i]) < get_event_timestamp(events[i + 1])
             for i in range(len(events) - 1)
-        )
+        ]
+        return all(orders)

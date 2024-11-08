@@ -14,28 +14,16 @@
 
 """Module for trace command extension implementation."""
 
-from ros2cli.command import add_subparsers_on_demand
 from ros2cli.command import CommandExtension
 from tracetools_trace.tools import args
 from tracetools_trace.trace import trace
 
 
 class TraceCommand(CommandExtension):
-    """Trace ROS 2 nodes to get information on their execution. The main 'trace' command requires user interaction; to trace non-interactively, use the 'start'/'stop'/'pause'/'resume' sub-commands."""  # noqa: E501
+    """Trace ROS nodes to get information on their execution."""
 
-    def add_arguments(self, parser, cli_name) -> None:
-        self._subparser = parser
+    def add_arguments(self, parser, cli_name):
         args.add_arguments(parser)
 
-        # Add arguments and sub-commands of verbs
-        add_subparsers_on_demand(parser, cli_name, '_verb', 'ros2trace.verb', required=False)
-
-    def main(self, *, parser, args) -> int:
-        if not hasattr(args, '_verb'):
-            # In case no verb was passed, do interactive tracing
-            return trace(args)
-
-        extension = getattr(args, '_verb')
-
-        # Call the verb's main method
-        return extension.main(args=args)
+    def main(self, *, parser, args):
+        return trace(args)

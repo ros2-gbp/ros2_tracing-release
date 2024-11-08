@@ -3,58 +3,55 @@ on:
   pull_request:
   push:
     branches:
-      - rolling
+      - iron
   schedule:
     - cron: "0 5 * * *"
-defaults:
-  run:
-    shell: bash
 jobs:
   test:
-    runs-on: ubuntu-latest
-    container:
-      image: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
     continue-on-error: ${{ matrix.build-type == 'binary' }}
     strategy:
       fail-fast: false
       matrix:
         include:
           # Normal build (binary)
-          - os: ubuntu:24.04
-            distro: rolling
+          - os: ubuntu-22.04
+            distro: iron
             build-type: binary
             instrumentation: instr-enabled
             tracepoints: tp-included
           # Normal build (source)
-          - os: ubuntu:24.04
-            distro: rolling
+          - os: ubuntu-22.04
+            distro: iron
             build-type: source
             instrumentation: instr-enabled
             tracepoints: tp-included
           # Build with instrumentation disabled
-          - os: ubuntu:24.04
-            distro: rolling
+          - os: ubuntu-22.04
+            distro: iron
             build-type: source
             instrumentation: instr-disabled
             tracepoints: tp-included
           # Normal build with tracepoints excluded
-          - os: ubuntu:24.04
-            distro: rolling
+          - os: ubuntu-22.04
+            distro: iron
             build-type: source
             instrumentation: instr-enabled
             tracepoints: tp-excluded
     env:
       ROS2_REPOS_FILE_URL: 'https://raw.githubusercontent.com/ros2/ros2/${{ matrix.distro }}/ros2.repos'
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v3
     - uses: ros-tooling/setup-ros@master
       with:
         required-ros-distributions: ${{ matrix.build-type == 'binary' && matrix.distro || '' }}
         use-ros2-testing: true
+    - name: Pin mypy==0.942
+      run: |
+        python3 -m pip install 'mypy==0.942'
     - uses: ros-tooling/action-ros-ci@master
       with:
         package-name: >
-          lttngpy
           ros2trace
           test_ros2trace
           test_tracetools

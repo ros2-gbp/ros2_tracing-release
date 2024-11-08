@@ -2,41 +2,13 @@
 Changelog for package tracetools_launch
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-8.4.0 (2024-10-15)
-------------------
-* Allow enabling syscalls through ``ros2 trace`` or the Trace action (`#137 <https://github.com/ros2/ros2_tracing/issues/137>`_)
-* Contributors: Christophe Bedard
-
-8.3.0 (2024-04-26)
+6.3.3 (2024-11-09)
 ------------------
 
-8.2.0 (2024-04-16)
-------------------
-* Replace all occurences of index.ros.org (`#114 <https://github.com/ros2/ros2_tracing/issues/114>`_)
-* Contributors: Chris Lalancette
-
-8.1.0 (2024-03-27)
-------------------
-* Use single underscore for private vars in Python (`#92 <https://github.com/ros2/ros2_tracing/issues/92>`_)
-* Improve tracing configuration error reporting (`#85 <https://github.com/ros2/ros2_tracing/issues/85>`_)
-* Fix warnings when using mypy 1.8.0. (`#89 <https://github.com/ros2/ros2_tracing/issues/89>`_)
-* Contributors: Chris Lalancette, Christophe Bedard
-
-8.0.0 (2024-01-23)
-------------------
-* Remove extra single quote in LdPreload debug log (`#79 <https://github.com/ros2/ros2_tracing/issues/79>`_)
-* Contributors: Christophe Bedard
-
-7.1.0 (2023-08-23)
+6.3.2 (2024-07-11)
 ------------------
 
-7.0.0 (2023-06-09)
-------------------
-
-6.4.1 (2023-05-11)
-------------------
-
-6.4.0 (2023-04-28)
+6.3.1 (2023-05-11)
 ------------------
 
 6.3.0 (2023-04-18)

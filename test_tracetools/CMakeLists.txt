@@ -36,133 +36,70 @@ if(BUILD_TESTING)
   find_package(lifecycle_msgs REQUIRED)
   find_package(rclcpp REQUIRED)
   find_package(rclcpp_lifecycle REQUIRED)
-  find_package(rcpputils REQUIRED)
   find_package(std_msgs REQUIRED)
   find_package(std_srvs REQUIRED)
-
-  # The utility lib is needed even if TRACETOOLS_DISABLED; it's just empty
-  add_library(${PROJECT_NAME}_mark_process src/mark_process.cpp)
-  if(NOT TRACETOOLS_DISABLED)
-    find_package(PkgConfig REQUIRED)
-    pkg_check_modules(LTTNG REQUIRED lttng-ust)
-    target_link_libraries(${PROJECT_NAME}_mark_process PRIVATE
-      ${LTTNG_LIBRARIES}
-      rcpputils::rcpputils
-    )
-  endif()
-  target_include_directories(${PROJECT_NAME}_mark_process PUBLIC
-    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-  )
-  if(TRACETOOLS_DISABLED)
-    target_compile_definitions(${PROJECT_NAME}_mark_process PRIVATE TRACETOOLS_DISABLED)
-  endif()
-  install(
-    DIRECTORY include/
-    DESTINATION include/${PROJECT_NAME}
-  )
-  install(
-    TARGETS ${PROJECT_NAME}_mark_process
-    LIBRARY DESTINATION lib
-    ARCHIVE DESTINATION lib
-    RUNTIME DESTINATION bin
-  )
 
   add_executable(test_publisher
     src/test_publisher.cpp
   )
-  target_link_libraries(test_publisher PRIVATE
-    ${PROJECT_NAME}_mark_process
-    rclcpp::rclcpp
-    ${std_msgs_TARGETS}
+  ament_target_dependencies(test_publisher
+    rclcpp
+    std_msgs
   )
-
   add_executable(test_intra
     src/test_intra.cpp
   )
-  target_link_libraries(test_intra PRIVATE
-    ${PROJECT_NAME}_mark_process
-    rclcpp::rclcpp
-    ${std_msgs_TARGETS}
+  ament_target_dependencies(test_intra
+    rclcpp
+    std_msgs
   )
-
   add_executable(test_lifecycle_node
     src/test_lifecycle_node.cpp
   )
-  target_link_libraries(test_lifecycle_node PRIVATE
-    ${PROJECT_NAME}_mark_process
-    rclcpp::rclcpp
-    rclcpp_lifecycle::rclcpp_lifecycle
+  ament_target_dependencies(test_lifecycle_node
+    rclcpp
+    rclcpp_lifecycle
   )
-
   add_executable(test_lifecycle_client
     src/test_lifecycle_client.cpp
   )
-  target_link_libraries(test_lifecycle_client PRIVATE
-    ${PROJECT_NAME}_mark_process
-    ${lifecycle_msgs_TARGETS}
-    rclcpp::rclcpp
+  ament_target_dependencies(test_lifecycle_client
+    lifecycle_msgs
+    rclcpp
   )
-
   add_executable(test_ping
     src/test_ping.cpp
   )
-  target_link_libraries(test_ping PRIVATE
-    ${PROJECT_NAME}_mark_process
-    rclcpp::rclcpp
-    ${std_msgs_TARGETS}
+  ament_target_dependencies(test_ping
+    rclcpp
+    std_msgs
   )
-
   add_executable(test_pong
     src/test_pong.cpp
   )
-  target_link_libraries(test_pong PRIVATE
-    ${PROJECT_NAME}_mark_process
-    rclcpp::rclcpp
-    ${std_msgs_TARGETS}
+  ament_target_dependencies(test_pong
+    rclcpp
+    std_msgs
   )
-
-  add_executable(test_generic_ping
-    src/test_generic_ping.cpp
-  )
-  target_link_libraries(test_generic_ping PRIVATE
-    ${PROJECT_NAME}_mark_process
-    rclcpp::rclcpp
-    ${std_msgs_TARGETS}
-  )
-
-  add_executable(test_generic_pong
-    src/test_generic_pong.cpp
-  )
-  target_link_libraries(test_generic_pong PRIVATE
-    ${PROJECT_NAME}_mark_process
-    rclcpp::rclcpp
-    ${std_msgs_TARGETS}
-  )
-
   add_executable(test_timer
     src/test_timer.cpp
   )
-  target_link_libraries(test_timer PRIVATE
-    ${PROJECT_NAME}_mark_process
-    rclcpp::rclcpp
+  ament_target_dependencies(test_timer
+    rclcpp
   )
-
   add_executable(test_service_ping
     src/test_service_ping.cpp
   )
-  target_link_libraries(test_service_ping PRIVATE
-    ${PROJECT_NAME}_mark_process
-    rclcpp::rclcpp
-    ${std_srvs_TARGETS}
+  ament_target_dependencies(test_service_ping
+    rclcpp
+    std_srvs
   )
-
   add_executable(test_service_pong
     src/test_service_pong.cpp
   )
-  target_link_libraries(test_service_pong PRIVATE
-    ${PROJECT_NAME}_mark_process
-    rclcpp::rclcpp
-    ${std_srvs_TARGETS}
+  ament_target_dependencies(test_service_pong
+    rclcpp
+    std_srvs
   )
 
   install(TARGETS
@@ -171,8 +108,6 @@ if(BUILD_TESTING)
     test_lifecycle_client
     test_ping
     test_pong
-    test_generic_ping
-    test_generic_pong
     test_publisher
     test_service_ping
     test_service_pong
@@ -189,8 +124,8 @@ if(BUILD_TESTING)
     find_package(ament_cmake_gtest REQUIRED)
     ament_add_gtest(test_utils test/test_utils.cpp)
     if(TARGET test_utils)
-      target_link_libraries(test_utils
-        tracetools::tracetools
+      ament_target_dependencies(test_utils
+        tracetools
       )
     endif()
   endif()
@@ -222,17 +157,13 @@ if(BUILD_TESTING)
 
     # Tests to run with all instrumented/supported rmw implementations
     set(_test_tracetools_pytest_tests_multi_rmw
-      test/test_generic_pub_sub.py
-      test/test_generic_subscription.py
       test/test_pub_sub.py
       test/test_publisher.py
       test/test_subscription.py
     )
     set(_test_tracetools_rmw_implementations
-      rmw_connextdds
       rmw_cyclonedds_cpp
       rmw_fastrtps_cpp
-      rmw_fastrtps_dynamic_cpp
     )
     get_available_rmw_implementations(rmw_implementations)
     foreach(_test_path ${_test_tracetools_pytest_tests_multi_rmw})

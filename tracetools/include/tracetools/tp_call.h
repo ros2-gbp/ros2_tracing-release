@@ -32,15 +32,8 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#include "tracetools/version.h"
-
 /// See RMW_GID_STORAGE_SIZE in rmw.
-#define TRACETOOLS_GID_STORAGE_SIZE 16u
-
-#ifdef __clang__
-# pragma clang diagnostic push
-# pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
-#endif
+#define TRACETOOLS_GID_STORAGE_SIZE 24u
 
 TRACEPOINT_EVENT(
   TRACEPOINT_PROVIDER,
@@ -50,7 +43,7 @@ TRACEPOINT_EVENT(
   ),
   TP_FIELDS(
     ctf_integer_hex(const void *, context_handle, context_handle_arg)
-    ctf_string(version, TRACETOOLS_VERSION_STR)
+    ctf_string(version, tracetools_VERSION)
   )
 )
 
@@ -144,14 +137,10 @@ TRACEPOINT_EVENT(
   TRACEPOINT_PROVIDER,
   rmw_publish,
   TP_ARGS(
-    const void *, rmw_publisher_handle_arg,
-    const void *, message_arg,
-    int64_t, timestamp_arg
+    const void *, message_arg
   ),
   TP_FIELDS(
-    ctf_integer_hex(const void *, rmw_publisher_handle, rmw_publisher_handle_arg)
     ctf_integer_hex(const void *, message, message_arg)
-    ctf_integer(int64_t, timestamp, timestamp_arg)
   )
 )
 
@@ -513,10 +502,6 @@ TRACEPOINT_EVENT(
     ctf_integer_hex(const void *, buffer, buffer_arg)
   )
 )
-
-#ifdef __clang__
-# pragma clang diagnostic pop
-#endif
 
 #endif  // _TRACETOOLS__TP_CALL_H_
 

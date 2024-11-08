@@ -13,7 +13,6 @@ elseif(CMAKE_CXX_COMPILER_ID MATCHES "MSVC")
   add_compile_options(/W4)
 endif()
 
-find_package(ament_cmake_gen_version_h REQUIRED)
 find_package(ament_cmake_ros REQUIRED)
 
 if(WIN32 OR APPLE OR ANDROID)
@@ -50,7 +49,7 @@ set(SOURCES
 set(HEADERS
   include/${PROJECT_NAME}/tracetools.h
   include/${PROJECT_NAME}/utils.hpp
-  include/${PROJECT_NAME}/visibility_control.h
+  include/${PROJECT_NAME}/visibility_control.hpp
 )
 if(NOT TRACETOOLS_TRACEPOINTS_EXCLUDED)
   # We only need these if we're using LTTng
@@ -103,9 +102,6 @@ if(NOT TRACETOOLS_DISABLED)
   set(export_target_options "HAS_LIBRARY_TARGET")
 endif()
 ament_export_targets(${PROJECT_NAME}_export ${export_target_options})
-if(NOT TRACETOOLS_DISABLED)
-  ament_generate_version_header(${PROJECT_NAME})
-endif()
 
 if(TRACETOOLS_STATUS_CHECKING_TOOL)
   # Lib for status checking
@@ -191,3 +187,7 @@ if(BUILD_TESTING)
 endif()
 
 ament_package()
+
+if(NOT TRACETOOLS_DISABLED)
+  target_compile_definitions(${PROJECT_NAME} PRIVATE ${PROJECT_NAME}_VERSION="${${PROJECT_NAME}_VERSION}")
+endif()
