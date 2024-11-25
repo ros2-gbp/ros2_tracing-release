@@ -2,18 +2,66 @@
 Changelog for package test_tracetools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-6.3.3 (2024-11-09)
+8.4.1 (2024-11-25)
 ------------------
-* Run relevant test_tracetools tests with all instrumented rmw impls (`#132 <https://github.com/ros2/ros2_tracing/issues/132>`_)
+* Don't try to build on BSD (`#142 <https://github.com/ros2/ros2_tracing/issues/142>`_)
+  The 'BSD' variable was added in CMake 3.25. Note that variables which
+  are not defined will evaluate to 'False', so this shouldn't regress
+  platforms using CMake versions older than 3.25.
+* Refactor and split test_service into test\_{service,client} (`#144 <https://github.com/ros2/ros2_tracing/issues/144>`_)
+* Contributors: Christophe Bedard, Scott K Logan
+
+8.4.0 (2024-10-15)
+------------------
+* Change expected rmw GID array size to 16 bytes (`#138 <https://github.com/ros2/ros2_tracing/issues/138>`_)
+* Run test_tracetools tests against rmw_fastrtps_dynamic_cpp too (`#127 <https://github.com/ros2/ros2_tracing/issues/127>`_)
+* Make test_tracetools ping pubs/subs transient_local (`#125 <https://github.com/ros2/ros2_tracing/issues/125>`_)
+* Run relevant test_tracetools tests with all instrumented rmw impls (`#116 <https://github.com/ros2/ros2_tracing/issues/116>`_)
 * Contributors: Christophe Bedard
 
-6.3.2 (2024-07-11)
+8.3.0 (2024-04-26)
 ------------------
 
-6.3.1 (2023-05-11)
+8.2.0 (2024-04-16)
 ------------------
-* Disable tracing on Android (`#72 <https://github.com/ros2/ros2_tracing/issues/72>`_)
-* Contributors: Przemysław Dąbrowski
+* Improve tracetools_test and simplify test_tracetools code (`#109 <https://github.com/ros2/ros2_tracing/issues/109>`_)
+* Install test_tracetools_mark_process (`#113 <https://github.com/ros2/ros2_tracing/issues/113>`_)
+* Remove unnecessary <string> include (`#111 <https://github.com/ros2/ros2_tracing/issues/111>`_)
+* Include <string> in mark_process.cpp (`#110 <https://github.com/ros2/ros2_tracing/issues/110>`_)
+* Remove unnecessary print in test (`#108 <https://github.com/ros2/ros2_tracing/issues/108>`_)
+* Add test for GenericPublisher/Subscriber (`#97 <https://github.com/ros2/ros2_tracing/issues/97>`_)
+* Use lttng_ust_tracef instead of lttng_ust__tracef (`#103 <https://github.com/ros2/ros2_tracing/issues/103>`_)
+* Contributors: Christophe Bedard, h-suzuki-isp
+
+8.1.0 (2024-03-27)
+------------------
+* Use a memcmp for the expected symbol name. (`#100 <https://github.com/ros2/ros2_tracing/issues/100>`_)
+* Fix the build on RHEL-9. (`#98 <https://github.com/ros2/ros2_tracing/issues/98>`_)
+* Allow tracing tests to be run in parallel with other tests (`#95 <https://github.com/ros2/ros2_tracing/issues/95>`_)
+* Fix interference between test_tracetools and ros2lifecycle tests (`#96 <https://github.com/ros2/ros2_tracing/issues/96>`_)
+* Make tracing test assert messages more descriptive (`#93 <https://github.com/ros2/ros2_tracing/issues/93>`_)
+* Update tests and docs after new rmw_publish timestamp field (`#90 <https://github.com/ros2/ros2_tracing/issues/90>`_)
+* Contributors: Chris Lalancette, Christophe Bedard
+
+8.0.0 (2024-01-23)
+------------------
+* Switch to target_link_libraries in test_tracetools. (`#83 <https://github.com/ros2/ros2_tracing/issues/83>`_)
+* Contributors: Chris Lalancette
+
+7.1.0 (2023-08-23)
+------------------
+
+7.0.0 (2023-06-09)
+------------------
+
+6.4.1 (2023-05-11)
+------------------
+* Improve test coverage of rclcpp_callback_register in test_tracetools (`#69 <https://github.com/ros2/ros2_tracing/issues/69>`_)
+* Disable tracing on Android (`#71 <https://github.com/ros2/ros2_tracing/issues/71>`_)
+* Contributors: Christophe Bedard, Przemysław Dąbrowski
+
+6.4.0 (2023-04-28)
+------------------
 
 6.3.0 (2023-04-18)
 ------------------

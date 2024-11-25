@@ -2,18 +2,55 @@
 Changelog for package tracetools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-6.3.3 (2024-11-09)
+8.4.1 (2024-11-25)
+------------------
+* Don't try to build on BSD (`#142 <https://github.com/ros2/ros2_tracing/issues/142>`_)
+* Contributors: Scott K Logan
+
+8.4.0 (2024-10-15)
+------------------
+* Change expected rmw GID array size to 16 bytes (`#138 <https://github.com/ros2/ros2_tracing/issues/138>`_)
+* Fix up two different C problems. (`#129 <https://github.com/ros2/ros2_tracing/issues/129>`_)
+* Ignore zero-variadic-macro-arguments warnings from lttng-ust macros (`#126 <https://github.com/ros2/ros2_tracing/issues/126>`_)
+* Remove deprecated TRACEPOINT macros (`#123 <https://github.com/ros2/ros2_tracing/issues/123>`_)
+* Fix type for buffer index argument in tracepoint event declaration. (`#117 <https://github.com/ros2/ros2_tracing/issues/117>`_)
+* Contributors: Chris Lalancette, Christophe Bedard, Mattis Kieffer
+
+8.3.0 (2024-04-26)
 ------------------
 
-6.3.2 (2024-07-11)
+8.2.0 (2024-04-16)
 ------------------
-* Fix type for buffer index argument in tracepoint event declaration. (`#121 <https://github.com/ros2/ros2_tracing/issues/121>`_)
-* Contributors: Mattis Kieffer
+* Replace all occurences of index.ros.org (`#114 <https://github.com/ros2/ros2_tracing/issues/114>`_)
+* Switch to ament_generate_version_header for tracetools (`#112 <https://github.com/ros2/ros2_tracing/issues/112>`_)
+* Fixes for newer uncrustify (`#101 <https://github.com/ros2/ros2_tracing/issues/101>`_)
+* Contributors: Chris Lalancette, Christophe Bedard
 
-6.3.1 (2023-05-11)
+8.1.0 (2024-03-27)
 ------------------
-* Disable tracing on Android (`#72 <https://github.com/ros2/ros2_tracing/issues/72>`_)
+* Update tests and docs after new rmw_publish timestamp field (`#90 <https://github.com/ros2/ros2_tracing/issues/90>`_)
+* Contributors: Christophe Bedard
+
+8.0.0 (2024-01-23)
+------------------
+* Add timestamp to rmw_publish tracepoint (`#74 <https://github.com/ros2/ros2_tracing/issues/74>`_)
+* Contributors: Christopher Wecht
+
+7.1.0 (2023-08-23)
+------------------
+
+7.0.0 (2023-06-09)
+------------------
+* Add TRACETOOLS\_ prefix to tracepoint-related public macros (`#56 <https://github.com/ros2/ros2_tracing/issues/56>`_)
+* Contributors: Christophe Bedard
+
+6.4.1 (2023-05-11)
+------------------
+* Disable tracing on Android (`#71 <https://github.com/ros2/ros2_tracing/issues/71>`_)
 * Contributors: Przemysław Dąbrowski
+
+6.4.0 (2023-04-28)
+------------------
 
 6.3.0 (2023-04-18)
 ------------------

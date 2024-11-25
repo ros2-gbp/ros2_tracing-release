@@ -2,13 +2,40 @@
 Changelog for package ros2trace
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-6.3.3 (2024-11-09)
+8.4.1 (2024-11-25)
 ------------------
 
-6.3.2 (2024-07-11)
+8.4.0 (2024-10-15)
 ------------------
 
-6.3.1 (2023-05-11)
+8.3.0 (2024-04-26)
+------------------
+
+8.2.0 (2024-04-16)
+------------------
+* Replace all occurences of index.ros.org (`#114 <https://github.com/ros2/ros2_tracing/issues/114>`_)
+* Contributors: Chris Lalancette
+
+8.1.0 (2024-03-27)
+------------------
+
+8.0.0 (2024-01-23)
+------------------
+
+7.1.0 (2023-08-23)
+------------------
+* Create start/pause/resume/stop sub-commands for 'ros2 trace' (`#70 <https://github.com/ros2/ros2_tracing/issues/70>`_)
+* Contributors: Christophe Bedard
+
+7.0.0 (2023-06-09)
+------------------
+
+6.4.1 (2023-05-11)
+------------------
+* Switch <depend> to <exec_depend> in pure Python packages (`#67 <https://github.com/ros2/ros2_tracing/issues/67>`_)
+* Contributors: Christophe Bedard
+
+6.4.0 (2023-04-28)
 ------------------
 
 6.3.0 (2023-04-18)

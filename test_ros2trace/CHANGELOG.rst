@@ -2,13 +2,43 @@
 Changelog for package test_ros2trace
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-6.3.3 (2024-11-09)
+8.4.1 (2024-11-25)
 ------------------
 
-6.3.2 (2024-07-11)
+8.4.0 (2024-10-15)
+------------------
+* Allow enabling syscalls through ``ros2 trace`` or the Trace action (`#137 <https://github.com/ros2/ros2_tracing/issues/137>`_)
+* Contributors: Christophe Bedard
+
+8.3.0 (2024-04-26)
 ------------------
 
-6.3.1 (2023-05-11)
+8.2.0 (2024-04-16)
+------------------
+* Add explicit context fields test to test_ros2trace (`#107 <https://github.com/ros2/ros2_tracing/issues/107>`_)
+* Contributors: Christophe Bedard
+
+8.1.0 (2024-03-27)
+------------------
+* Allow tracing tests to be run in parallel with other tests (`#95 <https://github.com/ros2/ros2_tracing/issues/95>`_)
+* Make test_ros2trace depend on test_tracetools_launch.
+* Contributors: Chris Lalancette, Christophe Bedard
+
+8.0.0 (2024-01-23)
+------------------
+* Switch to custom lttng-ctl Python bindings (`#81 <https://github.com/ros2/ros2_tracing/issues/81>`_)
+* Contributors: Christophe Bedard
+
+7.1.0 (2023-08-23)
+------------------
+
+7.0.0 (2023-06-09)
+------------------
+
+6.4.1 (2023-05-11)
+------------------
+
+6.4.0 (2023-04-28)
 ------------------
 
 6.3.0 (2023-04-18)

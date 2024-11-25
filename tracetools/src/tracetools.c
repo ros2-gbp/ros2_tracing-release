@@ -24,49 +24,51 @@
  */
 #ifndef TRACETOOLS_TRACEPOINTS_EXCLUDED
 # include "tracetools/tp_call.h"
-# define CONDITIONAL_TP(...) \
+// *INDENT-OFF*
+# define _CONDITIONAL_TP(...) \
   tracepoint(TRACEPOINT_PROVIDER, __VA_ARGS__)
-# define CONDITIONAL_TP_ENABLED(event_name) \
+# define _CONDITIONAL_TP_ENABLED(event_name) \
   0 != tracepoint_enabled(ros2, event_name)
-# define CONDITIONAL_DO_TP(...) \
+# define _CONDITIONAL_DO_TP(...) \
   do_tracepoint(ros2, __VA_ARGS__)
 #else
-# define CONDITIONAL_TP(...) ((void) (0))
-# define CONDITIONAL_TP_ENABLED(...) false
-# define CONDITIONAL_DO_TP(...) ((void) (0))
-#endif
+# define _CONDITIONAL_TP(...) ((void) (0))
+# define _CONDITIONAL_TP_ENABLED(...) false
+# define _CONDITIONAL_DO_TP(...) ((void) (0))
+#endif  // TRACETOOLS_TRACEPOINTS_EXCLUDED
 
 #define TRACEPOINT_ARGS(...) __VA_ARGS__
 #define TRACEPOINT_PARAMS(...) __VA_ARGS__
 
 #define DEFINE_TRACEPOINT(event_name, _TP_PARAMS, _TP_ARGS) \
-  void TRACEPOINT(event_name, _TP_PARAMS) \
+  void TRACETOOLS_TRACEPOINT(event_name, _TP_PARAMS) \
   { \
-    CONDITIONAL_TP(event_name, _TP_ARGS); \
+    _CONDITIONAL_TP(event_name, _TP_ARGS); \
   } \
-  bool TRACEPOINT_ENABLED(event_name) \
+  bool TRACETOOLS_TRACEPOINT_ENABLED(event_name) \
   { \
-    return CONDITIONAL_TP_ENABLED(event_name); \
+    return _CONDITIONAL_TP_ENABLED(event_name); \
   } \
-  void DO_TRACEPOINT(event_name, _TP_PARAMS) \
+  void TRACETOOLS_DO_TRACEPOINT(event_name, _TP_PARAMS) \
   { \
-    CONDITIONAL_DO_TP(event_name, _TP_ARGS); \
+    _CONDITIONAL_DO_TP(event_name, _TP_ARGS); \
   }
 #define DEFINE_TRACEPOINT_NO_ARGS(event_name) \
-  void TRACEPOINT(event_name) \
+  void TRACETOOLS_TRACEPOINT(event_name) \
   { \
-    CONDITIONAL_TP(event_name); \
+    _CONDITIONAL_TP(event_name); \
   } \
-  bool TRACEPOINT_ENABLED(event_name) \
+  bool TRACETOOLS_TRACEPOINT_ENABLED(event_name) \
   { \
-    return CONDITIONAL_TP_ENABLED(event_name); \
+    return _CONDITIONAL_TP_ENABLED(event_name); \
   } \
-  void DO_TRACEPOINT(event_name) \
+  void TRACETOOLS_DO_TRACEPOINT(event_name) \
   { \
-    CONDITIONAL_DO_TP(event_name); \
+    _CONDITIONAL_DO_TP(event_name); \
   }
+// *INDENT-ON*
 
-bool ros_trace_compile_status()
+bool ros_trace_compile_status(void)
 {
 #ifndef TRACETOOLS_TRACEPOINTS_EXCLUDED
   return true;
@@ -75,12 +77,19 @@ bool ros_trace_compile_status()
 #endif
 }
 
+// Ignore unused-parameters warning when tracepoints are excluded
 #ifndef _WIN32
 # pragma GCC diagnostic push
 # pragma GCC diagnostic ignored "-Wunused-parameter"
 #else
 # pragma warning(push)
 # pragma warning(disable: 4100)
+#endif
+
+// Ignore zero-variadic-macro-arguments clang warnings caused by lttng-ust macros
+#ifdef __clang__
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
 #endif
 
 DEFINE_TRACEPOINT(
@@ -156,9 +165,13 @@ DEFINE_TRACEPOINT(
 DEFINE_TRACEPOINT(
   rmw_publish,
   TRACEPOINT_PARAMS(
-    const void * message),
+    const void * rmw_publisher_handle,
+    const void * message,
+    int64_t timestamp),
   TRACEPOINT_ARGS(
-    message))
+    rmw_publisher_handle,
+    message,
+    timestamp))
 
 DEFINE_TRACEPOINT(
   rmw_subscription_init,
@@ -410,6 +423,10 @@ DEFINE_TRACEPOINT(
     const void * buffer),
   TRACEPOINT_ARGS(
     buffer))
+
+#ifdef __clang__
+# pragma clang diagnostic pop
+#endif
 
 #ifndef _WIN32
 # pragma GCC diagnostic pop

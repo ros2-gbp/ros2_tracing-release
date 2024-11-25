@@ -102,6 +102,7 @@ class TestTraceAction(unittest.TestCase):
             session_name='my-session-name',
             base_path=tmpdir,
             events_kernel=[],
+            syscalls=[],
             events_ust=[
                 'ros2:*',
                 '*',
@@ -126,6 +127,7 @@ class TestTraceAction(unittest.TestCase):
                     base-path="{}"
                     append-trace="true"
                     events-kernel=""
+                    syscalls=""
                     events-ust="ros2:* *"
                     subbuffer-size-ust="524288"
                     subbuffer-size-kernel="1048576"
@@ -154,6 +156,7 @@ class TestTraceAction(unittest.TestCase):
                 base-path: {}
                 append-trace: true
                 events-kernel: ""
+                syscalls: ""
                 events-ust: ros2:* *
                 subbuffer-size-ust: 524288
                 subbuffer-size-kernel: 1048576
@@ -171,10 +174,30 @@ class TestTraceAction(unittest.TestCase):
     def test_action_context_per_domain(self) -> None:
         tmpdir = tempfile.mkdtemp(prefix='TestTraceAction__test_action_context_per_domain')
 
+        # Invalid context domain
         action = Trace(
             session_name='my-session-name',
             base_path=tmpdir,
             events_kernel=[],
+            syscalls=[],
+            events_ust=[
+                'ros2:*',
+                '*',
+            ],
+            context_fields={
+                'some_unknown_domain_type': [],
+                'userspace': ['vpid', 'vtid'],
+            },
+            subbuffer_size_ust=524288,
+            subbuffer_size_kernel=1048576,
+        )
+        self._assert_launch_errors([action])
+
+        action = Trace(
+            session_name='my-session-name',
+            base_path=tmpdir,
+            events_kernel=[],
+            syscalls=[],
             events_ust=[
                 'ros2:*',
                 '*',
@@ -216,6 +239,7 @@ class TestTraceAction(unittest.TestCase):
             session_name=LaunchConfiguration(session_name_arg.name),
             base_path=TextSubstitution(text=tmpdir),
             events_kernel=[],
+            syscalls=[],
             events_ust=[
                 EnvironmentVariable(name='TestTraceAction__event_ust'),
                 TextSubstitution(text='*'),
@@ -252,6 +276,7 @@ class TestTraceAction(unittest.TestCase):
             session_name='my-session-name',
             base_path=tmpdir,
             events_kernel=[],
+            syscalls=[],
             events_ust=[
                 'lttng_ust_cyg_profile_fast:*',
                 'lttng_ust_libc:*',
@@ -305,6 +330,7 @@ class TestTraceAction(unittest.TestCase):
             append_timestamp=True,
             base_path=tmpdir,
             events_kernel=[],
+            syscalls=[],
             events_ust=[
                 'ros2:*',
                 '*',
@@ -330,6 +356,7 @@ class TestTraceAction(unittest.TestCase):
             base_path=tmpdir,
             append_trace=False,
             events_kernel=[],
+            syscalls=[],
             events_ust=[
                 'ros2:*',
                 '*',
@@ -349,6 +376,7 @@ class TestTraceAction(unittest.TestCase):
             base_path=tmpdir,
             append_trace=True,
             events_kernel=[],
+            syscalls=[],
             events_ust=[
                 'ros2:*',
                 '*',
