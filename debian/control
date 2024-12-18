@@ -1,0 +1,12 @@
+Source: ros-jazzy-tracetools
+Section: misc
+Priority: optional
+Maintainer: Christophe Bedard <bedard.christophe@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), liblttng-ust-dev, pkg-config, ros-jazzy-ament-cmake-gen-version-h, ros-jazzy-ament-cmake-gtest <!nocheck>, ros-jazzy-ament-cmake-ros, ros-jazzy-ament-lint-auto <!nocheck>, ros-jazzy-ament-lint-common <!nocheck>, ros-jazzy-ros-workspace
+Homepage: https://docs.ros.org/en/rolling/p/tracetools/
+Standards-Version: 3.9.2
+
+Package: ros-jazzy-tracetools
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, liblttng-ust-dev, lttng-tools, ros-jazzy-ros-workspace
+Description: Tracing wrapper for ROS 2.
