@@ -2,24 +2,23 @@
 Changelog for package test_tracetools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-8.4.1 (2024-11-25)
+8.2.3 (2024-12-18)
 ------------------
-* Don't try to build on BSD (`#142 <https://github.com/ros2/ros2_tracing/issues/142>`_)
-  The 'BSD' variable was added in CMake 3.25. Note that variables which
-  are not defined will evaluate to 'False', so this shouldn't regress
-  platforms using CMake versions older than 3.25.
-* Refactor and split test_service into test\_{service,client} (`#144 <https://github.com/ros2/ros2_tracing/issues/144>`_)
-* Contributors: Christophe Bedard, Scott K Logan
 
-8.4.0 (2024-10-15)
+8.2.2 (2024-09-06)
 ------------------
-* Change expected rmw GID array size to 16 bytes (`#138 <https://github.com/ros2/ros2_tracing/issues/138>`_)
-* Run test_tracetools tests against rmw_fastrtps_dynamic_cpp too (`#127 <https://github.com/ros2/ros2_tracing/issues/127>`_)
-* Make test_tracetools ping pubs/subs transient_local (`#125 <https://github.com/ros2/ros2_tracing/issues/125>`_)
-* Run relevant test_tracetools tests with all instrumented rmw impls (`#116 <https://github.com/ros2/ros2_tracing/issues/116>`_)
-* Contributors: Christophe Bedard
+* Run relevant test_tracetools tests with all instrumented rmw impls (`#134 <https://github.com/ros2/ros2_tracing/issues/134>`_)
+* Make test_tracetools ping pubs/subs transient_local (`#125 <https://github.com/ros2/ros2_tracing/issues/125>`_) (`#135 <https://github.com/ros2/ros2_tracing/issues/135>`_)
+  This will make sure that the initial `/ping` message is received no
+  matter the launch order of the `*ping` and `*pong` executables.
+  Also, given this guarantee, cancel the timer after the initial `/ping`
+  message.
+  Finally, add some helpful debug logs.
+  (cherry picked from commit 00a4e99c461e005d093689e1bdbb6b6caa3f5960)
+  Co-authored-by: Christophe Bedard <christophe.bedard@apex.ai>
+* Contributors: Christophe Bedard, mergify[bot]
 
-8.3.0 (2024-04-26)
+8.2.1 (2024-06-27)
 ------------------
 
 8.2.0 (2024-04-16)

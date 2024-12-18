@@ -102,7 +102,6 @@ class TestTraceAction(unittest.TestCase):
             session_name='my-session-name',
             base_path=tmpdir,
             events_kernel=[],
-            syscalls=[],
             events_ust=[
                 'ros2:*',
                 '*',
@@ -127,7 +126,6 @@ class TestTraceAction(unittest.TestCase):
                     base-path="{}"
                     append-trace="true"
                     events-kernel=""
-                    syscalls=""
                     events-ust="ros2:* *"
                     subbuffer-size-ust="524288"
                     subbuffer-size-kernel="1048576"
@@ -156,7 +154,6 @@ class TestTraceAction(unittest.TestCase):
                 base-path: {}
                 append-trace: true
                 events-kernel: ""
-                syscalls: ""
                 events-ust: ros2:* *
                 subbuffer-size-ust: 524288
                 subbuffer-size-kernel: 1048576
@@ -179,7 +176,6 @@ class TestTraceAction(unittest.TestCase):
             session_name='my-session-name',
             base_path=tmpdir,
             events_kernel=[],
-            syscalls=[],
             events_ust=[
                 'ros2:*',
                 '*',
@@ -197,7 +193,6 @@ class TestTraceAction(unittest.TestCase):
             session_name='my-session-name',
             base_path=tmpdir,
             events_kernel=[],
-            syscalls=[],
             events_ust=[
                 'ros2:*',
                 '*',
@@ -239,7 +234,6 @@ class TestTraceAction(unittest.TestCase):
             session_name=LaunchConfiguration(session_name_arg.name),
             base_path=TextSubstitution(text=tmpdir),
             events_kernel=[],
-            syscalls=[],
             events_ust=[
                 EnvironmentVariable(name='TestTraceAction__event_ust'),
                 TextSubstitution(text='*'),
@@ -276,7 +270,6 @@ class TestTraceAction(unittest.TestCase):
             session_name='my-session-name',
             base_path=tmpdir,
             events_kernel=[],
-            syscalls=[],
             events_ust=[
                 'lttng_ust_cyg_profile_fast:*',
                 'lttng_ust_libc:*',
@@ -330,7 +323,6 @@ class TestTraceAction(unittest.TestCase):
             append_timestamp=True,
             base_path=tmpdir,
             events_kernel=[],
-            syscalls=[],
             events_ust=[
                 'ros2:*',
                 '*',
@@ -356,7 +348,6 @@ class TestTraceAction(unittest.TestCase):
             base_path=tmpdir,
             append_trace=False,
             events_kernel=[],
-            syscalls=[],
             events_ust=[
                 'ros2:*',
                 '*',
@@ -376,7 +367,6 @@ class TestTraceAction(unittest.TestCase):
             base_path=tmpdir,
             append_trace=True,
             events_kernel=[],
-            syscalls=[],
             events_ust=[
                 'ros2:*',
                 '*',

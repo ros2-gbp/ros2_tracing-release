@@ -69,14 +69,8 @@ Finally, check out the following presentations:
 
 ## Building
 
-Starting from ROS 2 Iron Irwini, the LTTng tracer is a ROS 2 dependency.
+As of Iron, the LTTng tracer is a ROS 2 dependency.
 Therefore, ROS 2 can be traced out-of-the-box on Linux; this package does not need to be re-built.
-The following `rmw` implementations are supported:
-
-* `rmw_connextdds`
-* `rmw_cyclonedds_cpp`
-* `rmw_fastrtps_cpp`
-* `rmw_fastrtps_dynamic_cpp`
 
 To make sure that the instrumentation and tracepoints are available:
 
@@ -170,7 +164,7 @@ $ ros2 trace stop session_name    # Stop tracing after starting or resuming
 
 Run each command with `-h` for more information.
 
-You must [install the kernel tracer](#building) if you want to enable [kernel](https://lttng.org/docs/v2.13/#doc-tracing-the-linux-kernel) events (using the `-k`/`--kernel-events` option) or syscalls (using the `--syscalls` option).
+You must [install the kernel tracer](#building) if you want to enable kernel events (using the `-k`/`--kernel-events` option).
 If you have installed the kernel tracer, use kernel tracing, and still encounter an error here, make sure to [add your user to the `tracing` group](#tracing).
 
 ### Launch file trace action
@@ -185,7 +179,7 @@ $ ros2 launch tracetools_launch example.launch.py
 The `Trace` action will also set the `LD_PRELOAD` environment to preload [LTTng's userspace tracing helper(s)](https://lttng.org/docs/v2.13/#doc-prebuilt-ust-helpers) if the corresponding event(s) are enabled.
 For more information, see [this example launch file](./tracetools_launch/launch/example.launch.py) and the [`Trace` action](./tracetools_launch/tracetools_launch/action.py).
 
-You must [install the kernel tracer](#building) if you want to enable [kernel](https://lttng.org/docs/v2.13/#doc-tracing-the-linux-kernel) events (`events_kernel` in Python, `events-kernel` in XML or YAML) or syscalls (`syscalls` in Python, XML, or YAML).
+You must [install the kernel tracer](#building) if you want to enable kernel events (`events_kernel` in Python, `events-kernel` in XML or YAML).
 If you have installed the kernel tracer, use kernel tracing, and still encounter an error here, make sure to [add your user to the `tracing` group](#tracing).
 
 ## Design

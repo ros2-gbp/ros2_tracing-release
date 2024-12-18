@@ -16,7 +16,7 @@ endif()
 find_package(ament_cmake_gen_version_h REQUIRED)
 find_package(ament_cmake_ros REQUIRED)
 
-if(WIN32 OR APPLE OR ANDROID OR BSD)
+if(WIN32 OR APPLE OR ANDROID)
   set(DISABLED_DEFAULT ON)
   set(STATUS_CHECKING_TOOL_DEFAULT OFF)
 else()
@@ -50,7 +50,7 @@ set(SOURCES
 set(HEADERS
   include/${PROJECT_NAME}/tracetools.h
   include/${PROJECT_NAME}/utils.hpp
-  include/${PROJECT_NAME}/visibility_control.h
+  include/${PROJECT_NAME}/visibility_control.hpp
 )
 if(NOT TRACETOOLS_TRACEPOINTS_EXCLUDED)
   # We only need these if we're using LTTng

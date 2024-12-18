@@ -13,7 +13,7 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 
-if(WIN32 OR APPLE OR ANDROID OR BSD)
+if(WIN32 OR APPLE OR ANDROID)
   set(DISABLED_DEFAULT ON)
 else()
   set(DISABLED_DEFAULT OFF)
@@ -203,7 +203,6 @@ if(BUILD_TESTING)
     # Tests to run with the default rmw implementation, which should not matter
     set(_test_tracetools_pytest_tests
       test/test_buffer.py
-      test/test_client.py
       test/test_executor.py
       test/test_intra.py
       test/test_intra_pub_sub.py
@@ -233,7 +232,6 @@ if(BUILD_TESTING)
       rmw_connextdds
       rmw_cyclonedds_cpp
       rmw_fastrtps_cpp
-      rmw_fastrtps_dynamic_cpp
     )
     get_available_rmw_implementations(rmw_implementations)
     foreach(_test_path ${_test_tracetools_pytest_tests_multi_rmw})

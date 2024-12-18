@@ -2,22 +2,18 @@
 Changelog for package tracetools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-8.4.1 (2024-11-25)
+8.2.3 (2024-12-18)
 ------------------
-* Don't try to build on BSD (`#142 <https://github.com/ros2/ros2_tracing/issues/142>`_)
-* Contributors: Scott K Logan
 
-8.4.0 (2024-10-15)
+8.2.2 (2024-09-06)
 ------------------
-* Change expected rmw GID array size to 16 bytes (`#138 <https://github.com/ros2/ros2_tracing/issues/138>`_)
-* Fix up two different C problems. (`#129 <https://github.com/ros2/ros2_tracing/issues/129>`_)
-* Ignore zero-variadic-macro-arguments warnings from lttng-ust macros (`#126 <https://github.com/ros2/ros2_tracing/issues/126>`_)
-* Remove deprecated TRACEPOINT macros (`#123 <https://github.com/ros2/ros2_tracing/issues/123>`_)
-* Fix type for buffer index argument in tracepoint event declaration. (`#117 <https://github.com/ros2/ros2_tracing/issues/117>`_)
-* Contributors: Chris Lalancette, Christophe Bedard, Mattis Kieffer
 
-8.3.0 (2024-04-26)
+8.2.1 (2024-06-27)
 ------------------
+* Fix type for buffer index argument in tracepoint event declaration. (`#117 <https://github.com/ros2/ros2_tracing/issues/117>`_) (`#119 <https://github.com/ros2/ros2_tracing/issues/119>`_)
+  (cherry picked from commit 7e8d42e3816dc9f7dc268109a2bb9cc66cc4d4ee)
+  Co-authored-by: Mattis Kieffer <62772198+mat-kie@users.noreply.github.com>
+* Contributors: mergify[bot]
 
 8.2.0 (2024-04-16)
 ------------------
