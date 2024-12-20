@@ -2,17 +2,23 @@
 Changelog for package lttngpy
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-8.2.3 (2024-12-18)
-------------------
-* Add missing dependency on pkg-config to lttngpy (`#130 <https://github.com/ros2/ros2_tracing/issues/130>`_) (`#136 <https://github.com/ros2/ros2_tracing/issues/136>`_)
-  (cherry picked from commit a866b9c701311bc8200a00c949b4a0fff9803777)
-  Co-authored-by: Nathan Wiebe Neufeldt <wn.nathan@gmail.com>
-* Contributors: mergify[bot]
-
-8.2.2 (2024-09-06)
+8.5.0 (2024-12-20)
 ------------------
 
-8.2.1 (2024-06-27)
+8.4.1 (2024-11-25)
+------------------
+* Add python3-dev build_depend to lttngpy. (`#146 <https://github.com/ros2/ros2_tracing/issues/146>`_)
+* Don't try to build on BSD (`#142 <https://github.com/ros2/ros2_tracing/issues/142>`_)
+* Contributors: Chris Lalancette, Scott K Logan
+
+8.4.0 (2024-10-15)
+------------------
+* Allow enabling syscalls through ``ros2 trace`` or the Trace action (`#137 <https://github.com/ros2/ros2_tracing/issues/137>`_)
+* Remove python_cmake_module use. (`#91 <https://github.com/ros2/ros2_tracing/issues/91>`_)
+* Add missing dependency on pkg-config to lttngpy (`#130 <https://github.com/ros2/ros2_tracing/issues/130>`_)
+* Contributors: Chris Lalancette, Christophe Bedard, Nathan Wiebe Neufeldt
+
+8.3.0 (2024-04-26)
 ------------------
 
 8.2.0 (2024-04-16)

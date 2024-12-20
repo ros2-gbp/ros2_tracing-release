@@ -13,7 +13,7 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 
-if(WIN32 OR APPLE OR ANDROID)
+if(WIN32 OR APPLE OR ANDROID OR BSD)
   set(DISABLED_DEFAULT ON)
 else()
   set(DISABLED_DEFAULT OFF)
@@ -208,7 +208,6 @@ if(BUILD_TESTING)
       test/test_intra_pub_sub.py
       test/test_lifecycle_node.py
       test/test_node.py
-      test/test_service.py
       test/test_timer.py
     )
     foreach(_test_path ${_test_tracetools_pytest_tests})
@@ -222,16 +221,20 @@ if(BUILD_TESTING)
 
     # Tests to run with all instrumented/supported rmw implementations
     set(_test_tracetools_pytest_tests_multi_rmw
+      test/test_client.py
       test/test_generic_pub_sub.py
       test/test_generic_subscription.py
       test/test_pub_sub.py
       test/test_publisher.py
+      test/test_service.py
+      test/test_service_req_resp.py
       test/test_subscription.py
     )
     set(_test_tracetools_rmw_implementations
       rmw_connextdds
       rmw_cyclonedds_cpp
       rmw_fastrtps_cpp
+      rmw_fastrtps_dynamic_cpp
     )
     get_available_rmw_implementations(rmw_implementations)
     foreach(_test_path ${_test_tracetools_pytest_tests_multi_rmw})
