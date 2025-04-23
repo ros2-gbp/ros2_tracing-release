@@ -1,0 +1,12 @@
+Source: ros-kilted-lttngpy
+Section: misc
+Priority: optional
+Maintainer: Christophe Bedard <christophe.bedard@apex.ai>
+Build-Depends: debhelper (>= 9.0.0), liblttng-ctl-dev, pkg-config, python3-dev, ros-kilted-ament-cmake, ros-kilted-ament-cmake-gtest <!nocheck>, ros-kilted-ament-cmake-pytest <!nocheck>, ros-kilted-ament-lint-auto <!nocheck>, ros-kilted-ament-lint-common <!nocheck>, ros-kilted-pybind11-vendor, ros-kilted-ros-workspace
+Homepage: https://docs.ros.org/en/rolling/p/lttngpy/
+Standards-Version: 3.9.2
+
+Package: ros-kilted-lttngpy
+Architecture: any
+Depends: ${shlibs:Depends}, ${misc:Depends}, liblttng-ctl-dev, ros-kilted-rpyutils, ros-kilted-ros-workspace
+Description: liblttng-ctl Python bindings
