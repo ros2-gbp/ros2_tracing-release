@@ -1,0 +1,185 @@
+ros-rolling-tracetools-read (8.8.0-1bookworm) bookworm; urgency=high
+
+  * Address typing issues reported by mypy in tracetools_launch (#184 <https://github.com/ros2/ros2_tracing/issues/184>)
+  * Contributors: Christophe Bedard
+
+ -- Christophe Bedard <bedard.christophe@gmail.com>  Tue, 01 Jul 2025 00:00:00 -0000
+
+ros-rolling-tracetools-read (8.7.0-1bookworm) bookworm; urgency=high
+
+
+
+ -- Christophe Bedard <bedard.christophe@gmail.com>  Thu, 24 Apr 2025 00:00:00 -0000
+
+ros-rolling-tracetools-read (8.6.0-1bookworm) bookworm; urgency=high
+
+  * Improve Python typing annotations (#152 <https://github.com/ros2/ros2_tracing/issues/152>)
+  * Expose types for tracing tools (#153 <https://github.com/ros2/ros2_tracing/issues/153>)
+  * Contributors: Christophe Bedard, Michael Carlstrom
+
+ -- Christophe Bedard <bedard.christophe@gmail.com>  Thu, 17 Apr 2025 00:00:00 -0000
+
+ros-rolling-tracetools-read (8.5.0-1bookworm) bookworm; urgency=high
+
+
+
+ -- Christophe Bedard <bedard.christophe@gmail.com>  Fri, 20 Dec 2024 00:00:00 -0000
+
+ros-rolling-tracetools-read (8.4.1-1bookworm) bookworm; urgency=high
+
+
+
+ -- Christophe Bedard <bedard.christophe@gmail.com>  Mon, 25 Nov 2024 00:00:00 -0000
+
+ros-rolling-tracetools-read (8.4.0-1bookworm) bookworm; urgency=high
+
+
+
+ -- Christophe Bedard <bedard.christophe@gmail.com>  Tue, 15 Oct 2024 00:00:00 -0000
+
+ros-rolling-tracetools-read (8.3.0-1bookworm) bookworm; urgency=high
+
+
+
+ -- Christophe Bedard <bedard.christophe@gmail.com>  Fri, 26 Apr 2024 00:00:00 -0000
+
+ros-rolling-tracetools-read (8.2.0-1bookworm) bookworm; urgency=high
+
+  * Replace all occurences of index.ros.org (#114 <https://github.com/ros2/ros2_tracing/issues/114>)
+  * Improve tracetools_test and simplify test_tracetools code (#109 <https://github.com/ros2/ros2_tracing/issues/109>)
+  * Contributors: Chris Lalancette, Christophe Bedard
+
+ -- Christophe Bedard <bedard.christophe@gmail.com>  Tue, 16 Apr 2024 00:00:00 -0000
+
+ros-rolling-tracetools-read (8.1.0-1bookworm) bookworm; urgency=high
+
+  * Allow tracing tests to be run in parallel with other tests (#95 <https://github.com/ros2/ros2_tracing/issues/95>)
+  * Contributors: Christophe Bedard
+
+ -- Christophe Bedard <bedard.christophe@gmail.com>  Wed, 27 Mar 2024 00:00:00 -0000
+
+ros-rolling-tracetools-read (8.0.0-1bookworm) bookworm; urgency=high
+
+
+
+ -- Christophe Bedard <bedard.christophe@gmail.com>  Tue, 23 Jan 2024 00:00:00 -0000
+
+ros-rolling-tracetools-read (7.1.0-1bookworm) bookworm; urgency=high
+
+
+
+ -- Christophe Bedard <bedard.christophe@gmail.com>  Wed, 23 Aug 2023 00:00:00 -0000
+
+ros-rolling-tracetools-read (7.0.0-1bookworm) bookworm; urgency=high
+
+
+
+ -- Christophe Bedard <bedard.christophe@gmail.com>  Fri, 09 Jun 2023 00:00:00 -0000
+
+ros-rolling-tracetools-read (6.4.1-1bookworm) bookworm; urgency=high
+
+
+
+ -- Christophe Bedard <bedard.christophe@gmail.com>  Thu, 11 May 2023 00:00:00 -0000
+
+ros-rolling-tracetools-read (6.4.0-1bookworm) bookworm; urgency=high
+
+
+
+ -- Christophe Bedard <bedard.christophe@gmail.com>  Fri, 28 Apr 2023 00:00:00 -0000
+
+ros-rolling-tracetools-read (6.3.0-1bookworm) bookworm; urgency=high
+
+
+
+ -- Christophe Bedard <bedard.christophe@gmail.com>  Tue, 18 Apr 2023 00:00:00 -0000
+
+ros-rolling-tracetools-read (6.2.0-1bookworm) bookworm; urgency=high
+
+
+
+ -- Christophe Bedard <bedard.christophe@gmail.com>  Tue, 18 Apr 2023 00:00:00 -0000
+
+ros-rolling-tracetools-read (6.1.0-1bookworm) bookworm; urgency=high
+
+
+
+ -- Christophe Bedard <bedard.christophe@gmail.com>  Thu, 13 Apr 2023 00:00:00 -0000
+
+ros-rolling-tracetools-read (6.0.0-1bookworm) bookworm; urgency=high
+
+
+
+ -- Christophe Bedard <bedard.christophe@gmail.com>  Wed, 12 Apr 2023 00:00:00 -0000
+
+ros-rolling-tracetools-read (5.1.0-1bookworm) bookworm; urgency=high
+
+
+
+ -- Christophe Bedard <bedard.christophe@gmail.com>  Thu, 02 Mar 2023 00:00:00 -0000
+
+ros-rolling-tracetools-read (0.2.11-1bookworm) bookworm; urgency=high
+
+  * Register Python packages in the ament index
+  * Contributors: Christophe Bedard
+
+ -- Christophe Bedard <bedard.christophe@gmail.com>  Mon, 09 Dec 2019 00:00:00 -0000
+
+ros-rolling-tracetools-read (0.2.8-1bookworm) bookworm; urgency=high
+
+  * Add is_trace_directory() util function
+  * Contributors: Christophe Bedard
+
+ -- Christophe Bedard <bedard.christophe@gmail.com>  Mon, 14 Oct 2019 00:00:00 -0000
+
+ros-rolling-tracetools-read (0.2.7-1bookworm) bookworm; urgency=high
+
+  * Fix missing ament_xmllint dependency
+  * Contributors: Christophe Bedard
+
+ -- Christophe Bedard <bedard.christophe@gmail.com>  Mon, 09 Sep 2019 00:00:00 -0000
+
+ros-rolling-tracetools-read (0.2.5-1bookworm) bookworm; urgency=high
+
+  * Move babeltrace interface functions to separate file to avoid importing it needlessly
+  * Contributors: Christophe Bedard
+
+ -- Christophe Bedard <bedard.christophe@gmail.com>  Thu, 15 Aug 2019 00:00:00 -0000
+
+ros-rolling-tracetools-read (0.2.3-1bookworm) bookworm; urgency=high
+
+  * Move tracetools_read.utils to the init file
+  * Contributors: Christophe Bedard
+
+ -- Christophe Bedard <bedard.christophe@gmail.com>  Mon, 05 Aug 2019 00:00:00 -0000
+
+ros-rolling-tracetools-read (0.2.2-1bookworm) bookworm; urgency=high
+
+  * Revert "Replace special character to fix encoding issue"
+  * Contributors: Christophe Bedard
+
+ -- Christophe Bedard <bedard.christophe@gmail.com>  Thu, 01 Aug 2019 00:00:00 -0000
+
+ros-rolling-tracetools-read (0.2.1-1bookworm) bookworm; urgency=high
+
+  * Replace special character to fix encoding issue
+  * Contributors: Christophe Bedard
+
+ -- Christophe Bedard <bedard.christophe@gmail.com>  Wed, 31 Jul 2019 00:00:00 -0000
+
+ros-rolling-tracetools-read (0.2.0-1bookworm) bookworm; urgency=high
+
+  * Include event data in 'field not found' error message
+  * Remove cpu_id from list of ignored CTF fields
+  * Contributors: Christophe Bedard
+
+ -- Christophe Bedard <bedard.christophe@gmail.com>  Tue, 30 Jul 2019 00:00:00 -0000
+
+ros-rolling-tracetools-read (0.1.0-1bookworm) bookworm; urgency=high
+
+  * Add trace reading functions
+  * Contributors: Christophe Bedard, Ingo Lütkebohle
+
+ -- Christophe Bedard <bedard.christophe@gmail.com>  Thu, 11 Jul 2019 00:00:00 -0000
+
+
