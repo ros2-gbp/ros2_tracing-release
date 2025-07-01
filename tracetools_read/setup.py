@@ -5,13 +5,14 @@ package_name = 'tracetools_read'
 
 setup(
     name=package_name,
-    version='8.7.0',
+    version='8.8.0',
     packages=find_packages(exclude=['test']),
     data_files=[
         ('share/' + package_name, ['package.xml']),
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
     ],
+    package_data={'': ['py.typed']},
     install_requires=['setuptools'],
     maintainer=(
         'Christophe Bedard, '
