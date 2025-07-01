@@ -1,0 +1,71 @@
+ros-rolling-lttngpy (8.8.0-1bookworm) bookworm; urgency=high
+
+
+
+ -- Christophe Bedard <christophe.bedard@apex.ai>  Tue, 01 Jul 2025 00:00:00 -0000
+
+ros-rolling-lttngpy (8.7.0-1bookworm) bookworm; urgency=high
+
+
+
+ -- Christophe Bedard <christophe.bedard@apex.ai>  Thu, 24 Apr 2025 00:00:00 -0000
+
+ros-rolling-lttngpy (8.6.0-1bookworm) bookworm; urgency=high
+
+  * Remove SHARED from pybind11_add_module (#154 <https://github.com/ros2/ros2_tracing/issues/154>)
+  * Contributors: Silvio Traversaro
+
+ -- Christophe Bedard <christophe.bedard@apex.ai>  Thu, 17 Apr 2025 00:00:00 -0000
+
+ros-rolling-lttngpy (8.5.0-1bookworm) bookworm; urgency=high
+
+
+
+ -- Christophe Bedard <christophe.bedard@apex.ai>  Fri, 20 Dec 2024 00:00:00 -0000
+
+ros-rolling-lttngpy (8.4.1-1bookworm) bookworm; urgency=high
+
+  * Add python3-dev build_depend to lttngpy. (#146 <https://github.com/ros2/ros2_tracing/issues/146>)
+  * Don't try to build on BSD (#142 <https://github.com/ros2/ros2_tracing/issues/142>)
+  * Contributors: Chris Lalancette, Scott K Logan
+
+ -- Christophe Bedard <christophe.bedard@apex.ai>  Mon, 25 Nov 2024 00:00:00 -0000
+
+ros-rolling-lttngpy (8.4.0-1bookworm) bookworm; urgency=high
+
+  * Allow enabling syscalls through ``ros2 trace`` or the Trace action (#137 <https://github.com/ros2/ros2_tracing/issues/137>)
+  * Remove python_cmake_module use. (#91 <https://github.com/ros2/ros2_tracing/issues/91>)
+  * Add missing dependency on pkg-config to lttngpy (#130 <https://github.com/ros2/ros2_tracing/issues/130>)
+  * Contributors: Chris Lalancette, Christophe Bedard, Nathan Wiebe Neufeldt
+
+ -- Christophe Bedard <christophe.bedard@apex.ai>  Tue, 15 Oct 2024 00:00:00 -0000
+
+ros-rolling-lttngpy (8.3.0-1bookworm) bookworm; urgency=high
+
+
+
+ -- Christophe Bedard <christophe.bedard@apex.ai>  Fri, 26 Apr 2024 00:00:00 -0000
+
+ros-rolling-lttngpy (8.2.0-1bookworm) bookworm; urgency=high
+
+  * Replace all occurences of index.ros.org (#114 <https://github.com/ros2/ros2_tracing/issues/114>)
+  * Fixes for newer uncrustify (#101 <https://github.com/ros2/ros2_tracing/issues/101>)
+  * Contributors: Chris Lalancette, Christophe Bedard
+
+ -- Christophe Bedard <christophe.bedard@apex.ai>  Tue, 16 Apr 2024 00:00:00 -0000
+
+ros-rolling-lttngpy (8.1.0-1bookworm) bookworm; urgency=high
+
+
+
+ -- Christophe Bedard <christophe.bedard@apex.ai>  Wed, 27 Mar 2024 00:00:00 -0000
+
+ros-rolling-lttngpy (8.0.0-1bookworm) bookworm; urgency=high
+
+  * Fix Python not being found for lttngpy in Windows debug mode (#87 <https://github.com/ros2/ros2_tracing/issues/87>)
+  * Switch to custom lttng-ctl Python bindings (#81 <https://github.com/ros2/ros2_tracing/issues/81>)
+  * Contributors: Christophe Bedard
+
+ -- Christophe Bedard <christophe.bedard@apex.ai>  Tue, 23 Jan 2024 00:00:00 -0000
+
+
