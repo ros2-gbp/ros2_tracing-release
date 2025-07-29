@@ -5,7 +5,7 @@ package_name = 'test_ros2trace'
 
 setup(
     name=package_name,
-    version='8.8.0',
+    version='8.8.1',
     packages=find_packages(exclude=['test']),
     data_files=[
         ('share/' + package_name, ['package.xml']),
@@ -22,5 +22,9 @@ setup(
     keywords=[],
     description='Tests for the ros2trace package.',
     license='Apache 2.0',
-    tests_require=['pytest'],
+    extras_require={
+        'test': [
+            'pytest',
+        ],
+    },
 )
