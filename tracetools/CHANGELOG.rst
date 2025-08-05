@@ -2,45 +2,25 @@
 Changelog for package tracetools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-8.8.1 (2025-07-29)
+8.2.4 (2025-08-05)
+------------------
+* Removed clang warning (`#168 <https://github.com/ros2/ros2_tracing/issues/168>`_) (`#172 <https://github.com/ros2/ros2_tracing/issues/172>`_)
+  (cherry picked from commit 169c887a41e2f5233d2407f54c4ea3a1ec7665ab)
+  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
+* Contributors: mergify[bot]
+
+8.2.3 (2024-12-18)
 ------------------
 
-8.8.0 (2025-07-01)
-------------------
-* Fix Clang warnings by using proper function prototypes in macros (`#179 <https://github.com/ros2/ros2_tracing/issues/179>`_)
-* Update CMakeLists.txt (`#176 <https://github.com/ros2/ros2_tracing/issues/176>`_)
-* Removed clang warning (`#168 <https://github.com/ros2/ros2_tracing/issues/168>`_)
-* Contributors: Alejandro Hernández Cordero, Shravan Deva, mosfet80
-
-8.7.0 (2025-04-24)
+8.2.2 (2024-09-06)
 ------------------
 
-8.6.0 (2025-04-17)
+8.2.1 (2024-06-27)
 ------------------
-* Switch to ament_cmake_ros_core package (`#162 <https://github.com/ros2/ros2_tracing/issues/162>`_)
-* Contributors: Michael Carroll
-
-8.5.0 (2024-12-20)
-------------------
-* Instrument client/service for end-to-end request/response tracking (`#145 <https://github.com/ros2/ros2_tracing/issues/145>`_)
-* Contributors: Christophe Bedard
-
-8.4.1 (2024-11-25)
-------------------
-* Don't try to build on BSD (`#142 <https://github.com/ros2/ros2_tracing/issues/142>`_)
-* Contributors: Scott K Logan
-
-8.4.0 (2024-10-15)
-------------------
-* Change expected rmw GID array size to 16 bytes (`#138 <https://github.com/ros2/ros2_tracing/issues/138>`_)
-* Fix up two different C problems. (`#129 <https://github.com/ros2/ros2_tracing/issues/129>`_)
-* Ignore zero-variadic-macro-arguments warnings from lttng-ust macros (`#126 <https://github.com/ros2/ros2_tracing/issues/126>`_)
-* Remove deprecated TRACEPOINT macros (`#123 <https://github.com/ros2/ros2_tracing/issues/123>`_)
-* Fix type for buffer index argument in tracepoint event declaration. (`#117 <https://github.com/ros2/ros2_tracing/issues/117>`_)
-* Contributors: Chris Lalancette, Christophe Bedard, Mattis Kieffer
-
-8.3.0 (2024-04-26)
-------------------
+* Fix type for buffer index argument in tracepoint event declaration. (`#117 <https://github.com/ros2/ros2_tracing/issues/117>`_) (`#119 <https://github.com/ros2/ros2_tracing/issues/119>`_)
+  (cherry picked from commit 7e8d42e3816dc9f7dc268109a2bb9cc66cc4d4ee)
+  Co-authored-by: Mattis Kieffer <62772198+mat-kie@users.noreply.github.com>
+* Contributors: mergify[bot]
 
 8.2.0 (2024-04-16)
 ------------------

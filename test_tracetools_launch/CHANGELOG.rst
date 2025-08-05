@@ -2,38 +2,16 @@
 Changelog for package test_tracetools_launch
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-8.8.1 (2025-07-29)
-------------------
-* fix setuptools deprecation (`#189 <https://github.com/ros2/ros2_tracing/issues/189>`_)
-* Contributors: mosfet80
-
-8.8.0 (2025-07-01)
-------------------
-* Make trace action parameters substitutable for xml and yaml launch files (`#188 <https://github.com/ros2/ros2_tracing/issues/188>`_)
-* Make trace action parameters substitutable (`#187 <https://github.com/ros2/ros2_tracing/issues/187>`_)
-* Address typing issues reported by mypy in tracetools_launch (`#184 <https://github.com/ros2/ros2_tracing/issues/184>`_)
-* Contributors: Christophe Bedard, Shravan Deva
-
-8.7.0 (2025-04-24)
+8.2.4 (2025-08-05)
 ------------------
 
-8.6.0 (2025-04-17)
-------------------
-* Fix or ignore new mypy issues (`#161 <https://github.com/ros2/ros2_tracing/issues/161>`_)
-* Contributors: Christophe Bedard
-
-8.5.0 (2024-12-20)
+8.2.3 (2024-12-18)
 ------------------
 
-8.4.1 (2024-11-25)
+8.2.2 (2024-09-06)
 ------------------
 
-8.4.0 (2024-10-15)
-------------------
-* Allow enabling syscalls through ``ros2 trace`` or the Trace action (`#137 <https://github.com/ros2/ros2_tracing/issues/137>`_)
-* Contributors: Christophe Bedard
-
-8.3.0 (2024-04-26)
+8.2.1 (2024-06-27)
 ------------------
 
 8.2.0 (2024-04-16)
