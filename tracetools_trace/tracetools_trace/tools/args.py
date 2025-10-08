@@ -89,18 +89,39 @@ def _add_arguments_default_session_name(parser: argparse.ArgumentParser) -> None
         help='the name of the tracing session (default: session-YYYYMMDDHHMMSS)')
 
 
+def _add_arguments_dual_session(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument(
+        '-d', '--dual-session', dest='dual_session', action='store_true',
+        help='use this in interactive mode to record snapshot of the pre-configured snapshot '
+             'session with the same name and start normal runtime tracing session; use this in '
+             'non-interactive mode along with: start/resume to record snapshot of pre-configured '
+             'snapshot session and start/resume normal runtime tracing session, stop/pause to '
+             'stop/pause normal runtime tracing session (default: %(default)s)')
+
+
+def _add_arguments_session_mode(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument(
+        '--snapshot-mode', dest='snapshot_mode', action='store_true',
+        help='use this to create tracing session in snapshot mode in interactive mode or with '
+             'the start verb in non-interactive mode (default: %(default)s)')
+
+
 def add_arguments(parser: argparse.ArgumentParser) -> None:
     """Add arguments to parser for interactive tracing session configuration."""
     _add_arguments_default_session_name(parser)
+    _add_arguments_session_mode(parser)
+    _add_arguments_dual_session(parser)
     _add_arguments_configure(parser)
 
 
-def add_arguments_noninteractive(parser: argparse.ArgumentParser) -> None:
+def add_arguments_noninteractive_configure(parser: argparse.ArgumentParser) -> None:
     """Add arguments to parser for non-interactive tracing session configuration."""
-    add_arguments_session_name(parser)
     _add_arguments_configure(parser)
+    _add_arguments_session_mode(parser)
+    add_arguments_noninteractive_control(parser)
 
 
-def add_arguments_session_name(parser: argparse.ArgumentParser) -> None:
-    """Add mandatory session name argument to parser."""
+def add_arguments_noninteractive_control(parser: argparse.ArgumentParser) -> None:
+    """Add arguments to parser for non-interactive tracing session control."""
     parser.add_argument('session_name', help='the name of the tracing session')
+    _add_arguments_dual_session(parser)
