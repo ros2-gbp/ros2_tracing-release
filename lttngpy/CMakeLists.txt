@@ -45,7 +45,6 @@ set(Python3_FIND_UNVERSIONED_NAMES FIRST)
 # Find python before pybind11
 find_package(Python3 REQUIRED COMPONENTS Interpreter Development)
 
-find_package(pybind11_vendor REQUIRED)
 find_package(pybind11 REQUIRED)
 
 if(NOT LTTNGPY_DISABLED)
@@ -87,6 +86,7 @@ if(NOT LTTNGPY_DISABLED)
     src/lttngpy/event.cpp
     src/lttngpy/lttng.cpp
     src/lttngpy/session.cpp
+    src/lttngpy/snapshot.cpp
   )
 endif()
 
