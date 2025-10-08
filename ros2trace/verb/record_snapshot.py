@@ -1,4 +1,4 @@
-# Copyright 2023 Apex.AI, Inc.
+# Copyright 2025 Open Source Robotics Foundation, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -14,14 +14,14 @@
 
 from ros2trace.verb import VerbExtension
 from tracetools_trace.tools import args
-from tracetools_trace.trace import pause
+from tracetools_trace.trace import record_snapshot
 
 
-class PauseVerb(VerbExtension):
-    """Pause tracing after starting."""
+class RecordSnapshotVerb(VerbExtension):
+    """Take a snapshot of a snapshot session."""
 
     def add_arguments(self, parser, cli_name) -> None:
         args.add_arguments_noninteractive_control(parser)
 
     def main(self, *, args) -> int:
-        return pause(args)
+        return record_snapshot(args)
