@@ -5,13 +5,14 @@ package_name = 'tracetools_trace'
 
 setup(
     name=package_name,
-    version='8.2.4',
+    version='8.9.0',
     packages=find_packages(exclude=['test']),
     data_files=[
         ('share/' + package_name, ['package.xml']),
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
     ],
+    package_data={'': ['py.typed']},
     install_requires=['setuptools'],
     maintainer=(
         'Christophe Bedard, '
@@ -36,5 +37,9 @@ setup(
         ],
     },
     license='Apache 2.0',
-    tests_require=['pytest'],
+    extras_require={
+        'test': [
+            'pytest',
+        ],
+    },
 )
