@@ -2,49 +2,27 @@
 Changelog for package tracetools_trace
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-8.9.0 (2025-10-08)
+8.2.5 (2026-01-21)
 ------------------
-* Use overwrite mode for snapshot sessions (`#210 <https://github.com/ros2/ros2_tracing/issues/210>`_)
-* Allow creating snapshot sessions (`#195 <https://github.com/ros2/ros2_tracing/issues/195>`_)
-* Add support for starting tracing at runtime (`#191 <https://github.com/ros2/ros2_tracing/issues/191>`_)
-* Contributors: Shravan Deva
+* Add exec_depend on procps to tracetools_trace for ps command (`#227 <https://github.com/ros2/ros2_tracing/issues/227>`_) (`#229 <https://github.com/ros2/ros2_tracing/issues/229>`_)
+  (cherry picked from commit 0852cd777d247e7c18fb768968d8b041b673d1a8)
+  Co-authored-by: Christophe Bedard <bedard.christophe@gmail.com>
+* fix setuptools deprecation (`#189 <https://github.com/ros2/ros2_tracing/issues/189>`_) (`#203 <https://github.com/ros2/ros2_tracing/issues/203>`_)
+  (cherry picked from commit 526967c1a0ad3208fe6c28e0cf16f2b045ed5241)
+  Co-authored-by: mosfet80 <10235105+mosfet80@users.noreply.github.com>
+  Co-authored-by: Christophe Bedard <bedard.christophe@gmail.com>
+* Contributors: mergify[bot]
 
-8.8.1 (2025-07-29)
-------------------
-* fix setuptools deprecation (`#189 <https://github.com/ros2/ros2_tracing/issues/189>`_)
-* Contributors: mosfet80
-
-8.8.0 (2025-07-01)
-------------------
-* Address typing issues reported by mypy in tracetools_launch (`#184 <https://github.com/ros2/ros2_tracing/issues/184>`_)
-* Warn if kernel might be paranoid about 'perf:thread:' context fields (`#173 <https://github.com/ros2/ros2_tracing/issues/173>`_)
-* Fix pluralization in ros2 trace output (`#169 <https://github.com/ros2/ros2_tracing/issues/169>`_)
-* Contributors: Christophe Bedard, Shravan Deva
-
-8.7.0 (2025-04-24)
+8.2.4 (2025-08-05)
 ------------------
 
-8.6.0 (2025-04-17)
-------------------
-* Improve Python typing annotations (`#152 <https://github.com/ros2/ros2_tracing/issues/152>`_)
-* Expose types for tracing tools (`#153 <https://github.com/ros2/ros2_tracing/issues/153>`_)
-* Remove unnecessary 'type: ignore' comments in tracetools_trace (`#151 <https://github.com/ros2/ros2_tracing/issues/151>`_)
-* Contributors: Christophe Bedard, Michael Carlstrom
-
-8.5.0 (2024-12-20)
-------------------
-* Instrument client/service for end-to-end request/response tracking (`#145 <https://github.com/ros2/ros2_tracing/issues/145>`_)
-* Contributors: Christophe Bedard
-
-8.4.1 (2024-11-25)
+8.2.3 (2024-12-18)
 ------------------
 
-8.4.0 (2024-10-15)
+8.2.2 (2024-09-06)
 ------------------
-* Allow enabling syscalls through ``ros2 trace`` or the Trace action (`#137 <https://github.com/ros2/ros2_tracing/issues/137>`_)
-* Contributors: Christophe Bedard
 
-8.3.0 (2024-04-26)
+8.2.1 (2024-06-27)
 ------------------
 
 8.2.0 (2024-04-16)

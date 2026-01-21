@@ -5,14 +5,13 @@ package_name = 'ros2trace'
 
 setup(
     name=package_name,
-    version='8.9.0',
+    version='8.2.5',
     packages=find_packages(exclude=['test']),
     data_files=[
         ('share/' + package_name, ['package.xml']),
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
     ],
-    package_data={'': ['py.typed']},
     install_requires=['ros2cli'],
     zip_safe=True,
     maintainer=(
@@ -47,7 +46,6 @@ setup(
         ],
         f'{package_name}.verb': [
             f'pause = {package_name}.verb.pause:PauseVerb',
-            f'record_snapshot = {package_name}.verb.record_snapshot:RecordSnapshotVerb',
             f'resume = {package_name}.verb.resume:ResumeVerb',
             f'start = {package_name}.verb.start:StartVerb',
             f'stop = {package_name}.verb.stop:StopVerb',
