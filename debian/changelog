@@ -1,0 +1,59 @@
+ros-jazzy-lttngpy (8.2.5-1bookworm) bookworm; urgency=high
+
+  * [Fix] compile fail (#194 <https://github.com/ros2/ros2_tracing/issues/194>) (#215 <https://github.com/ros2/ros2_tracing/issues/215>)
+    (cherry picked from commit e175cde407a2da7fab2a75890cdb9d0e626cc73b)
+    Co-authored-by: mosfet80 <mailto:10235105+mosfet80@users.noreply.github.com>
+  * Contributors: mergify[bot]
+
+ -- Christophe Bedard <christophe.bedard@apex.ai>  Wed, 21 Jan 2026 00:00:00 -0000
+
+ros-jazzy-lttngpy (8.2.4-1bookworm) bookworm; urgency=high
+
+
+
+ -- Christophe Bedard <christophe.bedard@apex.ai>  Tue, 05 Aug 2025 00:00:00 -0000
+
+ros-jazzy-lttngpy (8.2.3-1bookworm) bookworm; urgency=high
+
+  * Add missing dependency on pkg-config to lttngpy (#130 <https://github.com/ros2/ros2_tracing/issues/130>) (#136 <https://github.com/ros2/ros2_tracing/issues/136>)
+    (cherry picked from commit a866b9c701311bc8200a00c949b4a0fff9803777)
+    Co-authored-by: Nathan Wiebe Neufeldt <mailto:wn.nathan@gmail.com>
+  * Contributors: mergify[bot]
+
+ -- Christophe Bedard <christophe.bedard@apex.ai>  Wed, 18 Dec 2024 00:00:00 -0000
+
+ros-jazzy-lttngpy (8.2.2-1bookworm) bookworm; urgency=high
+
+
+
+ -- Christophe Bedard <christophe.bedard@apex.ai>  Fri, 06 Sep 2024 00:00:00 -0000
+
+ros-jazzy-lttngpy (8.2.1-1bookworm) bookworm; urgency=high
+
+
+
+ -- Christophe Bedard <christophe.bedard@apex.ai>  Thu, 27 Jun 2024 00:00:00 -0000
+
+ros-jazzy-lttngpy (8.2.0-1bookworm) bookworm; urgency=high
+
+  * Replace all occurences of index.ros.org (#114 <https://github.com/ros2/ros2_tracing/issues/114>)
+  * Fixes for newer uncrustify (#101 <https://github.com/ros2/ros2_tracing/issues/101>)
+  * Contributors: Chris Lalancette, Christophe Bedard
+
+ -- Christophe Bedard <christophe.bedard@apex.ai>  Tue, 16 Apr 2024 00:00:00 -0000
+
+ros-jazzy-lttngpy (8.1.0-1bookworm) bookworm; urgency=high
+
+
+
+ -- Christophe Bedard <christophe.bedard@apex.ai>  Wed, 27 Mar 2024 00:00:00 -0000
+
+ros-jazzy-lttngpy (8.0.0-1bookworm) bookworm; urgency=high
+
+  * Fix Python not being found for lttngpy in Windows debug mode (#87 <https://github.com/ros2/ros2_tracing/issues/87>)
+  * Switch to custom lttng-ctl Python bindings (#81 <https://github.com/ros2/ros2_tracing/issues/81>)
+  * Contributors: Christophe Bedard
+
+ -- Christophe Bedard <christophe.bedard@apex.ai>  Tue, 23 Jan 2024 00:00:00 -0000
+
+
