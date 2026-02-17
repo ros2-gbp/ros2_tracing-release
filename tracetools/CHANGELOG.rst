@@ -2,6 +2,9 @@
 Changelog for package tracetools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+4.1.2 (2026-02-16)
+------------------
+
 4.1.1 (2022-11-07)
 ------------------
 * Merge branch 'clalancette/release-4.1.0' into 'master'
