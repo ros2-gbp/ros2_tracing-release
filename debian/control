@@ -1,0 +1,12 @@
+Source: ros-humble-tracetools-trace
+Section: misc
+Priority: optional
+Maintainer: Christophe Bedard <bedard.christophe@gmail.com>
+Build-Depends: debhelper (>= 9.0.0), python3-pytest <!nocheck>, ros-humble-ament-copyright <!nocheck>, ros-humble-ament-flake8 <!nocheck>, ros-humble-ament-mypy <!nocheck>, ros-humble-ament-pep257 <!nocheck>, ros-humble-ament-xmllint <!nocheck>, ros-humble-ros-workspace, python3-all, python3-setuptools, dh-python
+Homepage: https://index.ros.org/p/tracetools_trace/
+Standards-Version: 3.9.2
+
+Package: ros-humble-tracetools-trace
+Architecture: any
+Depends: ${python3:Depends}, ${misc:Depends}, python3-lttng, ros-humble-ros-workspace
+Description: Tools for setting up tracing sessions.
