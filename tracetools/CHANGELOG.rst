@@ -2,92 +2,13 @@
 Changelog for package tracetools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-8.2.5 (2026-01-21)
+4.1.2 (2026-02-16)
 ------------------
 
-8.2.4 (2025-08-05)
+4.1.1 (2022-11-07)
 ------------------
-* Removed clang warning (`#168 <https://github.com/ros2/ros2_tracing/issues/168>`_) (`#172 <https://github.com/ros2/ros2_tracing/issues/172>`_)
-  (cherry picked from commit 169c887a41e2f5233d2407f54c4ea3a1ec7665ab)
-  Co-authored-by: Alejandro Hernández Cordero <ahcorde@gmail.com>
-* Contributors: mergify[bot]
-
-8.2.3 (2024-12-18)
-------------------
-
-8.2.2 (2024-09-06)
-------------------
-
-8.2.1 (2024-06-27)
-------------------
-* Fix type for buffer index argument in tracepoint event declaration. (`#117 <https://github.com/ros2/ros2_tracing/issues/117>`_) (`#119 <https://github.com/ros2/ros2_tracing/issues/119>`_)
-  (cherry picked from commit 7e8d42e3816dc9f7dc268109a2bb9cc66cc4d4ee)
-  Co-authored-by: Mattis Kieffer <62772198+mat-kie@users.noreply.github.com>
-* Contributors: mergify[bot]
-
-8.2.0 (2024-04-16)
-------------------
-* Replace all occurences of index.ros.org (`#114 <https://github.com/ros2/ros2_tracing/issues/114>`_)
-* Switch to ament_generate_version_header for tracetools (`#112 <https://github.com/ros2/ros2_tracing/issues/112>`_)
-* Fixes for newer uncrustify (`#101 <https://github.com/ros2/ros2_tracing/issues/101>`_)
-* Contributors: Chris Lalancette, Christophe Bedard
-
-8.1.0 (2024-03-27)
-------------------
-* Update tests and docs after new rmw_publish timestamp field (`#90 <https://github.com/ros2/ros2_tracing/issues/90>`_)
+* Merge branch 'clalancette/release-4.1.0' into 'master'
 * Contributors: Christophe Bedard
-
-8.0.0 (2024-01-23)
-------------------
-* Add timestamp to rmw_publish tracepoint (`#74 <https://github.com/ros2/ros2_tracing/issues/74>`_)
-* Contributors: Christopher Wecht
-
-7.1.0 (2023-08-23)
-------------------
-
-7.0.0 (2023-06-09)
-------------------
-* Add TRACETOOLS\_ prefix to tracepoint-related public macros (`#56 <https://github.com/ros2/ros2_tracing/issues/56>`_)
-* Contributors: Christophe Bedard
-
-6.4.1 (2023-05-11)
-------------------
-* Disable tracing on Android (`#71 <https://github.com/ros2/ros2_tracing/issues/71>`_)
-* Contributors: Przemysław Dąbrowski
-
-6.4.0 (2023-04-28)
-------------------
-
-6.3.0 (2023-04-18)
-------------------
-
-6.2.0 (2023-04-18)
-------------------
-
-6.1.0 (2023-04-13)
-------------------
-* Add intra-process tracepoints (`#30 <https://github.com/ros2/ros2_tracing/issues/30>`_)
-* Contributors: ymski
-
-6.0.0 (2023-04-12)
-------------------
-* Improve tracetools rosdoc2/doxygen output (`#57 <https://github.com/ros2/ros2_tracing/issues/57>`_)
-* Update README and other documentation (`#55 <https://github.com/ros2/ros2_tracing/issues/55>`_)
-* Disable tracing on macOS (`#53 <https://github.com/ros2/ros2_tracing/issues/53>`_)
-* Include tracepoints by default on Linux (`#31 <https://github.com/ros2/ros2_tracing/issues/31>`_)
-* Contributors: Christophe Bedard
-
-5.1.0 (2023-03-02)
-------------------
-* Explicitly link against dl for dladdr() (`#48 <https://github.com/ros2/ros2_tracing/issues/48>`_)
-* Fix memory leak in tracetools::get_symbol() (`#43 <https://github.com/ros2/ros2_tracing/issues/43>`_)
-* Add TRACEPOINT_ENABLED() and DO_TRACEPOINT() macros (`#46 <https://github.com/ros2/ros2_tracing/issues/46>`_)
-* Contributors: Christophe Bedard
-
-5.0.0 (2023-02-14)
-------------------
-* Update tracing to C++17. (`#33 <https://github.com/ros2/ros2_tracing/issues/33>`_)
-* Contributors: Chris Lalancette
 
 4.1.0 (2022-03-29)
 ------------------
@@ -154,7 +75,7 @@ Changelog for package tracetools
 
 0.2.10 (2019-11-17)
 -------------------
-* Add new rclcpp_subscription_init tracepoint to support new intra-process comms
+* Add new rclcpp_subscription_init tracepoint to support new intra-process comms 
 * Contributors: Christophe Bedard
 
 0.2.9 (2019-10-18)

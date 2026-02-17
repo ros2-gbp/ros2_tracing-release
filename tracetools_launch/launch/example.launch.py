@@ -14,13 +14,13 @@
 
 """Example launch file for the Trace action."""
 
-import launch
+from launch import LaunchDescription
 from launch_ros.actions import Node
 from tracetools_launch.action import Trace
 
 
 def generate_launch_description():
-    return launch.LaunchDescription([
+    return LaunchDescription([
         Trace(
             session_name='my-tracing-session',
         ),

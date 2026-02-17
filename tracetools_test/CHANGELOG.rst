@@ -2,75 +2,15 @@
 Changelog for package tracetools_test
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-8.2.5 (2026-01-21)
+4.1.2 (2026-02-16)
 ------------------
-* fix setuptools deprecation (`#189 <https://github.com/ros2/ros2_tracing/issues/189>`_) (`#203 <https://github.com/ros2/ros2_tracing/issues/203>`_)
-  (cherry picked from commit 526967c1a0ad3208fe6c28e0cf16f2b045ed5241)
-  Co-authored-by: mosfet80 <10235105+mosfet80@users.noreply.github.com>
-  Co-authored-by: Christophe Bedard <bedard.christophe@gmail.com>
+* fix setuptools deprecation (backport `#189 <https://github.com/ros2/ros2_tracing/issues/189>`_) (`#204 <https://github.com/ros2/ros2_tracing/issues/204>`_)
 * Contributors: mergify[bot]
 
-8.2.4 (2025-08-05)
+4.1.1 (2022-11-07)
 ------------------
-
-8.2.3 (2024-12-18)
-------------------
-
-8.2.2 (2024-09-06)
-------------------
-* Run relevant test_tracetools tests with all instrumented rmw impls (`#134 <https://github.com/ros2/ros2_tracing/issues/134>`_)
+* Merge branch 'clalancette/release-4.1.0' into 'master'
 * Contributors: Christophe Bedard
-
-8.2.1 (2024-06-27)
-------------------
-
-8.2.0 (2024-04-16)
-------------------
-* Replace all occurences of index.ros.org (`#114 <https://github.com/ros2/ros2_tracing/issues/114>`_)
-* Improve tracetools_test and simplify test_tracetools code (`#109 <https://github.com/ros2/ros2_tracing/issues/109>`_)
-* Improve assertEventOrder failure output (`#106 <https://github.com/ros2/ros2_tracing/issues/106>`_)
-* Contributors: Chris Lalancette, Christophe Bedard
-
-8.1.0 (2024-03-27)
-------------------
-* Allow tracing tests to be run in parallel with other tests (`#95 <https://github.com/ros2/ros2_tracing/issues/95>`_)
-* Fix interference between test_tracetools and ros2lifecycle tests (`#96 <https://github.com/ros2/ros2_tracing/issues/96>`_)
-* Make tracing test assert messages more descriptive (`#93 <https://github.com/ros2/ros2_tracing/issues/93>`_)
-* Contributors: Christophe Bedard
-
-8.0.0 (2024-01-23)
-------------------
-* Fix use of mutable default arg in tracetools_test (`#84 <https://github.com/ros2/ros2_tracing/issues/84>`_)
-* Contributors: Christophe Bedard
-
-7.1.0 (2023-08-23)
-------------------
-
-7.0.0 (2023-06-09)
-------------------
-
-6.4.1 (2023-05-11)
-------------------
-* Switch <depend> to <exec_depend> in pure Python packages (`#67 <https://github.com/ros2/ros2_tracing/issues/67>`_)
-* Contributors: Christophe Bedard
-
-6.4.0 (2023-04-28)
-------------------
-
-6.3.0 (2023-04-18)
-------------------
-
-6.2.0 (2023-04-18)
-------------------
-
-6.1.0 (2023-04-13)
-------------------
-
-6.0.0 (2023-04-12)
-------------------
-
-5.1.0 (2023-03-02)
-------------------
 
 4.1.0 (2022-03-29)
 ------------------

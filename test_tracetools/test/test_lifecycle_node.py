@@ -16,10 +16,8 @@ import unittest
 
 from tracetools_test.case import TraceTestCase
 from tracetools_trace.tools import tracepoints as tp
-from tracetools_trace.tools.lttng import is_lttng_installed
 
 
-@unittest.skipIf(not is_lttng_installed(minimum_version='2.9.0'), 'LTTng is required')
 class TestLifecycleNode(TraceTestCase):
 
     def __init__(self, *args) -> None:
@@ -33,7 +31,6 @@ class TestLifecycleNode(TraceTestCase):
             ],
             package='test_tracetools',
             nodes=['test_lifecycle_node', 'test_lifecycle_client'],
-            namespace='/test_tracetools',
         )
 
     def test_all(self):
@@ -47,19 +44,22 @@ class TestLifecycleNode(TraceTestCase):
             'test_lifecycle_node',
             rcl_node_init_events,
         )
-        lifecycle_node_match = self.get_event_with_field_value_and_assert(
-            'namespace',
-            '/test_tracetools',
-            lifecycle_node_matches,
-            allow_multiple=False,
+        self.assertEqual(
+            len(lifecycle_node_matches),
+            1,
+            'no node init event for lifecycle node',
         )
-        lifecycle_node_handle = self.get_field(lifecycle_node_match, 'node_handle')
+        lifecycle_node_handle = self.get_field(lifecycle_node_matches[0], 'node_handle')
 
         # Check the state machine init event
         rcl_lifecycle_state_machine_init_events = self.get_events_with_name(
             tp.rcl_lifecycle_state_machine_init,
         )
-        self.assertNumEventsEqual(rcl_lifecycle_state_machine_init_events, 1)
+        self.assertEqual(
+            len(rcl_lifecycle_state_machine_init_events),
+            1,
+            'more than one state machine init event',
+        )
         # Make sure the node handle matches the one from the node init event
         rcl_lifecycle_state_machine_init_event = rcl_lifecycle_state_machine_init_events[0]
         node_handle = self.get_field(rcl_lifecycle_state_machine_init_event, 'node_handle')
@@ -75,6 +75,7 @@ class TestLifecycleNode(TraceTestCase):
 
         # This list of states corresponds to the states that the test_lifecycle_node goes through
         # following test_lifecycle_client's requests
+        # We do not expect any other lifecycle node
         expected_lifecycle_states = [
             'unconfigured',
             'configuring',
@@ -95,21 +96,25 @@ class TestLifecycleNode(TraceTestCase):
             (expected_lifecycle_states[i], expected_lifecycle_states[i + 1])
             for i in range(len(expected_lifecycle_states) - 1)
         ]
-        # Check transitions for our state machine
-        rcl_lifecycle_transition_events = self.get_events_with_name(tp.rcl_lifecycle_transition)
-        transition_events = self.get_events_with_field_value(
-            'state_machine',
-            state_machine_handle,
-            rcl_lifecycle_transition_events,
-        )
+        # Check transitions
+        rcl_lifecycle_transition_events = self.get_events_with_name(
+            tp.rcl_lifecycle_transition)
         lifecycle_state_transitions = [
             (self.get_field(event, 'start_label'), self.get_field(event, 'goal_label'))
-            for event in transition_events
+            for event in rcl_lifecycle_transition_events
         ]
         self.assertListEqual(
             expected_lifecycle_state_transitions,
             lifecycle_state_transitions,
             'transitions not valid',
+        )
+        # Make sure all state machine handle values match the one from the init event
+        self.assertTrue(
+            all(
+                self.get_field(event, 'state_machine') == state_machine_handle
+                for event in rcl_lifecycle_transition_events
+            ),
+            'state machine handle does not match',
         )
 
 

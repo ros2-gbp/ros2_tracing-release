@@ -20,7 +20,6 @@ import shutil
 import tempfile
 import textwrap
 from typing import List
-from typing import Optional
 import unittest
 
 from launch import LaunchDescription
@@ -36,7 +35,6 @@ from tracetools_launch.action import Trace
 from tracetools_trace.tools.lttng import is_lttng_installed
 
 
-@unittest.skipIf(not is_lttng_installed(minimum_version='2.9.0'), 'LTTng is required')
 class TestTraceAction(unittest.TestCase):
 
     def __init__(self, *args) -> None:
@@ -44,31 +42,18 @@ class TestTraceAction(unittest.TestCase):
             *args,
         )
 
-    def setUp(self) -> None:
-        self.assertIsNone(os.environ.get('LD_PRELOAD'))
-
-    def tearDown(self) -> None:
-        if 'LD_PRELOAD' in os.environ:
-            del os.environ['LD_PRELOAD']
-
-    def _assert_launch(self, actions) -> int:
+    def _assert_launch_no_errors(self, actions) -> None:
         ld = LaunchDescription(actions)
         ls = LaunchService(debug=True)
         ls.include_launch_description(ld)
-        return ls.run()
-
-    def _assert_launch_no_errors(self, actions) -> None:
-        self.assertEqual(0, self._assert_launch(actions), 'expected no errors')
-
-    def _assert_launch_errors(self, actions) -> None:
-        self.assertEqual(1, self._assert_launch(actions), 'expected errors')
+        assert 0 == ls.run()
 
     def _assert_launch_frontend_no_errors(self, file) -> Trace:
         root_entity, parser = Parser.load(file)
         ld = parser.parse_description(root_entity)
         ls = LaunchService()
         ls.include_launch_description(ld)
-        self.assertEqual(0, ls.run(), 'expected no errors')
+        assert 0 == ls.run()
         trace_action = ld.describe_sub_entities()[0]
         return trace_action
 
@@ -76,25 +61,19 @@ class TestTraceAction(unittest.TestCase):
         self,
         action,
         tmpdir,
-        *,
-        session_name: Optional[str] = 'my-session-name',
-        append_trace: bool = False,
+        session_name: str = 'my-session-name',
         events_ust: List[str] = ['ros2:*', '*'],
-        subbuffer_size_ust: int = 524288,
-        subbuffer_size_kernel: int = 1048576,
     ) -> None:
-        if session_name is not None:
-            self.assertEqual(session_name, action.session_name)
+        self.assertEqual(session_name, action.session_name)
         self.assertEqual(tmpdir, action.base_path)
         self.assertTrue(action.trace_directory.startswith(tmpdir))
-        self.assertEqual(append_trace, action.append_trace)
         self.assertEqual([], action.events_kernel)
         self.assertEqual(events_ust, action.events_ust)
         self.assertTrue(pathlib.Path(tmpdir).exists())
-        self.assertEqual(subbuffer_size_ust, action.subbuffer_size_ust)
-        self.assertEqual(subbuffer_size_kernel, action.subbuffer_size_kernel)
 
+    @unittest.skipIf(not is_lttng_installed(), 'LTTng is required')
     def test_action(self) -> None:
+        self.assertIsNone(os.environ.get('LD_PRELOAD'))
         tmpdir = tempfile.mkdtemp(prefix='TestTraceAction__test_action')
 
         # Disable kernel events just to not require kernel tracing for the test
@@ -106,15 +85,16 @@ class TestTraceAction(unittest.TestCase):
                 'ros2:*',
                 '*',
             ],
-            subbuffer_size_ust=524288,
-            subbuffer_size_kernel=1048576,
         )
         self._assert_launch_no_errors([action])
         self._check_trace_action(action, tmpdir)
 
         shutil.rmtree(tmpdir)
+        del os.environ['LD_PRELOAD']
 
+    @unittest.skipIf(not is_lttng_installed(), 'LTTng is required')
     def test_action_frontend_xml(self) -> None:
+        self.assertIsNone(os.environ.get('LD_PRELOAD'))
         tmpdir = tempfile.mkdtemp(prefix='TestTraceAction__test_frontend_xml')
 
         xml_file = textwrap.dedent(
@@ -122,13 +102,9 @@ class TestTraceAction(unittest.TestCase):
             <launch>
                 <trace
                     session-name="my-session-name"
-                    append-timestamp="false"
                     base-path="{}"
-                    append-trace="true"
                     events-kernel=""
                     events-ust="ros2:* *"
-                    subbuffer-size-ust="524288"
-                    subbuffer-size-kernel="1048576"
                 />
             </launch>
             """.format(tmpdir)
@@ -138,11 +114,14 @@ class TestTraceAction(unittest.TestCase):
         with io.StringIO(xml_file) as f:
             trace_action = self._assert_launch_frontend_no_errors(f)
 
-        self._check_trace_action(trace_action, tmpdir, append_trace=True)
+        self._check_trace_action(trace_action, tmpdir)
 
         shutil.rmtree(tmpdir)
+        del os.environ['LD_PRELOAD']
 
+    @unittest.skipIf(not is_lttng_installed(), 'LTTng is required')
     def test_action_frontend_yaml(self) -> None:
+        self.assertIsNone(os.environ.get('LD_PRELOAD'))
         tmpdir = tempfile.mkdtemp(prefix='TestTraceAction__test_frontend_yaml')
 
         yaml_file = textwrap.dedent(
@@ -150,13 +129,9 @@ class TestTraceAction(unittest.TestCase):
             launch:
             - trace:
                 session-name: my-session-name
-                append-timestamp: false
                 base-path: {}
-                append-trace: true
                 events-kernel: ""
                 events-ust: ros2:* *
-                subbuffer-size-ust: 524288
-                subbuffer-size-kernel: 1048576
             """.format(tmpdir)
         )
 
@@ -164,30 +139,15 @@ class TestTraceAction(unittest.TestCase):
         with io.StringIO(yaml_file) as f:
             trace_action = self._assert_launch_frontend_no_errors(f)
 
-        self._check_trace_action(trace_action, tmpdir, append_trace=True)
+        self._check_trace_action(trace_action, tmpdir)
 
         shutil.rmtree(tmpdir)
+        del os.environ['LD_PRELOAD']
 
+    @unittest.skipIf(not is_lttng_installed(), 'LTTng is required')
     def test_action_context_per_domain(self) -> None:
+        self.assertIsNone(os.environ.get('LD_PRELOAD'))
         tmpdir = tempfile.mkdtemp(prefix='TestTraceAction__test_action_context_per_domain')
-
-        # Invalid context domain
-        action = Trace(
-            session_name='my-session-name',
-            base_path=tmpdir,
-            events_kernel=[],
-            events_ust=[
-                'ros2:*',
-                '*',
-            ],
-            context_fields={
-                'some_unknown_domain_type': [],
-                'userspace': ['vpid', 'vtid'],
-            },
-            subbuffer_size_ust=524288,
-            subbuffer_size_kernel=1048576,
-        )
-        self._assert_launch_errors([action])
 
         action = Trace(
             session_name='my-session-name',
@@ -201,8 +161,6 @@ class TestTraceAction(unittest.TestCase):
                 'kernel': [],
                 'userspace': ['vpid', 'vtid'],
             },
-            subbuffer_size_ust=524288,
-            subbuffer_size_kernel=1048576,
         )
         self._assert_launch_no_errors([action])
         self._check_trace_action(action, tmpdir)
@@ -216,8 +174,11 @@ class TestTraceAction(unittest.TestCase):
         )
 
         shutil.rmtree(tmpdir)
+        del os.environ['LD_PRELOAD']
 
+    @unittest.skipIf(not is_lttng_installed(), 'LTTng is required')
     def test_action_substitutions(self) -> None:
+        self.assertIsNone(os.environ.get('LD_PRELOAD'))
         tmpdir = tempfile.mkdtemp(prefix='TestTraceAction__test_action_substitutions')
 
         self.assertIsNone(os.environ.get('TestTraceAction__event_ust', None))
@@ -245,8 +206,6 @@ class TestTraceAction(unittest.TestCase):
                     TextSubstitution(text='vtid'),
                 ],
             },
-            subbuffer_size_ust=524288,
-            subbuffer_size_kernel=1048576,
         )
         self._assert_launch_no_errors([session_name_arg, action])
         self._check_trace_action(action, tmpdir)
@@ -262,8 +221,11 @@ class TestTraceAction(unittest.TestCase):
         shutil.rmtree(tmpdir)
         del os.environ['TestTraceAction__event_ust']
         del os.environ['TestTraceAction__context_field']
+        del os.environ['LD_PRELOAD']
 
+    @unittest.skipIf(not is_lttng_installed(), 'LTTng is required')
     def test_action_ld_preload(self) -> None:
+        self.assertIsNone(os.environ.get('LD_PRELOAD'))
         tmpdir = tempfile.mkdtemp(prefix='TestTraceAction__test_action_ld_preload')
 
         action = Trace(
@@ -277,8 +239,6 @@ class TestTraceAction(unittest.TestCase):
                 'lttng_ust_pthread:*',
                 'lttng_ust_dl:*',
             ],
-            subbuffer_size_ust=524288,
-            subbuffer_size_kernel=1048576,
         )
         node_ping_action = Node(
             package='test_tracetools',
@@ -314,70 +274,7 @@ class TestTraceAction(unittest.TestCase):
         self.assertTrue(any(p.endswith('liblttng-ust-dl.so') for p in paths))
 
         shutil.rmtree(tmpdir)
-
-    def test_append_timestamp(self) -> None:
-        tmpdir = tempfile.mkdtemp(prefix='TestTraceAction__test_append_timestamp')
-
-        action = Trace(
-            session_name='my-session-name',
-            append_timestamp=True,
-            base_path=tmpdir,
-            events_kernel=[],
-            events_ust=[
-                'ros2:*',
-                '*',
-            ],
-            subbuffer_size_ust=524288,
-            subbuffer_size_kernel=1048576,
-        )
-        self._assert_launch_no_errors([action])
-        self._check_trace_action(action, tmpdir, session_name=None)
-        # Session name should start with the given prefix and end with the timestamp, but don't
-        # bother validating the timestamp here
-        self.assertTrue(action.session_name.startswith('my-session-name-'))
-        self.assertNotEqual('my-session-name-', action.session_name)
-
-        shutil.rmtree(tmpdir)
-
-    def test_append_trace(self) -> None:
-        tmpdir = tempfile.mkdtemp(prefix='TestTraceAction__test_append_trace')
-
-        # Generate a normal trace
-        action = Trace(
-            session_name='my-session-name',
-            base_path=tmpdir,
-            append_trace=False,
-            events_kernel=[],
-            events_ust=[
-                'ros2:*',
-                '*',
-            ],
-            subbuffer_size_ust=524288,
-            subbuffer_size_kernel=1048576,
-        )
-        self._assert_launch_no_errors([action])
-        self._check_trace_action(action, tmpdir, append_trace=False)
-
-        # Generating another trace with the same path should error out
-        self._assert_launch_errors([action])
-
-        # But it should work if we use the append_trace option
-        action = Trace(
-            session_name='my-session-name',
-            base_path=tmpdir,
-            append_trace=True,
-            events_kernel=[],
-            events_ust=[
-                'ros2:*',
-                '*',
-            ],
-            subbuffer_size_ust=524288,
-            subbuffer_size_kernel=1048576,
-        )
-        self._assert_launch_no_errors([action])
-        self._check_trace_action(action, tmpdir, append_trace=True)
-
-        shutil.rmtree(tmpdir)
+        del os.environ['LD_PRELOAD']
 
 
 if __name__ == '__main__':

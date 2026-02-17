@@ -16,7 +16,7 @@
 #include "tracetools/status.h"
 #include "tracetools/tracetools.h"
 
-int main(void)
+int main()
 {
 #ifndef TRACETOOLS_DISABLED
   return tracetools_status(ros_trace_compile_status());

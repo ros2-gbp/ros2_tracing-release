@@ -16,7 +16,6 @@
 
 #include "rclcpp/rclcpp.hpp"
 #include "std_msgs/msg/string.hpp"
-#include "test_tracetools/mark_process.hpp"
 
 #define NODE_NAME "test_pong"
 #define SUB_TOPIC_NAME "ping"
@@ -30,7 +29,7 @@ public:
   {
     sub_ = this->create_subscription<std_msgs::msg::String>(
       SUB_TOPIC_NAME,
-      rclcpp::QoS(10).transient_local(),
+      rclcpp::QoS(10),
       std::bind(&PongNode::callback, this, std::placeholders::_1));
     pub_ = this->create_publisher<std_msgs::msg::String>(
       PUB_TOPIC_NAME,
@@ -46,7 +45,6 @@ private:
     RCLCPP_INFO(this->get_logger(), "[output] %s", msg->data.c_str());
     auto next_msg = std::make_shared<std_msgs::msg::String>();
     next_msg->data = "some random pong string";
-    RCLCPP_INFO(this->get_logger(), "pong");
     pub_->publish(*next_msg);
     if (do_only_one_) {
       rclcpp::shutdown();
@@ -60,8 +58,6 @@ private:
 
 int main(int argc, char * argv[])
 {
-  test_tracetools::mark_trace_test_process();
-
   bool do_only_one = true;
   for (int i = 0; i < argc; ++i) {
     if (strncmp(argv[i], "do_more", 7) == 0) {

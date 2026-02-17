@@ -36,7 +36,7 @@ All installed headers are in the `include` directory of the package, headers in 
 
 ### Change Requests [2.i]
 
-All changes occur through a pull request.
+All changes occur through a merge request.
 
 ### Contributor Origin [2.ii]
 
@@ -45,13 +45,13 @@ There is an automated DCO check for change requests.
 
 ### Peer Review Policy [2.iii]
 
-All pull requests must have at least one peer review.
+All merge requests must have at least one peer review.
 
 ### Continuous Integration [2.iv]
 
-All pull requests must pass CI on Ubuntu amd64.
+All merge requests must pass CI on Ubuntu amd64.
 
-Nightly results for all [tier 1 platforms as defined in REP-2000](https://www.ros.org/reps/rep-2000.html#support-tiers) can be found here (note that only the tagged release used in the [`ros2.repos`](https://github.com/ros2/ros2/blob/rolling/ros2.repos) file is tested nightly):
+Nightly results for all [tier 1 platforms as defined in REP-2000](https://www.ros.org/reps/rep-2000.html#support-tiers) can be found here (note that only the tagged release used in the [`ros2.repos`](https://github.com/ros2/ros2/blob/master/ros2.repos) file is tested nightly):
 * [linux-aarch64_release](https://ci.ros2.org/view/nightly/job/nightly_linux-aarch64_release/lastBuild/testReport/tracetools/)
 * [linux-amd64_release](https://ci.ros2.org/view/nightly/job/nightly_linux_release/lastBuild/testReport/tracetools/)
 * [macos_release](https://ci.ros2.org/view/nightly/job/nightly_osx_release/lastBuild/testReport/tracetools/)
@@ -59,7 +59,7 @@ Nightly results for all [tier 1 platforms as defined in REP-2000](https://www.ro
 
 ### Documentation Policy [2.v]
 
-All pull requests must resolve related documentation changes before merging.
+All merge requests must resolve related documentation changes before merging.
 
 ## Documentation [3]
 
@@ -71,7 +71,7 @@ It does not currently have a features list with links to the corresponding featu
 
 ### Public API Documentation [3.ii]
 
-`tracetools` has embedded API documentation which can be generated using doxygen. The latest version can be viewed [here](https://docs.ros.org/en/rolling/p/tracetools/).
+`tracetools` has embedded API documentation which can be generated using doxygen. The latest version can be viewed [here](https://ros-tracing.gitlab.io/ros2_tracing-api/).
 
 New additions to the public API require documentation before being added.
 
@@ -111,7 +111,7 @@ This includes:
 
 Changes are required to make a best effort to keep or increase coverage before being accepted, but decreases are allowed if properly justified and accepted by reviewers.
 
-Current coverage statistics can be viewed [on codecov.io](https://codecov.io/gh/ros2/ros2_tracing) or in the [results of the latest `coverage` CI job](https://github.com/ros2/ros2_tracing/actions).
+Current coverage statistics can be viewed [on codecov.io](https://codecov.io/gl/ros-tracing/ros2_tracing) or in the [results of the latest `coverage` CI job](https://gitlab.com/ros-tracing/ros2_tracing/pipelines/latest).
 
 `tracetools` might not reach the 95% goal because it uses `#ifdef` in case LTTng is not installed, but, when using and enabling LTTng, the line coverage is above 95%.
 

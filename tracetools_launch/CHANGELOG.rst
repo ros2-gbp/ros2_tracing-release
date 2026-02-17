@@ -2,79 +2,14 @@
 Changelog for package tracetools_launch
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-8.2.5 (2026-01-21)
+4.1.2 (2026-02-16)
 ------------------
-* fix setuptools deprecation (`#189 <https://github.com/ros2/ros2_tracing/issues/189>`_) (`#203 <https://github.com/ros2/ros2_tracing/issues/203>`_)
-  (cherry picked from commit 526967c1a0ad3208fe6c28e0cf16f2b045ed5241)
-  Co-authored-by: mosfet80 <10235105+mosfet80@users.noreply.github.com>
-  Co-authored-by: Christophe Bedard <bedard.christophe@gmail.com>
+* fix setuptools deprecation (backport `#189 <https://github.com/ros2/ros2_tracing/issues/189>`_) (`#204 <https://github.com/ros2/ros2_tracing/issues/204>`_)
 * Contributors: mergify[bot]
 
-8.2.4 (2025-08-05)
+4.1.1 (2022-11-07)
 ------------------
-
-8.2.3 (2024-12-18)
-------------------
-
-8.2.2 (2024-09-06)
-------------------
-
-8.2.1 (2024-06-27)
-------------------
-
-8.2.0 (2024-04-16)
-------------------
-* Replace all occurences of index.ros.org (`#114 <https://github.com/ros2/ros2_tracing/issues/114>`_)
-* Contributors: Chris Lalancette
-
-8.1.0 (2024-03-27)
-------------------
-* Use single underscore for private vars in Python (`#92 <https://github.com/ros2/ros2_tracing/issues/92>`_)
-* Improve tracing configuration error reporting (`#85 <https://github.com/ros2/ros2_tracing/issues/85>`_)
-* Fix warnings when using mypy 1.8.0. (`#89 <https://github.com/ros2/ros2_tracing/issues/89>`_)
-* Contributors: Chris Lalancette, Christophe Bedard
-
-8.0.0 (2024-01-23)
-------------------
-* Remove extra single quote in LdPreload debug log (`#79 <https://github.com/ros2/ros2_tracing/issues/79>`_)
-* Contributors: Christophe Bedard
-
-7.1.0 (2023-08-23)
-------------------
-
-7.0.0 (2023-06-09)
-------------------
-
-6.4.1 (2023-05-11)
-------------------
-
-6.4.0 (2023-04-28)
-------------------
-
-6.3.0 (2023-04-18)
-------------------
-
-6.2.0 (2023-04-18)
-------------------
-* Error out if trace already exists unless 'append' option is used (`#58 <https://github.com/ros2/ros2_tracing/issues/58>`_)
-* Improve 'ros2 trace' command error handling & add end-to-end tests (`#54 <https://github.com/ros2/ros2_tracing/issues/54>`_)
-* Make subbuffer size configurable with Trace action (`#51 <https://github.com/ros2/ros2_tracing/issues/51>`_)
-* Contributors: Christophe Bedard, Christopher Wecht
-
-6.1.0 (2023-04-13)
-------------------
-
-6.0.0 (2023-04-12)
-------------------
-* Enable document generation using rosdoc2 for ament_python pkgs (`#50 <https://github.com/ros2/ros2_tracing/issues/50>`_)
-* Contributors: Yadu
-
-5.1.0 (2023-03-02)
-------------------
-
-5.0.0 (2023-02-14)
-------------------
-* Remove deprecated context_names parameter (`#38 <https://github.com/ros2/ros2_tracing/issues/38>`_)
+* Merge branch 'clalancette/release-4.1.0' into 'master'
 * Contributors: Christophe Bedard
 
 4.0.0 (2022-01-20)

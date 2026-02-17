@@ -5,7 +5,7 @@ package_name = 'tracetools_read'
 
 setup(
     name=package_name,
-    version='8.2.5',
+    version='4.1.2',
     packages=find_packages(exclude=['test']),
     data_files=[
         ('share/' + package_name, ['package.xml']),
@@ -23,7 +23,7 @@ setup(
     ),
     author='Christophe Bedard',
     author_email='fixed-term.christophe.bourquebedard@de.bosch.com',
-    url='https://github.com/ros2/ros2_tracing',
+    url='https://gitlab.com/ros-tracing/ros2_tracing',
     keywords=[],
     description='Tools for reading traces.',
     license='Apache 2.0',

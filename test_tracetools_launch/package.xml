@@ -2,14 +2,14 @@
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>test_tracetools_launch</name>
-  <version>8.2.5</version>
+  <version>4.1.2</version>
   <description>Tests for the tracetools_launch package.</description>
   <maintainer email="bedard.christophe@gmail.com">Christophe Bedard</maintainer>
   <maintainer email="ingo.luetkebohle@de.bosch.com">Ingo Luetkebohle</maintainer>
   <license>Apache 2.0</license>
-  <url type="website">https://github.com/ros2/ros2_tracing</url>
-  <url type="repository">https://github.com/ros2/ros2_tracing</url>
-  <url type="bugtracker">https://github.com/ros2/ros2_tracing/issues</url>
+  <url type="website">https://gitlab.com/ros-tracing/ros2_tracing</url>
+  <url type="repository">https://gitlab.com/ros-tracing/ros2_tracing</url>
+  <url type="bugtracker">https://gitlab.com/ros-tracing/ros2_tracing/-/issues</url>
   <author email="fixed-term.christophe.bourquebedard@de.bosch.com">Christophe Bedard</author>
 
   <test_depend>ament_copyright</test_depend>
