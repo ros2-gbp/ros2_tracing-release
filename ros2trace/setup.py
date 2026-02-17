@@ -5,7 +5,7 @@ package_name = 'ros2trace'
 
 setup(
     name=package_name,
-    version='4.1.1',
+    version='4.1.2',
     packages=find_packages(exclude=['test']),
     data_files=[
         ('share/' + package_name, ['package.xml']),
@@ -32,7 +32,11 @@ setup(
         'for the ROS 2 command line tools.'
     ),
     license='Apache 2.0',
-    tests_require=['pytest'],
+    extras_require={
+        'test': [
+            'pytest',
+        ],
+    },
     entry_points={
         'ros2cli.command': [
             f'trace = {package_name}.command.trace:TraceCommand',
