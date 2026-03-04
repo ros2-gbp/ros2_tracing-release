@@ -32,8 +32,15 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "tracetools/version.h"
+
 /// See RMW_GID_STORAGE_SIZE in rmw.
-#define TRACETOOLS_GID_STORAGE_SIZE 24u
+#define TRACETOOLS_GID_STORAGE_SIZE 16u
+
+#ifdef __clang__
+# pragma clang diagnostic push
+# pragma clang diagnostic ignored "-Wgnu-zero-variadic-macro-arguments"
+#endif
 
 TRACEPOINT_EVENT(
   TRACEPOINT_PROVIDER,
@@ -43,7 +50,7 @@ TRACEPOINT_EVENT(
   ),
   TP_FIELDS(
     ctf_integer_hex(const void *, context_handle, context_handle_arg)
-    ctf_string(version, tracetools_VERSION)
+    ctf_string(version, TRACETOOLS_VERSION_STR)
   )
 )
 
@@ -109,6 +116,19 @@ TRACEPOINT_EVENT(
 
 TRACEPOINT_EVENT(
   TRACEPOINT_PROVIDER,
+  rclcpp_intra_publish,
+  TP_ARGS(
+    const void *, publisher_handle_arg,
+    const void *, message_arg
+  ),
+  TP_FIELDS(
+    ctf_integer_hex(const void *, publisher_handle, publisher_handle_arg)
+    ctf_integer_hex(const void *, message, message_arg)
+  )
+)
+
+TRACEPOINT_EVENT(
+  TRACEPOINT_PROVIDER,
   rcl_publish,
   TP_ARGS(
     const void *, publisher_handle_arg,
@@ -124,10 +144,14 @@ TRACEPOINT_EVENT(
   TRACEPOINT_PROVIDER,
   rmw_publish,
   TP_ARGS(
-    const void *, message_arg
+    const void *, rmw_publisher_handle_arg,
+    const void *, message_arg,
+    int64_t, timestamp_arg
   ),
   TP_FIELDS(
+    ctf_integer_hex(const void *, rmw_publisher_handle, rmw_publisher_handle_arg)
     ctf_integer_hex(const void *, message, message_arg)
+    ctf_integer(int64_t, timestamp, timestamp_arg)
   )
 )
 
@@ -260,6 +284,57 @@ TRACEPOINT_EVENT(
 
 TRACEPOINT_EVENT(
   TRACEPOINT_PROVIDER,
+  rmw_take_request,
+  TP_ARGS(
+    const void *, rmw_service_handle_arg,
+    const void *, request_arg,
+    const uint8_t *, client_gid_arg,
+    int64_t, sequence_number_arg,
+    const bool, taken_arg
+  ),
+  TP_FIELDS(
+    ctf_integer_hex(const void *, rmw_service_handle, rmw_service_handle_arg)
+    ctf_integer_hex(const void *, request, request_arg)
+    ctf_array(uint8_t, client_gid, client_gid_arg, TRACETOOLS_GID_STORAGE_SIZE)
+    ctf_integer(int64_t, sequence_number, sequence_number_arg)
+    ctf_integer(int, taken, (taken_arg ? 1 : 0))
+  )
+)
+
+TRACEPOINT_EVENT(
+  TRACEPOINT_PROVIDER,
+  rmw_send_response,
+  TP_ARGS(
+    const void *, rmw_service_handle_arg,
+    const void *, response_arg,
+    const uint8_t *, client_gid_arg,
+    int64_t, sequence_number_arg,
+    int64_t, timestamp_arg
+  ),
+  TP_FIELDS(
+    ctf_integer_hex(const void *, rmw_service_handle, rmw_service_handle_arg)
+    ctf_integer_hex(const void *, response, response_arg)
+    ctf_array(uint8_t, client_gid, client_gid_arg, TRACETOOLS_GID_STORAGE_SIZE)
+    ctf_integer(int64_t, sequence_number, sequence_number_arg)
+    ctf_integer(int64_t, timestamp, timestamp_arg)
+  )
+)
+
+TRACEPOINT_EVENT(
+  TRACEPOINT_PROVIDER,
+  rmw_client_init,
+  TP_ARGS(
+    const void *, rmw_client_handle_arg,
+    const uint8_t *, gid_arg
+  ),
+  TP_FIELDS(
+    ctf_integer_hex(const void *, rmw_client_handle, rmw_client_handle_arg)
+    ctf_array(uint8_t, gid, gid_arg, TRACETOOLS_GID_STORAGE_SIZE)
+  )
+)
+
+TRACEPOINT_EVENT(
+  TRACEPOINT_PROVIDER,
   rcl_client_init,
   TP_ARGS(
     const void *, client_handle_arg,
@@ -272,6 +347,40 @@ TRACEPOINT_EVENT(
     ctf_integer_hex(const void *, node_handle, node_handle_arg)
     ctf_integer_hex(const void *, rmw_client_handle, rmw_client_handle_arg)
     ctf_string(service_name, service_name_arg)
+  )
+)
+
+TRACEPOINT_EVENT(
+  TRACEPOINT_PROVIDER,
+  rmw_send_request,
+  TP_ARGS(
+    const void *, rmw_client_handle_arg,
+    const void *, request_arg,
+    int64_t, sequence_number_arg
+  ),
+  TP_FIELDS(
+    ctf_integer_hex(const void *, rmw_client_handle, rmw_client_handle_arg)
+    ctf_integer_hex(const void *, request, request_arg)
+    ctf_integer(int64_t, sequence_number, sequence_number_arg)
+  )
+)
+
+TRACEPOINT_EVENT(
+  TRACEPOINT_PROVIDER,
+  rmw_take_response,
+  TP_ARGS(
+    const void *, rmw_client_handle_arg,
+    const void *, response_arg,
+    int64_t, sequence_number_arg,
+    int64_t, source_timestamp_arg,
+    const bool, taken_arg
+  ),
+  TP_FIELDS(
+    ctf_integer_hex(const void *, rmw_client_handle, rmw_client_handle_arg)
+    ctf_integer_hex(const void *, response, response_arg)
+    ctf_integer(int64_t, sequence_number, sequence_number_arg)
+    ctf_integer(int64_t, source_timestamp, source_timestamp_arg)
+    ctf_integer(int, taken, (taken_arg ? 1 : 0))
   )
 )
 
@@ -407,6 +516,122 @@ TRACEPOINT_EVENT(
     ctf_integer_hex(const void *, handle, handle_arg)
   )
 )
+
+TRACEPOINT_EVENT(
+  TRACEPOINT_PROVIDER,
+  rclcpp_ipb_to_subscription,
+  TP_ARGS(
+    const void *, ipb_arg,
+    const void *, subscription_arg
+  ),
+  TP_FIELDS(
+    ctf_integer_hex(const void *, ipb, ipb_arg)
+    ctf_integer_hex(const void *, subscription, subscription_arg)
+  )
+)
+
+TRACEPOINT_EVENT(
+  TRACEPOINT_PROVIDER,
+  rclcpp_buffer_to_ipb,
+  TP_ARGS(
+    const void *, buffer_arg,
+    const void *, ipb_arg
+  ),
+  TP_FIELDS(
+    ctf_integer_hex(const void *, buffer, buffer_arg)
+    ctf_integer_hex(const void *, ipb, ipb_arg)
+  )
+)
+
+TRACEPOINT_EVENT(
+  TRACEPOINT_PROVIDER,
+  rclcpp_construct_ring_buffer,
+  TP_ARGS(
+    const void *, buffer_arg,
+    const uint64_t, capacity_arg
+  ),
+  TP_FIELDS(
+    ctf_integer_hex(const void *, buffer, buffer_arg)
+    ctf_integer(const uint64_t, capacity, capacity_arg)
+  )
+)
+
+TRACEPOINT_EVENT(
+  TRACEPOINT_PROVIDER,
+  rclcpp_ring_buffer_enqueue,
+  TP_ARGS(
+    const void *, buffer_arg,
+    const uint64_t, index_arg,
+    const uint64_t, size_arg,
+    const bool, overwritten_arg
+  ),
+  TP_FIELDS(
+    ctf_integer_hex(const void *, buffer, buffer_arg)
+    ctf_integer(const uint64_t, index, index_arg)
+    ctf_integer(const uint64_t, size, size_arg)
+    ctf_integer(const int, overwritten, (overwritten_arg ? 1 : 0))
+  )
+)
+
+TRACEPOINT_EVENT(
+  TRACEPOINT_PROVIDER,
+  rclcpp_ring_buffer_dequeue,
+  TP_ARGS(
+    const void *, buffer_arg,
+    const uint64_t, index_arg,
+    const uint64_t, size_arg
+  ),
+  TP_FIELDS(
+    ctf_integer_hex(const void *, buffer, buffer_arg)
+    ctf_integer(const uint64_t, index, index_arg)
+    ctf_integer(const uint64_t, size, size_arg)
+  )
+)
+
+TRACEPOINT_EVENT(
+  TRACEPOINT_PROVIDER,
+  rclcpp_ring_buffer_clear,
+  TP_ARGS(
+    const void *, buffer_arg
+  ),
+  TP_FIELDS(
+    ctf_integer_hex(const void *, buffer, buffer_arg)
+  )
+)
+
+TRACEPOINT_EVENT(
+  TRACEPOINT_PROVIDER,
+  message_link_periodic_async,
+  TP_ARGS(
+    const void **, subs_arg,
+    const size_t, num_subs_arg,
+    const void **, pubs_arg,
+    const size_t, num_pubs_arg
+  ),
+  TP_FIELDS(
+    ctf_sequence_hex(const void *, subs, subs_arg, size_t, num_subs_arg)
+    ctf_sequence_hex(const void *, pubs, pubs_arg, size_t, num_pubs_arg)
+  )
+)
+
+TRACEPOINT_EVENT(
+  TRACEPOINT_PROVIDER,
+  message_link_partial_sync,
+  TP_ARGS(
+    const void **, subs_arg,
+    const size_t, num_subs_arg,
+    const void **, pubs_arg,
+    const size_t, num_pubs_arg
+  ),
+  TP_FIELDS(
+    ctf_sequence_hex(const void *, subs, subs_arg, size_t, num_subs_arg)
+    ctf_sequence_hex(const void *, pubs, pubs_arg, size_t, num_pubs_arg)
+  )
+)
+
+#ifdef __clang__
+# pragma clang diagnostic pop
+#endif
 
 #endif  // _TRACETOOLS__TP_CALL_H_
 

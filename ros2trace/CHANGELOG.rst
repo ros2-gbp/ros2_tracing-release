@@ -2,15 +2,94 @@
 Changelog for package ros2trace
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-4.1.2 (2026-02-16)
-------------------
-* fix setuptools deprecation (backport `#189 <https://github.com/ros2/ros2_tracing/issues/189>`_) (`#204 <https://github.com/ros2/ros2_tracing/issues/204>`_)
-* Contributors: mergify[bot]
+8.10.0 (2026-03-04)
+-------------------
+* Ignore A0005 (`#237 <https://github.com/ros2/ros2_tracing/issues/237>`_)
+* Contributors: Michael Carlstrom
 
-4.1.1 (2022-11-07)
+8.9.0 (2025-10-08)
 ------------------
-* Merge branch 'clalancette/release-4.1.0' into 'master'
+* Update trace command's doc-string (`#213 <https://github.com/ros2/ros2_tracing/issues/213>`_)
+* Allow creating snapshot sessions (`#195 <https://github.com/ros2/ros2_tracing/issues/195>`_)
+* Add support for starting tracing at runtime (`#191 <https://github.com/ros2/ros2_tracing/issues/191>`_)
+* Contributors: Shravan Deva
+
+8.8.1 (2025-07-29)
+------------------
+* fix setuptools deprecation (`#189 <https://github.com/ros2/ros2_tracing/issues/189>`_)
+* Contributors: mosfet80
+
+8.8.0 (2025-07-01)
+------------------
+* Address typing issues reported by mypy in tracetools_launch (`#184 <https://github.com/ros2/ros2_tracing/issues/184>`_)
 * Contributors: Christophe Bedard
+
+8.7.0 (2025-04-24)
+------------------
+
+8.6.0 (2025-04-17)
+------------------
+* Expose types for tracing tools (`#153 <https://github.com/ros2/ros2_tracing/issues/153>`_)
+* Contributors: Michael Carlstrom
+
+8.5.0 (2024-12-20)
+------------------
+
+8.4.1 (2024-11-25)
+------------------
+
+8.4.0 (2024-10-15)
+------------------
+
+8.3.0 (2024-04-26)
+------------------
+
+8.2.0 (2024-04-16)
+------------------
+* Replace all occurences of index.ros.org (`#114 <https://github.com/ros2/ros2_tracing/issues/114>`_)
+* Contributors: Chris Lalancette
+
+8.1.0 (2024-03-27)
+------------------
+
+8.0.0 (2024-01-23)
+------------------
+
+7.1.0 (2023-08-23)
+------------------
+* Create start/pause/resume/stop sub-commands for 'ros2 trace' (`#70 <https://github.com/ros2/ros2_tracing/issues/70>`_)
+* Contributors: Christophe Bedard
+
+7.0.0 (2023-06-09)
+------------------
+
+6.4.1 (2023-05-11)
+------------------
+* Switch <depend> to <exec_depend> in pure Python packages (`#67 <https://github.com/ros2/ros2_tracing/issues/67>`_)
+* Contributors: Christophe Bedard
+
+6.4.0 (2023-04-28)
+------------------
+
+6.3.0 (2023-04-18)
+------------------
+* Move ros2trace tests to new test_ros2trace package (`#63 <https://github.com/ros2/ros2_tracing/issues/63>`_)
+* Contributors: Christophe Bedard
+
+6.2.0 (2023-04-18)
+------------------
+* Error out if trace already exists unless 'append' option is used (`#58 <https://github.com/ros2/ros2_tracing/issues/58>`_)
+* Improve 'ros2 trace' command error handling & add end-to-end tests (`#54 <https://github.com/ros2/ros2_tracing/issues/54>`_)
+* Contributors: Christophe Bedard
+
+6.1.0 (2023-04-13)
+------------------
+
+6.0.0 (2023-04-12)
+------------------
+
+5.1.0 (2023-03-02)
+------------------
 
 4.1.0 (2022-03-29)
 ------------------

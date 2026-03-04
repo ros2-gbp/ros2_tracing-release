@@ -5,13 +5,14 @@ package_name = 'ros2trace'
 
 setup(
     name=package_name,
-    version='4.1.2',
+    version='8.10.0',
     packages=find_packages(exclude=['test']),
     data_files=[
         ('share/' + package_name, ['package.xml']),
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
     ],
+    package_data={'': ['py.typed']},
     install_requires=['ros2cli'],
     zip_safe=True,
     maintainer=(
@@ -24,7 +25,7 @@ setup(
     ),
     author='Christophe Bedard',
     author_email='fixed-term.christophe.bourquebedard@de.bosch.com',
-    url='https://gitlab.com/ros-tracing/ros2_tracing',
+    url='https://github.com/ros2/ros2_tracing',
     keywords=[],
     description='The trace command for ROS 2 command line tools.',
     long_description=(
@@ -40,6 +41,16 @@ setup(
     entry_points={
         'ros2cli.command': [
             f'trace = {package_name}.command.trace:TraceCommand',
+        ],
+        'ros2cli.extension_point': [
+            f'{package_name}.verb = {package_name}.verb:VerbExtension',
+        ],
+        f'{package_name}.verb': [
+            f'pause = {package_name}.verb.pause:PauseVerb',
+            f'record_snapshot = {package_name}.verb.record_snapshot:RecordSnapshotVerb',
+            f'resume = {package_name}.verb.resume:ResumeVerb',
+            f'start = {package_name}.verb.start:StartVerb',
+            f'stop = {package_name}.verb.stop:StopVerb',
         ],
     }
 )

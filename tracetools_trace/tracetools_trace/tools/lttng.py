@@ -16,29 +16,28 @@
 """Interface for tracing with LTTng."""
 
 import platform
-import subprocess
 import sys
 from typing import Optional
 
+from packaging.version import Version
+
 try:
-    from . import lttng_impl
-
-    _lttng = lttng_impl  # type: ignore
-
-    # Check lttng module version
-    from distutils.version import StrictVersion
-    current_version = _lttng.get_version()
-    LTTNG_MIN_VERSION = '2.10.7'
-    if current_version is None or current_version < StrictVersion(LTTNG_MIN_VERSION):
-        print(
-            f'lttng module version >={LTTNG_MIN_VERSION} required, found {str(current_version)}',
-            file=sys.stderr,
-        )
+    from . import lttng_impl as _lttng
 except ImportError:
     # Fall back on stub functions so that this still passes linter checks
-    from . import lttng_stub
+    # This will happen if lttngpy isn't found, in which case importing lttng_impl will fail
+    from . import lttng_stub as _lttng  # type: ignore
 
-    _lttng = lttng_stub  # type: ignore
+
+def get_lttng_version() -> Optional[Version]:
+    """
+    Get version of lttng-ctl.
+
+    :return: the version of lttng-ctl, or `None` if it is not available
+    """
+    if not hasattr(_lttng, 'get_version') or not callable(_lttng.get_version):
+        return None
+    return _lttng.get_version()
 
 
 def lttng_init(**kwargs) -> Optional[str]:
@@ -46,6 +45,8 @@ def lttng_init(**kwargs) -> Optional[str]:
     Set up and start LTTng session.
 
     For the full list of kwargs, see `lttng_impl.setup()`.
+
+    Raises RuntimeError on failure, in which case the tracing session might still exist.
 
     :return: the full path to the trace directory, or `None` if initialization failed
     """
@@ -63,39 +64,88 @@ def lttng_fini(**kwargs) -> None:
     """
     Stop and destroy LTTng session.
 
+    Raises RuntimeError on failure.
+
     :param session_name: the name of the session
     """
     _lttng.stop(**kwargs)
     _lttng.destroy(**kwargs)
 
 
-def is_lttng_installed() -> bool:
+def lttng_start(**kwargs) -> None:
+    """
+    Start tracing.
+
+    Raises RuntimeError on failure.
+
+    :param session_name: the name of the session
+    """
+    _lttng.start(**kwargs)
+
+
+def lttng_stop(**kwargs) -> None:
+    """
+    Stop tracing.
+
+    Raises RuntimeError on failure.
+
+    :param session_name: the name of the session
+    """
+    _lttng.stop(**kwargs)
+
+
+def lttng_record_snapshot(**kwargs) -> None:
+    """
+    Record a snapshot.
+
+    Raises RuntimeError on failure.
+
+    :param session_name: the name of the session
+    """
+    _lttng.record_snapshot(**kwargs)
+
+
+def is_lttng_installed(
+    *,
+    minimum_version: Optional[str] = None,
+) -> bool:
     """
     Check if LTTng is installed.
 
     It first checks if the OS can support LTTng.
-    If so, it then simply checks if LTTng is installed using the 'lttng' command.
+    If so, it then checks if lttng-ctl is installed.
 
-    :return: True if it is installed, False otherwise
+    Optionally, a minimum version can also be specified for lttng-ctl.
+
+    :param minimum_version: the minimum required lttng-ctl version
+    :return: True if lttng-ctl is installed, and optionally if the version of lttng-ctl is
+        sufficient, False otherwise
     """
+    # Check system
     message_doc = (
         'Cannot trace. See documentation at: '
-        'https://gitlab.com/ros-tracing/ros2_tracing'
+        'https://github.com/ros2/ros2_tracing'
     )
     system = platform.system()
     if 'Linux' != system:
         print(f"System '{system}' does not support LTTng.\n{message_doc}", file=sys.stderr)
         return False
-    try:
-        process = subprocess.Popen(
-            ['lttng', '--version'],
-            stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE,
+    # Check if lttng-ctl is installed
+    lttng_version = get_lttng_version()
+    if not lttng_version:
+        print(
+            f'lttng-ctl (liblttng-ctl-dev) not installed\n{message_doc}',
+            file=sys.stderr,
         )
-        _, stderr = process.communicate()
-        if 0 != process.returncode:
-            raise RuntimeError(stderr.decode())
-        return True
-    except (RuntimeError, FileNotFoundError) as e:
-        print(f'LTTng not found: {e}\n{message_doc}', file=sys.stderr)
         return False
+    # Check if lttng-ctl version is sufficient
+    if minimum_version and lttng_version < Version(minimum_version):
+        print(
+            (
+                f'lttng-ctl (liblttng-ctl-dev) version >={minimum_version} required, '
+                f'found {str(lttng_version)}'
+            ),
+            file=sys.stderr,
+        )
+        return False
+    return True

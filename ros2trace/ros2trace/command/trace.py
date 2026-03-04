@@ -12,31 +12,32 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# flake8: noqa: A005
+
 """Module for trace command extension implementation."""
 
+from ros2cli.command import add_subparsers_on_demand
 from ros2cli.command import CommandExtension
 from tracetools_trace.tools import args
-from tracetools_trace.trace import fini
-from tracetools_trace.trace import init
+from tracetools_trace.trace import trace
 
 
 class TraceCommand(CommandExtension):
-    """Trace ROS nodes to get information on their execution."""
+    """Various tracing related sub-commands."""
 
-    def add_arguments(self, parser, cli_name):
+    def add_arguments(self, parser, cli_name, *, argv=None) -> None:
+        self._subparser = parser
         args.add_arguments(parser)
 
-    def main(self, *, parser, args):
-        if not init(
-            session_name=args.session_name,
-            base_path=args.path,
-            ros_events=args.events_ust,
-            kernel_events=args.events_kernel,
-            context_fields=args.context_fields,
-            display_list=args.list,
-        ):
-            return 1
-        fini(
-            session_name=args.session_name,
-        )
-        return 0
+        # Add arguments and sub-commands of verbs
+        add_subparsers_on_demand(parser, cli_name, '_verb', 'ros2trace.verb', required=False)
+
+    def main(self, *, parser, args) -> int:
+        if not hasattr(args, '_verb'):
+            # In case no verb was passed, do interactive tracing
+            return trace(args)
+
+        extension = getattr(args, '_verb')
+
+        # Call the verb's main method
+        return extension.main(args=args)

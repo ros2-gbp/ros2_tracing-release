@@ -1,4 +1,4 @@
-// Copyright 2019 Robert Bosch GmbH
+// Copyright 2023 Apex.AI, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -12,7 +12,16 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#define TRACEPOINT_CREATE_PROBES
+#include <lttng/lttng.h>
 
-#define TRACEPOINT_DEFINE
-#include "tracetools/tp_call.h"
+#include "lttngpy/lttng.hpp"
+
+namespace lttngpy
+{
+
+bool is_lttng_session_daemon_alive()
+{
+  return 1 == lttng_session_daemon_alive();
+}
+
+}  // namespace lttngpy

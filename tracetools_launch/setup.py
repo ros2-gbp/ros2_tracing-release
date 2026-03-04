@@ -7,7 +7,7 @@ package_name = 'tracetools_launch'
 
 setup(
     name=package_name,
-    version='4.1.2',
+    version='8.10.0',
     packages=find_packages(exclude=['test']),
     data_files=[
         ('share/' + package_name, ['package.xml']),
@@ -15,6 +15,7 @@ setup(
         ('share/ament_index/resource_index/packages',
             ['resource/' + package_name]),
     ],
+    package_data={'': ['py.typed']},
     install_requires=['setuptools'],
     maintainer=(
         'Christophe Bedard, '
@@ -26,7 +27,7 @@ setup(
     ),
     author='Christophe Bedard',
     author_email='fixed-term.christophe.bourquebedard@de.bosch.com',
-    url='https://gitlab.com/ros-tracing/ros2_tracing',
+    url='https://github.com/ros2/ros2_tracing',
     keywords=[],
     description='Launch integration for tracing.',
     long_description=(

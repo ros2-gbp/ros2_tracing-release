@@ -19,6 +19,7 @@ import platform
 import subprocess
 from typing import List
 from typing import Optional
+from typing import Text
 
 from launch import logging
 from launch.action import Action
@@ -31,7 +32,7 @@ class LdPreload(Action):
 
     ENV_VAR_LD_PRELOAD = 'LD_PRELOAD'
 
-    __logger = logging.get_logger(__name__)
+    _logger = logging.get_logger(__name__)
 
     def __init__(
         self,
@@ -44,35 +45,45 @@ class LdPreload(Action):
         :param lib_name: the name of the library (e.g., 'lib.so')
         """
         super().__init__(**kwargs)
-        self.__lib_name = lib_name
-        self.__env_action = None
+        self._lib_name = lib_name
+        self._env_action: Optional[Action] = None
         # Try to find lib
-        self.__lib_path = self.get_shared_lib_path(self.__lib_name)
+        self._lib_path = self.get_shared_lib_path(self._lib_name)
         # And create action if found
-        if self.__lib_path is not None:
-            self.__logger.debug(f"Shared library for '{lib_name}' found at: {self.__lib_path}")
-            self.__env_action = AppendEnvironmentVariable(
+        if self._lib_path is not None:
+            self._logger.debug(f"Shared library for '{lib_name}' found at: {self._lib_path}")
+            self._env_action = AppendEnvironmentVariable(
                 self.ENV_VAR_LD_PRELOAD,
-                self.__lib_path,
+                self._lib_path,
             )
         else:
-            self.__logger.warning(
-                f"Could not find shared library for '{lib_name}': {self.__lib_name}")
+            self._logger.warning(
+                f"Could not find shared library for '{lib_name}': {self._lib_name}")
 
     @property
     def lib_name(self) -> str:
-        return self.__lib_name
+        return self._lib_name
 
     @property
     def lib_path(self) -> Optional[str]:
-        return self.__lib_path
+        """
+        Get the resolved shared lib path, if found.
+
+        :return: the full path to the shared lib if found, or `None` if not found
+        """
+        return self._lib_path
 
     def lib_found(self) -> bool:
-        return self.__env_action is not None
+        """
+        Check if the shared lib was found.
+
+        :return: `True` if the shared lib was found, or `False` if not found
+        """
+        return self._env_action is not None
 
     def execute(self, context: LaunchContext) -> Optional[List[Action]]:
         if self.lib_found():
-            return [self.__env_action]
+            return [self._env_action]  # type: ignore[list-item]
         return None
 
     @classmethod
@@ -89,7 +100,7 @@ class LdPreload(Action):
         if 'Linux' != platform.system():
             return None
         (exit_code, output) = subprocess.getstatusoutput(f'whereis -b {lib_name}')
-        cls.__logger.debug(f"whereis command for '{lib_name}' exited with {exit_code}: {output}")
+        cls._logger.debug(f"whereis command for '{lib_name}' exited with {exit_code}: {output}")
         if 0 != exit_code:
             return None
         # Output of whereis is:
@@ -104,19 +115,19 @@ class LdPreload(Action):
             return None
         # Assuming that there are no spaces in paths (which should be valid for Linux libs)
         paths = output_split[1].split(' ')
-        cls.__logger.debug(f"lib paths for '{lib_name}'': {paths}")
+        cls._logger.debug(f"lib paths for '{lib_name}': {paths}")
         # Try to find a shared library
-        # Paths could contain a shared lib (.so) or a static lib (.a) in any order
+        # Paths could contain: shared lib (.so), static lib (.a), or libtools text file (.la)
         shared_lib_paths = [path for path in paths if path.endswith('.so')]
         if not shared_lib_paths:
             return None
         shared_lib = shared_lib_paths[0]
         return shared_lib
 
-    def __repr__(self):
+    def __repr__(self) -> Text:
         return (
             'LdPreload('
-            f'lib_name={self.__lib_name}, '
+            f'lib_name={self._lib_name}, '
             f'lib found={self.lib_found()}, '
-            f'lib_path={self.__lib_path})'
+            f'lib_path={self._lib_path})'
         )

@@ -1,6 +1,6 @@
 # `ros2_tracing`
 
-Design document for the general ROS 2 instrumentation, tracing, and analysis effort, which includes [`ros2_tracing`](https://gitlab.com/ros-tracing/ros2_tracing), a collection of flexible tracing tools and multipurpose instrumentation for ROS 2.
+Design document for the general ROS 2 instrumentation, tracing, and analysis effort, which includes [`ros2_tracing`](https://github.com/ros2/ros2_tracing), a collection of flexible tracing tools and multipurpose instrumentation for ROS 2.
 
 **Table of contents**
 1. [Introduction](#introduction)
@@ -16,9 +16,12 @@ Design document for the general ROS 2 instrumentation, tracing, and analysis eff
         1. [Node/component creation](#nodecomponent-creation)
         1. [Publisher creation](#publisher-creation)
         1. [Subscription creation](#subscription-creation)
+        1. [IntraProcessBuffer creation](#intraprocessbuffer-creation)
         1. [Executors](#executors)
         1. [Subscription callbacks](#subscription-callbacks)
+        1. [Intra-process callback](#intra-process-callback)
         1. [Message publishing](#message-publishing)
+        1. [Intra-process message publishing](#intra-process-message-publishing)
         1. [Service creation](#service-creation)
         1. [Service callbacks](#service-callbacks)
         1. [Client creation](#client-creation)
@@ -116,6 +119,7 @@ The following table summarizes the instrumentation and links to the correspondin
 | `rclcpp` | `rclcpp_subscription_init`           | [*Subscription creation*](#subscription-creation) |
 |          | `rclcpp_subscription_callback_added` | [*Subscription creation*](#subscription-creation) |
 |          | `rclcpp_publish`                     | [*Message publishing*](#message-publishing) |
+|          | `rclcpp_intra_publish`               | [*Intra-process message publishing*](#intra-process-message-publishing) |
 |          | `rclcpp_take`                        | [*Subscription callbacks*](#subscription-callbacks) |
 |          | `rclcpp_service_callback_added`      | [*Service creation*](#service-creation) |
 |          | `rclcpp_timer_callback_added`        | [*Timer creation*](#timer-creation) |
@@ -123,6 +127,12 @@ The following table summarizes the instrumentation and links to the correspondin
 |          | `rclcpp_callback_register`           | [*Subscription creation*](#subscription-creation), [*Service creation*](#service-creation), [*Timer creation*](#timer-creation) |
 |          | `callback_start`                     | [*Subscription callbacks*](#subscription-callbacks), [*Service callbacks*](#service-callbacks), [*Client request/response*](#client-requestresponse), [*Timer callbacks*](#timer-callbacks) |
 |          | `callback_end`                       | [*Subscription callbacks*](#subscription-callbacks), [*Service callbacks*](#service-callbacks), [*Client request/response*](#client-requestresponse), [*Timer callbacks*](#timer-callbacks) |
+|          | `rclcpp_construct_ring_buffer`       | [*IntraProcessBuffer creation*](#intraprocessbuffer-creation) |
+|          | `rclcpp_buffer_to_ipb`               | [*IntraProcessBuffer creation*](#intraprocessbuffer-creation) |
+|          | `rclcpp_ipb_to_subscription`         | [*IntraProcessBuffer creation*](#intraprocessbuffer-creation) |
+|          | `rclcpp_ring_buffer_enqueue`         | [*Intra-process message publishing*](#intra-process-message-publishing) |
+|          | `rclcpp_ring_buffer_dequeue`         | [*Intra-process callback*](#intra-process-callback) |
+|          | `rclcpp_ring_buffer_clear`           | [*IntraProcessBuffer creation*](#intraprocessbuffer-creation) |
 |          | `rclcpp_executor_get_next_ready`     | [*Executors*](#executors) |
 |          | `rclcpp_executor_wait_for_work`      | [*Executors*](#executors) |
 |          | `rclcpp_executor_execute`            | [*Executors*](#executors), [*Timer callbacks*](#timer-callbacks), [*Subscription callbacks*](#subscription-callbacks) |
@@ -141,6 +151,11 @@ The following table summarizes the instrumentation and links to the correspondin
 |          | `rmw_subscription_init`              | [*Subscription creation*](#subscription-creation) |
 |          | `rmw_publish`                        | [*Message publishing*](#message-publishing) |
 |          | `rmw_take`                           | [*Subscription callbacks*](#subscription-callbacks) |
+|          | `rmw_client_init`                    | [*Client creation*](#client-creation) |
+|          | `rmw_take_request`                   | [*Service callbacks*](#service-callbacks) |
+|          | `rmw_send_response`                  | [*Service callbacks*](#service-callbacks) |
+|          | `rmw_send_request`                   | [*Client request/response*](#client-requestresponse) |
+|          | `rmw_take_response`                  | [*Client request/response*](#client-requestresponse) |
 
 ### General guidelines
 
@@ -293,6 +308,7 @@ It creates an `rmw_subscription_t` handle by calling `rmw_create_subscription()`
 `rclcpp::Subscription` creates an `rclcpp::AnySubscriptionCallback` object and associates it with itself.
 
 If intra-process is enabled, `rclcpp::Subscription` also creates a `rclcpp::SubscriptionIntraProcess` object, which has its own `rclcpp::AnySubscriptionCallback` object.
+See the [IntraProcessBuffer creation section](#intraprocessbuffer-creation).
 
 **Important information**:
 * Link between `rcl_subscription_t` and `rmw_subscription_t` handles and `rclcpp::Subscription` object
@@ -337,6 +353,42 @@ sequenceDiagram
     rclcpp-->>tracetools: TP(rclcpp_callback_register, rclcpp::AnySubscriptionCallback *, symbol)
 ```
 
+#### IntraProcessBuffer creation
+
+The initialization process for the buffer used in intra-process communication is performed as part of the [initialization process for the subscription](#subscription-creation).
+First, the `rclcpp::SubscriptionIntraProcess` that is responsible for managing intra-process communication is created.
+It then creates an instance of `rclcpp::experimental::SubscriptionIntraProcessBuffer` using the `rclcpp::experimental::create_intra_process_buffer()` function.
+This function creates a `rclcpp::experimental::buffers::TypedIntraProcessBuffer` object with a `rclcpp::experimental::buffers::RingBufferImplementation`.
+The initialization of intra-process communication is completed by registering the settings related to the intra-process communication generated above using `rclcpp::SubscriptionBase::setup_intra_process()`.
+
+```mermaid
+sequenceDiagram
+    participant Subscription
+    participant SubscriptionIntraProcess
+    participant SubscriptionIntraProcessBuffer
+    participant RingBufferImplementation
+    participant TypedIntraProcessBuffer
+    participant IntraProcessManager
+    participant tracetools
+
+    Note over Subscription: construct subscription
+    Subscription ->> SubscriptionIntraProcess: construct
+    SubscriptionIntraProcess ->> SubscriptionIntraProcessBuffer: construct
+    Note over SubscriptionIntraProcessBuffer: rclcpp::exmerimental::create_intra_process_buffer()
+    SubscriptionIntraProcessBuffer ->> RingBufferImplementation: construct
+    RingBufferImplementation -->> tracetools: TP(rclcpp_construct_ring_buffer, buffer *, capacity)
+    SubscriptionIntraProcessBuffer ->> TypedIntraProcessBuffer: construct
+    TypedIntraProcessBuffer -->> tracetools: TP(rclcpp_buffer_to_ipb, buffer *, ipb *)
+    SubscriptionIntraProcessBuffer -->> tracetools: TP(rclcpp_ipb_to_subscription, ipb *, subscription *)
+    SubscriptionIntraProcess --> tracetools: TP(rclcpp_subscription_callback_added, rclcpp::SubscriptionIntraProcess *, rclcpp::Waitable *)
+    Subscription ->> IntraProcessManager: construct
+    Subscription ->> IntraProcessManager: add_subscription(subscription_intra_process)
+    Note over Subscription: setup_intra_process(intra_process_subscription_id, ipm)
+    Subscription -->> tracetools: TP(rclcpp_subscription_init, rcl_subscription_t *, rclcpp::SubscriptionIntraProcess *)
+    Subscription --> tracetools: TP(rclcpp_subscription_init, rcl_subscription_t *, rclcpp::Subscription *)
+    Subscription --> tracetools: TP(rclcpp_subscription_callback_added, rclcpp::Subscription *, rclcpp::AnySubscriptionCallback *)
+```
+
 #### Executors
 
 An `rclcpp::Executor` object is created for a given process.
@@ -347,7 +399,7 @@ Nodes are instanciated, usually as a `shared_ptr` through `std::make_shared<Node
 After all the nodes have been added, `rclcpp::Executor::spin()` is called (there are other spinning varations, but this is the main one).
 `rclcpp::executors::SingleThreadedExecutor::spin()` simply loops forever until the process' context isn't valid anymore.
 It fetches the next `rclcpp::AnyExecutable` (e.g., subscription, timer, service, client), possibly waiting a bit, and calls `rclcpp::Executor::execute_any_executable()` with it.
-This then calls the relevant `execute*()` method (e.g., [`execute_timer()`](#timer-callbacks), [`execute_subscription()`](#subscription-callbacks), `execute_service()`, `execute_client()`).
+This then calls the relevant `execute*()` method (e.g., [`execute_timer()`](#timer-callbacks), [`execute_subscription()`](#subscription-callbacks), `execute_service()`, `execute_client()`, `Waitable::execute()`).
 
 **Important information**:
 * Timestamps of executor phases
@@ -391,6 +443,8 @@ For simple messages without loaning, it simply gets deallocated.
 * Link to handle(s) of subscription being executed
 * Message being taken
 * Source timestamp of message being taken
+    * To link message being taken to the same message being published
+    * Note: there could be collisions if multiple publishers publish a message on the same topic at the exact same time (depending on clock resolution), but it's unlikely
 * Link to callback object being dispatched, with start/end timestamps
 * Whether the callback dispatching is for intra-process or not
 
@@ -426,20 +480,50 @@ sequenceDiagram
     Executor->>Subscription: return_message(msg)
 ```
 
+#### Intra-process callback
+
+Intra-process subscriptions are handled in the `rclcpp` layer.
+Callback functions are wrapped by an `rclcpp::Waitable` object (i.e., the `rclcpp::SubscriptionIntraProcess` object), which is registered when creating the `rclcpp::Subscription` object.
+
+In `rclcpp::Executor::get_next_ready_executable_from_map()`, the `rclcpp::Executor` checks for new intra-process messages.
+If there is a new message, it calls `rclcpp::SubscriptionIntraProcess::take_data()`, which calls `rclcpp::IntraProcessBuffer::consume_*()` (e.g., `consume_share()`, `consume_unique()`), which in turn calls `rclcpp::BufferImplementationBase::dequeue()` to get the message from the intra-process buffer.
+Then, in `rclcpp::Executor::get_next_ready_executable(any_exec)`, the executor calls `rclcpp::Waitable::execute()` with the message, which is actually `rclcpp::SubscriptionIntraProcess::execute()`.
+This checks message is `shared_ptr` or `unique_ptr`, and then it calls `rclcpp::SubscriptionIntraProcess::dispatch_intra_process()`, which then calls the callback `std::function`.
+Finally, the callback group (`any_exec.callback_group`) is reset.
+
+```mermaid
+sequenceDiagram
+
+    participant Executor
+    participant SubscriptionIntraProcess
+    participant IntraProcessBuffer
+    participant RingBufferImplementation
+    participant AnySubscriptionCallback
+    participant tracetools
+
+    Note over Executor: get_next_ready_executable(any_exec)
+    Executor ->> SubscriptionIntraProcess: take_data()
+    SubscriptionIntraProcess ->> IntraProcessBuffer: consume_*()
+    IntraProcessBuffer ->> RingBufferImplementation: dequeue()
+    RingBufferImplementation -->> tracetools: TP(rclcpp_ring_buffer_dequeue, buffer *, index)
+    Note over Executor: execute_any_executable(any_exec)
+    Executor ->> SubscriptionIntraProcess: execute(any_exec.data)
+    SubscriptionIntraProcess ->> AnySubscriptionCallback: dispatch_intra_process()
+    AnySubscriptionCallback -->> tracetools: TP(callback_start, callback, is_intra_process)
+    Note over AnySubscriptionCallback: std::function(...)
+    AnySubscriptionCallback -->> tracetools: TP(callback_end, callback)
+    Note over Executor: reset any_exec.callback_group
+```
+
 #### Message publishing
 
 To publish a message, a message object is first allocated (or loaned) and then populated at the user level (e.g., in a node).
 The message is then published through one of the `rclcpp::Publisher::publish()` methods.
 For normal inter-process publishing, this then passes that on to `rcl`, which itself passes it to `rmw`, which passes it on to the underlying middleware.
 
-TODO add inter- vs. intra-process execution flow
-TODO talk about IntraProcessManager stuff?
-
 **Important information**:
 * Link to publisher handle(s)
-* Message being published, with timestamp
-* TODO
-    * Source timestamp of message being published
+* Message being published, with its timestamp
 
 ```mermaid
 sequenceDiagram
@@ -457,9 +541,38 @@ sequenceDiagram
     Publisher->>rcl: rcl_publish(rcl_publisher_t *, msg *)
     rcl-->>tracetools: TP(rcl_publish, rcl_publisher_t *, msg *)
     rcl->>rmw: rmw_publish(rmw_publisher_t *, msg *)
-    rmw-->>tracetools: TP(rmw_publish, msg *)
+    rmw-->>tracetools: TP(rmw_publish, rmw_publisher_t *, msg *, timestamp)
     Note over rmw: calls middleware
     Note over node: keeps, returns, or destroys msg
+```
+
+#### Intra-process message publishing
+
+To publishing a message in intra-process, a message object is first allocated (or loaned) and then populated at the user level (e.g., in a node).
+The message is then published through one of the `rclcpp::Publisher::publish()` methods.
+
+For normal intra-process publishing, this then passes that on to `rclcpp::IntraProcessManager`, which itself passes it to `rclcpp::TypedIntraProcessBuffer`, which passes it on to the `rclcpp::RingBufferImplementation`.
+In `rclcpp::RingBufferImplementation`, published data is stored by its `enqueue()` method.
+
+```mermaid
+sequenceDiagram
+    participant node
+    participant Publisher
+    participant IntraProcessManager
+    participant SubscriptionIntraProcess
+    participant TypedIntraProcessBuffer
+    participant RingBufferImplementation
+    participant tracetools
+
+    Note over node: spin
+    Note over node: creates a msg
+    node ->> Publisher: publish(message)
+    Publisher -->> tracetools : TP(rclcpp_intra_publish, publisher_handle, message *)
+    Publisher ->> IntraProcessManager: do_intra_process_publish()/do_intra_process_publish_and_return_shared()
+    IntraProcessManager ->> SubscriptionIntraProcess: provide_intra_process_data()
+    SubscriptionIntraProcess ->> TypedIntraProcessBuffer: add_shared(message *)/add_unique(message *)
+    TypedIntraProcessBuffer ->> RingBufferImplementation: enqueue()
+    RingBufferImplementation -->> tracetools : TP(rclcpp_ring_buffer_enqueue, buffer *, index, size, overwritten)
 ```
 
 #### Service creation
@@ -469,7 +582,7 @@ The node calls `rclcpp::create_service()` which ends up creating a `rclcpp::Serv
 In its constructor, it allocates a `rcl_service_t` handle, and then calls `rcl_service_init()`.
 This processes the handle and validates the service name.
 It calls `rmw_create_service()` to get the corresponding `rmw_service_t` handle.
-`rclcpp::Service` creates an `rclcpp::AnySubscriptionCallback` object and associates it with itself.
+`rclcpp::Service` creates an `rclcpp::AnyServiceCallback` object and associates it with itself.
 
 **Important information**:
 * Link between `rcl_service_t` and `rmw_service_t` handles
@@ -510,16 +623,17 @@ It then calls `rclcpp::Service::take_type_erased_request()`, which calls `rcl_ta
 
 If those are successful and a new request is taken, then the `rclcpp::Executor` calls `rclcpp::Service::handle_request()` with the request.
 This casts the request to its actual type, allocates a response object, and calls `rclcpp::AnyServiceCallback::dispatch()`, which calls the actual `std::function` with the right signature.
+Depending on the service callback signature, a response object could be provided to the callback to be populated, a reference to the service could be used to send a response from inside the callback, or a response could be sent later.
 
 If there is a service response for the request, `rclcpp::Service::send_response()` is called, which calls `rcl_send_response()` & `rmw_send_response()`.
 
 **Important information**:
+* Link to handle(s) of service being executed
 * Request being taken
 * Link to callback object being dispatched, with start/end timestamps
-* TODO
-    * Link to handle(s) of service being executed
-    * Source timestamp of request being taken
-    * Link between request and response
+* Sequence number and client GID of request being taken
+* Sequence number and client GID of request that a response is for
+* Source timestamp of response being sent
 
 ```mermaid
 sequenceDiagram
@@ -538,17 +652,19 @@ sequenceDiagram
     Executor->>Service: take_type_erased_request(out request *, out request_id): bool
     Service->>rcl: rcl_take_request(rcl_service *, out request_header *, out request *)
     rcl->>rmw: rmw_take_request(rmw_service_t *, out request_header *, out request *, out taken)
+    rmw-->>tracetools: TP(rmw_take_request, rmw_service_t *, request *, client_gid, sequence_number, taken)
     opt taken
         Executor->>Service: handle_request(request_header *, request *)
         Note over Service: casts request to its actual type
         Note over Service: allocates a response object
-        Service->>AnyServiceCallback: dispatch(request_header, typed_request): response
+        Service->>AnyServiceCallback: dispatch(service, request_header, request): response
         AnyServiceCallback-->>tracetools: TP(callback_start, rclcpp::AnyServiceCallback *)
         Note over AnyServiceCallback: std::function(...)
         AnyServiceCallback-->>tracetools: TP(callback_end, rclcpp::AnyServiceCallback *)
         opt response
             Service->>rcl: rcl_send_response(rcl_service_t *, request_header *, response *)
             rcl->>rmw: rmw_send_response(rmw_service_t *, request_header *, response *)
+            rmw-->>tracetools: TP(rmw_send_response, rmw_service_t *, response *, client_gid, sequence_number, timestamp)
         end
     end
 ```
@@ -560,10 +676,12 @@ The node calls `rclcpp::create_client()` which ends up creating a `rclcpp::Clien
 In its constructor, it allocates a `rcl_client_t` handle, and then calls `rcl_client_init()`.
 This validates and processes the handle.
 It also calls `rmw_create_client()` which creates the `rmw_client_t` handle.
+`rmw` creates or associates the `rmw_client_t` handle with *a* GID, since client `rmw` implementations use multiple DDS objects that have GIDs (e.g., request publisher, response subscription).
 
 **Important information**:
 * Link between `rcl_client_t` and `rmw_client_t` handles
 * Link to corresponding node handle
+* Link to corresponding client GID
 * Service name
 
 ```mermaid
@@ -583,6 +701,7 @@ sequenceDiagram
     Note over rcl: validates and processes rcl_client_t handle
     rcl->>rmw: rmw_create_client(rmw_node_t *, service_name, qos_options): rmw_client_t
     Note over rmw: creates rmw_client_t handle
+    rmw-->>tracetools: TP(rmw_client_init, rmw_client_t *, gid)
     rcl-->>tracetools: TP(rcl_client_init, rcl_client_t *, rcl_node_t *, rmw_client_t *, service_name)
 ```
 
@@ -602,13 +721,12 @@ This waits until the future object is ready, or until timeout, and returns.
 If this last call was successful, then the node can get the result (i.e., response) and do something with it.
 
 **Important information**:
-* TODO
-    * Link to handle(s) of client
-    * Request being sent, with timestamp
-    * Link to callback object being used, with start/end timestamps
-    * Response being taken
-    * Source timestamp of response being taken
-    * Link to response
+* Link to handle(s) of client
+* Sequence number of request being sent
+* Sequence number of request that a response being taken is for
+* Source timestamp of response being taken
+    * To link response being taken to the same response being sent
+    * Note: there could be collisions if multiple services replied to the same request at the exact same time (depending on clock resolution), but it's unlikely
 
 ```mermaid
 sequenceDiagram
@@ -624,11 +742,11 @@ sequenceDiagram
 
     Note over node: creates request
     node->>Client: async_send_request(request[, callback]): result_future
-    Client->>rcl: rcl_send_request(rcl_client_t, request, out sequence_number): int64_t
+    Client->>rcl: rcl_send_request(rcl_client_t, request *, out sequence_number): int64_t
     Note over rcl: assigns sequence_number
     %% rcl-->>tracetools: TP(rcl_send_request, rcl_client_t *, sequence_number)
-    rcl->>rmw: rmw_send_request(rmw_client_t, request, sequence_number)
-    %% rmw-->>tracetools: TP(rmw_send_request, sequence_number)
+    rcl->>rmw: rmw_send_request(rmw_client_t, request *, sequence_number)
+    rmw-->>tracetools: TP(rmw_send_request, rmw_client_t *, request *, sequence_number)
     Note over Client: puts sequence_number in a 'pending requests' map with promise+callback+future
 
     alt without callback
@@ -647,7 +765,7 @@ sequenceDiagram
         Executor->>Client: take_type_erased_response(response *, header *): bool
         Client->>rcl: rcl_take_response*(rcl_client_t *, out request_header *, out response *)
         rcl->>rmw: rmw_take_response(rmw_client_t *, out request_header *, out response *, out taken)
-        %% rmw-->>tracetools: TP(rmw_take_response)
+        rmw-->>tracetools: TP(rmw_take_response, rmw_client_t *, response *, sequence_number, source_timestamp, taken)
         %% rcl-->>tracetools: TP(rcl_take_response)
         opt taken
             Executor->>Client: handle_response(request_header *, response *)
@@ -817,9 +935,9 @@ The process for adding instrumentation to the ROS 2 core and supporting it in `r
 
 Additional considerations:
 
-* The merge request with the necessary changes in `ros2_tracing` is usually merged first, then a new release of the `ros2_tracing` is created before merging the pull request(s) for the corresponding downstream package(s) in the ROS 2 core
-* For the `ros2_tracing` MR and until the PRs for the ROS 2 core package(s) are merged, CI here will need to use the modified version(s) of the core package(s) using the [`instrumented.repos`](../instrumented.repos) file so that end-to-end tests pass (`test_tracetools`)
-* Add support for the new instrumentation in [`tracetools_analysis`](https://gitlab.com/ros-tracing/tracetools_analysis)
+* The pull request with the necessary changes in `ros2_tracing` is usually merged first, then a new release of the `ros2_tracing` is created before merging the pull request(s) for the corresponding downstream package(s) in the ROS 2 core
+* For the `ros2_tracing` PR and until the PRs for the ROS 2 core package(s) are merged, local GitHub CI may need to use the modified version(s) of the core package(s) using a `.repos` file so that end-to-end tests pass (see `test_tracetools`)
+* Add support for the new instrumentation in [`tracetools_analysis`](https://github.com/ros-tracing/tracetools_analysis)
     * Along with the end-to-end tests, this is usually a good way to demonstrate how the tracing data resulting from the new instrumentation is used and how useful it is
 
 ## Architecture
@@ -944,7 +1062,7 @@ tracetools_analysis <-- ros2trace_analysis
 ## Analysis
 
 A number of existing tools or libraries could be leveraged to perform analysis on the trace data collected using `ros2_tracing` and LTTng.
-This section presents a minimal analysis library architecture as a working proof-of-concept: [`tracetools_analysis`](https://gitlab.com/ros-tracing/tracetools_analysis).
+This section presents a minimal analysis library architecture as a working proof-of-concept: [`tracetools_analysis`](https://github.com/ros-tracing/tracetools_analysis).
 
 ### Analysis design
 
