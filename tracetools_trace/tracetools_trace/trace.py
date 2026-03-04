@@ -14,6 +14,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+# flake8: noqa: A005
+
 """Entrypoint/script to setup and start an LTTng tracing session."""
 
 import argparse
@@ -217,7 +219,7 @@ def fini(
             session_name=session_name + (path.RUNTIME_SESSION_SUFFIX if dual_session else '')
         )
 
-    signals.execute_and_handle_sigint(_run, _fini)
+    signals.execute_and_handle_signals(_run, _fini)
 
 
 def cleanup(
