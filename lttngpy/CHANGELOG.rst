@@ -2,6 +2,11 @@
 Changelog for package lttngpy
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+8.10.0 (2026-03-04)
+-------------------
+* Use <lttng/lttng.h> in lttngpy and clean up includes (`#222 <https://github.com/ros2/ros2_tracing/issues/222>`_)
+* Contributors: RHolland
+
 8.9.0 (2025-10-08)
 ------------------
 * Allow creating snapshot sessions (`#195 <https://github.com/ros2/ros2_tracing/issues/195>`_)
