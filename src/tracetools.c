@@ -484,6 +484,32 @@ DEFINE_TRACEPOINT(
   TRACEPOINT_ARGS(
     buffer))
 
+DEFINE_TRACEPOINT(
+  message_link_periodic_async,
+  TRACEPOINT_PARAMS(
+    const void ** subs,
+    const size_t num_subs,
+    const void ** pubs,
+    const size_t num_pubs),
+  TRACEPOINT_ARGS(
+    subs,
+    num_subs,
+    pubs,
+    num_pubs))
+
+DEFINE_TRACEPOINT(
+  message_link_partial_sync,
+  TRACEPOINT_PARAMS(
+    const void ** subs,
+    const size_t num_subs,
+    const void ** pubs,
+    const size_t num_pubs),
+  TRACEPOINT_ARGS(
+    subs,
+    num_subs,
+    pubs,
+    num_pubs))
+
 #ifndef TRACETOOLS_TRACEPOINTS_EXCLUDED
 static void * tracetools_provider_handle = NULL;
 
@@ -503,7 +529,7 @@ static bool get_boolean_env(const char *name)
   return value != NULL && strcmp(value, "1") == 0;
 }
 
-void __attribute__((constructor)) tracetools_init()
+void __attribute__((constructor)) tracetools_init(void)
 {
   const bool verbose = get_boolean_env("TRACETOOLS_VERBOSE");
   if (get_boolean_env("TRACETOOLS_RUNTIME_DISABLE")) {
@@ -521,7 +547,7 @@ void __attribute__((constructor)) tracetools_init()
   }
 }
 
-void __attribute__((destructor)) tracetools_fini()
+void __attribute__((destructor)) tracetools_fini(void)
 {
   if (tracetools_provider_handle != NULL) {
     if (dlclose(tracetools_provider_handle) != 0) {
