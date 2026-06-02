@@ -3,7 +3,7 @@ on:
   pull_request:
   push:
     branches:
-      - rolling
+      - jazzy
   schedule:
     - cron: "0 5 * * *"
 defaults:
@@ -13,25 +13,25 @@ jobs:
   binary:
     runs-on: ubuntu-latest
     container:
-      image: ubuntu:26.04
+      image: ubuntu:24.04
     continue-on-error: true
     strategy:
       fail-fast: false
       matrix:
         distro:
-          - rolling
+          - jazzy
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v3
       with:
         path: ws/src/ros2/ros2_tracing
-    - uses: ros-tooling/setup-ros@main
+    - uses: ros-tooling/setup-ros@master
       with:
         required-ros-distributions: ${{ matrix.distro }}
         use-ros2-testing: true
     - name: Install other dependencies
       run: |
-        sudo apt update
-        sudo apt install -y -q ros-${{ matrix.distro }}-*tracetools* babeltrace
+        sudo apt-get update
+        sudo apt-get install -y -q ros-${{ matrix.distro }}-*tracetools* babeltrace
     - name: Make sure that tracing instrumentation is available
       run: |
         source /opt/ros/${{ matrix.distro }}/setup.bash
@@ -58,26 +58,25 @@ jobs:
   source:
     runs-on: ubuntu-latest
     container:
-      image: ubuntu:26.04
+      image: ubuntu:24.04
     continue-on-error: true
     strategy:
       fail-fast: false
       matrix:
         distro:
-          - rolling
+          - jazzy
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v3
       with:
         path: ws/src/ros2/ros2_tracing
-    - uses: ros-tooling/setup-ros@main
+    - uses: ros-tooling/setup-ros@master
     - name: Build
       run: |
         cd $GITHUB_WORKSPACE/ws
         vcs import src/ --input https://raw.githubusercontent.com/ros2/ros2/${{ matrix.distro }}/ros2.repos --skip-existing
         vcs log -l1 src/
         rosdep update
-        rosdep install -r --from-paths src --ignore-src -y --rosdistro ${{ matrix.distro }} --skip-keys "fastcdr rti-connext-dds-7.7.0 urdfdom_headers"
-        sudo apt install -y -q babeltrace
+        rosdep install -r --from-paths src --ignore-src -y --rosdistro ${{ matrix.distro }} --skip-keys "fastcdr rti-connext-dds-6.0.1 urdfdom_headers"
         colcon build --packages-up-to tracetools ros2run ros2launch demo_nodes_cpp tracetools_launch test_tracetools
     - name: Make sure that tracing instrumentation is available
       run: |
@@ -101,7 +100,7 @@ jobs:
         (! ros2 run tracetools status)
     - name: Remove LTTng-UST
       run: |
-        sudo apt purge -y liblttng-ust-dev
+        sudo apt-get purge -y liblttng-ust-dev
     - name: Make sure building tracetools without LTTng fails
       run: |
         cd $GITHUB_WORKSPACE/ws

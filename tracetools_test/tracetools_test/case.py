@@ -63,10 +63,10 @@ class TraceTestCase(unittest.TestCase):
     def __init__(
         self,
         *args,
-        session_name_prefix: str = '',
-        events_ros: Optional[List[str]] = None,
-        package: str = '',
-        nodes: Optional[List[str]] = None,
+        session_name_prefix: str,
+        events_ros: List[str],
+        package: str,
+        nodes: List[str],
         base_path: Optional[str] = None,
         events_kernel: List[str] = [],
         additional_actions: Optional[List[Action]] = None,
@@ -79,14 +79,14 @@ class TraceTestCase(unittest.TestCase):
         rmw_implementation = os.environ.get('RMW_IMPLEMENTATION', None)
         self._session_name_prefix = \
             session_name_prefix + ('__' + rmw_implementation if rmw_implementation else '')
-        self._events_ros = (events_ros or []) + [TRACE_TEST_ID_TP_NAME]
+        self._events_ros = events_ros + [TRACE_TEST_ID_TP_NAME]
         self._events_kernel = events_kernel
         self._package = package
-        self._nodes = nodes or []
+        self._nodes = nodes
         self._additional_actions = additional_actions or []
         self._namespace = namespace
 
-    def setUp(self) -> None:
+    def setUp(self):
         # Get timestamp before trace (ns)
         timestamp_before = int(time.time() * 1000000000.0)
 
@@ -133,7 +133,7 @@ class TraceTestCase(unittest.TestCase):
         # Check that the launched nodes are present as processes
         self.assertProcessNamesExist(self._nodes)
 
-    def tearDown(self) -> None:
+    def tearDown(self):
         if not os.environ.get(self.ENV_VAR_DEBUG, None):
             cleanup_trace(self._full_path)
 

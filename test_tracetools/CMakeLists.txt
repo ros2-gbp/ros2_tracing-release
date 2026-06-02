@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.20)
+cmake_minimum_required(VERSION 3.5)
 project(test_tracetools)
 
 # Default to C++17
@@ -13,7 +13,7 @@ endif()
 
 find_package(ament_cmake REQUIRED)
 
-if(WIN32 OR APPLE OR ANDROID OR BSD)
+if(WIN32 OR APPLE OR ANDROID)
   set(DISABLED_DEFAULT ON)
 else()
   set(DISABLED_DEFAULT OFF)
@@ -41,7 +41,7 @@ if(BUILD_TESTING)
   find_package(std_srvs REQUIRED)
 
   # The utility lib is needed even if TRACETOOLS_DISABLED; it's just empty
-  add_library(${PROJECT_NAME}_mark_process STATIC src/mark_process.cpp)
+  add_library(${PROJECT_NAME}_mark_process src/mark_process.cpp)
   if(NOT TRACETOOLS_DISABLED)
     find_package(PkgConfig REQUIRED)
     pkg_check_modules(LTTNG REQUIRED lttng-ust)
@@ -73,7 +73,7 @@ if(BUILD_TESTING)
   target_link_libraries(test_publisher PRIVATE
     ${PROJECT_NAME}_mark_process
     rclcpp::rclcpp
-    std_msgs::std_msgs
+    ${std_msgs_TARGETS}
   )
 
   add_executable(test_intra
@@ -82,7 +82,7 @@ if(BUILD_TESTING)
   target_link_libraries(test_intra PRIVATE
     ${PROJECT_NAME}_mark_process
     rclcpp::rclcpp
-    std_msgs::std_msgs
+    ${std_msgs_TARGETS}
   )
 
   add_executable(test_lifecycle_node
@@ -99,28 +99,8 @@ if(BUILD_TESTING)
   )
   target_link_libraries(test_lifecycle_client PRIVATE
     ${PROJECT_NAME}_mark_process
-    lifecycle_msgs::lifecycle_msgs
+    ${lifecycle_msgs_TARGETS}
     rclcpp::rclcpp
-  )
-
-  add_executable(test_message_link_partial_sync
-    src/test_message_link_partial_sync.cpp
-  )
-  target_link_libraries(test_message_link_partial_sync PRIVATE
-    ${PROJECT_NAME}_mark_process
-    rclcpp::rclcpp
-    tracetools::tracetools
-    std_msgs::std_msgs
-  )
-
-  add_executable(test_message_link_periodic_async
-    src/test_message_link_periodic_async.cpp
-  )
-  target_link_libraries(test_message_link_periodic_async PRIVATE
-    ${PROJECT_NAME}_mark_process
-    rclcpp::rclcpp
-    tracetools::tracetools
-    std_msgs::std_msgs
   )
 
   add_executable(test_ping
@@ -129,7 +109,7 @@ if(BUILD_TESTING)
   target_link_libraries(test_ping PRIVATE
     ${PROJECT_NAME}_mark_process
     rclcpp::rclcpp
-    std_msgs::std_msgs
+    ${std_msgs_TARGETS}
   )
 
   add_executable(test_pong
@@ -138,7 +118,7 @@ if(BUILD_TESTING)
   target_link_libraries(test_pong PRIVATE
     ${PROJECT_NAME}_mark_process
     rclcpp::rclcpp
-    std_msgs::std_msgs
+    ${std_msgs_TARGETS}
   )
 
   add_executable(test_generic_ping
@@ -147,7 +127,7 @@ if(BUILD_TESTING)
   target_link_libraries(test_generic_ping PRIVATE
     ${PROJECT_NAME}_mark_process
     rclcpp::rclcpp
-    std_msgs::std_msgs
+    ${std_msgs_TARGETS}
   )
 
   add_executable(test_generic_pong
@@ -156,7 +136,7 @@ if(BUILD_TESTING)
   target_link_libraries(test_generic_pong PRIVATE
     ${PROJECT_NAME}_mark_process
     rclcpp::rclcpp
-    std_msgs::std_msgs
+    ${std_msgs_TARGETS}
   )
 
   add_executable(test_timer
@@ -173,7 +153,7 @@ if(BUILD_TESTING)
   target_link_libraries(test_service_ping PRIVATE
     ${PROJECT_NAME}_mark_process
     rclcpp::rclcpp
-    std_srvs::std_srvs
+    ${std_srvs_TARGETS}
   )
 
   add_executable(test_service_pong
@@ -182,15 +162,13 @@ if(BUILD_TESTING)
   target_link_libraries(test_service_pong PRIVATE
     ${PROJECT_NAME}_mark_process
     rclcpp::rclcpp
-    std_srvs::std_srvs
+    ${std_srvs_TARGETS}
   )
 
   install(TARGETS
     test_intra
     test_lifecycle_node
     test_lifecycle_client
-    test_message_link_partial_sync
-    test_message_link_periodic_async
     test_ping
     test_pong
     test_generic_ping
@@ -219,7 +197,7 @@ if(BUILD_TESTING)
 
   # Only run tracing tests if instrumentation and tracepoints are included
   if(NOT TRACETOOLS_TRACEPOINTS_EXCLUDED)
-    find_package(ament_cmake_ros REQUIRED)
+    find_package(ament_cmake_pytest REQUIRED)
     find_package(rmw_implementation_cmake REQUIRED)
 
     # Tests to run with the default rmw implementation, which should not matter
@@ -229,14 +207,13 @@ if(BUILD_TESTING)
       test/test_intra.py
       test/test_intra_pub_sub.py
       test/test_lifecycle_node.py
-      test/test_message_link_partial_sync.py
-      test/test_message_link_periodic_async.py
       test/test_node.py
+      test/test_service.py
       test/test_timer.py
     )
     foreach(_test_path ${_test_tracetools_pytest_tests})
       get_filename_component(_test_name ${_test_path} NAME_WE)
-      ament_add_ros_isolated_pytest_test(${_test_name} ${_test_path}
+      ament_add_pytest_test(${_test_name} ${_test_path}
         APPEND_ENV PYTHONPATH=${CMAKE_CURRENT_BINARY_DIR}
         TIMEOUT 60
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
@@ -245,28 +222,23 @@ if(BUILD_TESTING)
 
     # Tests to run with all instrumented/supported rmw implementations
     set(_test_tracetools_pytest_tests_multi_rmw
-      test/test_client.py
       test/test_generic_pub_sub.py
       test/test_generic_subscription.py
       test/test_pub_sub.py
       test/test_publisher.py
-      test/test_service.py
-      test/test_service_req_resp.py
       test/test_subscription.py
     )
     set(_test_tracetools_rmw_implementations
       rmw_connextdds
       rmw_cyclonedds_cpp
       rmw_fastrtps_cpp
-      rmw_fastrtps_dynamic_cpp
-      rmw_zenoh_cpp
     )
     get_available_rmw_implementations(rmw_implementations)
     foreach(_test_path ${_test_tracetools_pytest_tests_multi_rmw})
       get_filename_component(_test_name ${_test_path} NAME_WE)
       foreach(rmw_implementation ${_test_tracetools_rmw_implementations})
         if(rmw_implementation IN_LIST rmw_implementations)
-          ament_add_ros_isolated_pytest_test(${_test_name}__${rmw_implementation} ${_test_path}
+          ament_add_pytest_test(${_test_name}__${rmw_implementation} ${_test_path}
             ENV RMW_IMPLEMENTATION=${rmw_implementation}
             APPEND_ENV PYTHONPATH=${CMAKE_CURRENT_BINARY_DIR}
             TIMEOUT 60

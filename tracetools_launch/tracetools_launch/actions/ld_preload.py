@@ -19,7 +19,6 @@ import platform
 import subprocess
 from typing import List
 from typing import Optional
-from typing import Text
 
 from launch import logging
 from launch.action import Action
@@ -46,7 +45,7 @@ class LdPreload(Action):
         """
         super().__init__(**kwargs)
         self._lib_name = lib_name
-        self._env_action: Optional[Action] = None
+        self._env_action = None
         # Try to find lib
         self._lib_path = self.get_shared_lib_path(self._lib_name)
         # And create action if found
@@ -66,24 +65,14 @@ class LdPreload(Action):
 
     @property
     def lib_path(self) -> Optional[str]:
-        """
-        Get the resolved shared lib path, if found.
-
-        :return: the full path to the shared lib if found, or `None` if not found
-        """
         return self._lib_path
 
     def lib_found(self) -> bool:
-        """
-        Check if the shared lib was found.
-
-        :return: `True` if the shared lib was found, or `False` if not found
-        """
         return self._env_action is not None
 
     def execute(self, context: LaunchContext) -> Optional[List[Action]]:
         if self.lib_found():
-            return [self._env_action]  # type: ignore[list-item]
+            return [self._env_action]
         return None
 
     @classmethod
@@ -124,7 +113,7 @@ class LdPreload(Action):
         shared_lib = shared_lib_paths[0]
         return shared_lib
 
-    def __repr__(self) -> Text:
+    def __repr__(self):
         return (
             'LdPreload('
             f'lib_name={self._lib_name}, '

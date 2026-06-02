@@ -2,70 +2,32 @@
 Changelog for package test_tracetools
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-9.0.0 (2026-05-05)
+8.2.6 (2026-06-02)
 ------------------
 
-8.10.2 (2026-04-30)
--------------------
-* fix: Fixed compiation on MSVC 2022 (`#243 <https://github.com/ros2/ros2_tracing/issues/243>`_)
-* Contributors: Janosch Machowinski
-
-8.10.1 (2026-03-24)
--------------------
-* Use new ROSIDL aggregate CMake target (`#238 <https://github.com/ros2/ros2_tracing/issues/238>`_)
-* Contributors: Emerson Knapp
-
-8.10.0 (2026-03-04)
--------------------
-* Support tracepoints for complex message flow annotation used by ROS 2 plugin of Eclipse Trace Compass (`#233 <https://github.com/ros2/ros2_tracing/issues/233>`_)
-* Update subscription callback signatures (`#217 <https://github.com/ros2/ros2_tracing/issues/217>`_)
-* Contributors: Raphael van Kempen, mini-1235
-
-8.9.0 (2025-10-08)
-------------------
-* Add runtime tracing opt-out mechanism (`#185 <https://github.com/ros2/ros2_tracing/issues/185>`_)
-* Contributors: Michel Hidalgo
-
-8.8.1 (2025-07-29)
+8.2.5 (2026-01-21)
 ------------------
 
-8.8.0 (2025-07-01)
-------------------
-* Update CMakeLists.txt (`#176 <https://github.com/ros2/ros2_tracing/issues/176>`_)
-* Contributors: mosfet80
-
-8.7.0 (2025-04-24)
+8.2.4 (2025-08-05)
 ------------------
 
-8.6.0 (2025-04-17)
+8.2.3 (2024-12-18)
 ------------------
-* Run test_tracetools tests against rmw_zenoh_cpp (`#140 <https://github.com/ros2/ros2_tracing/issues/140>`_)
-* Use ament_add_ros_isolated\_* in test_tracetools (`#159 <https://github.com/ros2/ros2_tracing/issues/159>`_)
-* Contributors: Christophe Bedard
 
-8.5.0 (2024-12-20)
+8.2.2 (2024-09-06)
 ------------------
-* Instrument client/service for end-to-end request/response tracking (`#145 <https://github.com/ros2/ros2_tracing/issues/145>`_)
-* Contributors: Christophe Bedard
+* Run relevant test_tracetools tests with all instrumented rmw impls (`#134 <https://github.com/ros2/ros2_tracing/issues/134>`_)
+* Make test_tracetools ping pubs/subs transient_local (`#125 <https://github.com/ros2/ros2_tracing/issues/125>`_) (`#135 <https://github.com/ros2/ros2_tracing/issues/135>`_)
+  This will make sure that the initial `/ping` message is received no
+  matter the launch order of the `*ping` and `*pong` executables.
+  Also, given this guarantee, cancel the timer after the initial `/ping`
+  message.
+  Finally, add some helpful debug logs.
+  (cherry picked from commit 00a4e99c461e005d093689e1bdbb6b6caa3f5960)
+  Co-authored-by: Christophe Bedard <christophe.bedard@apex.ai>
+* Contributors: Christophe Bedard, mergify[bot]
 
-8.4.1 (2024-11-25)
-------------------
-* Don't try to build on BSD (`#142 <https://github.com/ros2/ros2_tracing/issues/142>`_)
-  The 'BSD' variable was added in CMake 3.25. Note that variables which
-  are not defined will evaluate to 'False', so this shouldn't regress
-  platforms using CMake versions older than 3.25.
-* Refactor and split test_service into test\_{service,client} (`#144 <https://github.com/ros2/ros2_tracing/issues/144>`_)
-* Contributors: Christophe Bedard, Scott K Logan
-
-8.4.0 (2024-10-15)
-------------------
-* Change expected rmw GID array size to 16 bytes (`#138 <https://github.com/ros2/ros2_tracing/issues/138>`_)
-* Run test_tracetools tests against rmw_fastrtps_dynamic_cpp too (`#127 <https://github.com/ros2/ros2_tracing/issues/127>`_)
-* Make test_tracetools ping pubs/subs transient_local (`#125 <https://github.com/ros2/ros2_tracing/issues/125>`_)
-* Run relevant test_tracetools tests with all instrumented rmw impls (`#116 <https://github.com/ros2/ros2_tracing/issues/116>`_)
-* Contributors: Christophe Bedard
-
-8.3.0 (2024-04-26)
+8.2.1 (2024-06-27)
 ------------------
 
 8.2.0 (2024-04-16)
