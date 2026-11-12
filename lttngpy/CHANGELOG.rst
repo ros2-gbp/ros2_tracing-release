@@ -2,40 +2,35 @@
 Changelog for package lttngpy
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-8.2.7 (2026-11-12)
+8.6.1 (2026-11-12)
 ------------------
-* Use CMake instead of pybind11 to enable LTO for lttngpy (backport `#275 <https://github.com/ros2/ros2_tracing/issues/275>`_) (`#276 <https://github.com/ros2/ros2_tracing/issues/276>`_)
-* Contributors: mergify[bot]
+* [kilted] Use CMake instead of pybind11 to enable LTO for lttngpy (`#275 <https://github.com/ros2/ros2_tracing/issues/275>`_)
+* Use <lttng/lttng.h> in lttngpy and clean up includes (backport `#222 <https://github.com/ros2/ros2_tracing/issues/222>`_) (`#231 <https://github.com/ros2/ros2_tracing/issues/231>`_)
+* [Fix] compile fail (`#194 <https://github.com/ros2/ros2_tracing/issues/194>`_) (`#214 <https://github.com/ros2/ros2_tracing/issues/214>`_)
+* Contributors: Christophe Bedard, mergify[bot]
 
-8.2.6 (2026-06-02)
+8.6.0 (2025-04-17)
 ------------------
-* Use <lttng/lttng.h> in lttngpy and clean up includes (backport `#222 <https://github.com/ros2/ros2_tracing/issues/222>`_) (`#232 <https://github.com/ros2/ros2_tracing/issues/232>`_)
-  (cherry picked from commit 91ff6165773e1177a5fd41431d1b1dc274ac4ee1)
-  Co-authored-by: RHolland <17493785+reeceholland@users.noreply.github.com>
-  Co-authored-by: Christophe Bedard <bedard.christophe@gmail.com>
-* Contributors: mergify[bot]
+* Remove SHARED from pybind11_add_module (`#154 <https://github.com/ros2/ros2_tracing/issues/154>`_)
+* Contributors: Silvio Traversaro
 
-8.2.5 (2026-01-21)
-------------------
-* [Fix] compile fail (`#194 <https://github.com/ros2/ros2_tracing/issues/194>`_) (`#215 <https://github.com/ros2/ros2_tracing/issues/215>`_)
-  (cherry picked from commit e175cde407a2da7fab2a75890cdb9d0e626cc73b)
-  Co-authored-by: mosfet80 <10235105+mosfet80@users.noreply.github.com>
-* Contributors: mergify[bot]
-
-8.2.4 (2025-08-05)
+8.5.0 (2024-12-20)
 ------------------
 
-8.2.3 (2024-12-18)
+8.4.1 (2024-11-25)
 ------------------
-* Add missing dependency on pkg-config to lttngpy (`#130 <https://github.com/ros2/ros2_tracing/issues/130>`_) (`#136 <https://github.com/ros2/ros2_tracing/issues/136>`_)
-  (cherry picked from commit a866b9c701311bc8200a00c949b4a0fff9803777)
-  Co-authored-by: Nathan Wiebe Neufeldt <wn.nathan@gmail.com>
-* Contributors: mergify[bot]
+* Add python3-dev build_depend to lttngpy. (`#146 <https://github.com/ros2/ros2_tracing/issues/146>`_)
+* Don't try to build on BSD (`#142 <https://github.com/ros2/ros2_tracing/issues/142>`_)
+* Contributors: Chris Lalancette, Scott K Logan
 
-8.2.2 (2024-09-06)
+8.4.0 (2024-10-15)
 ------------------
+* Allow enabling syscalls through ``ros2 trace`` or the Trace action (`#137 <https://github.com/ros2/ros2_tracing/issues/137>`_)
+* Remove python_cmake_module use. (`#91 <https://github.com/ros2/ros2_tracing/issues/91>`_)
+* Add missing dependency on pkg-config to lttngpy (`#130 <https://github.com/ros2/ros2_tracing/issues/130>`_)
+* Contributors: Chris Lalancette, Christophe Bedard, Nathan Wiebe Neufeldt
 
-8.2.1 (2024-06-27)
+8.3.0 (2024-04-26)
 ------------------
 
 8.2.0 (2024-04-16)

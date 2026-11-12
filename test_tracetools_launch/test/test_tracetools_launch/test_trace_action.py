@@ -70,6 +70,7 @@ class TestTraceAction(unittest.TestCase):
         ls.include_launch_description(ld)
         self.assertEqual(0, ls.run(), 'expected no errors')
         trace_action = ld.describe_sub_entities()[0]
+        assert isinstance(trace_action, Trace), f'expected Trace action, got: {trace_action}'
         return trace_action
 
     def _check_trace_action(
@@ -102,6 +103,7 @@ class TestTraceAction(unittest.TestCase):
             session_name='my-session-name',
             base_path=tmpdir,
             events_kernel=[],
+            syscalls=[],
             events_ust=[
                 'ros2:*',
                 '*',
@@ -126,6 +128,7 @@ class TestTraceAction(unittest.TestCase):
                     base-path="{}"
                     append-trace="true"
                     events-kernel=""
+                    syscalls=""
                     events-ust="ros2:* *"
                     subbuffer-size-ust="524288"
                     subbuffer-size-kernel="1048576"
@@ -154,6 +157,7 @@ class TestTraceAction(unittest.TestCase):
                 base-path: {}
                 append-trace: true
                 events-kernel: ""
+                syscalls: ""
                 events-ust: ros2:* *
                 subbuffer-size-ust: 524288
                 subbuffer-size-kernel: 1048576
@@ -176,6 +180,7 @@ class TestTraceAction(unittest.TestCase):
             session_name='my-session-name',
             base_path=tmpdir,
             events_kernel=[],
+            syscalls=[],
             events_ust=[
                 'ros2:*',
                 '*',
@@ -193,6 +198,7 @@ class TestTraceAction(unittest.TestCase):
             session_name='my-session-name',
             base_path=tmpdir,
             events_kernel=[],
+            syscalls=[],
             events_ust=[
                 'ros2:*',
                 '*',
@@ -208,7 +214,7 @@ class TestTraceAction(unittest.TestCase):
         self._check_trace_action(action, tmpdir)
 
         self.assertDictEqual(
-            action.context_fields,
+            action.context_fields,  # type: ignore[arg-type]
             {
                 'kernel': [],
                 'userspace': ['vpid', 'vtid'],
@@ -234,6 +240,7 @@ class TestTraceAction(unittest.TestCase):
             session_name=LaunchConfiguration(session_name_arg.name),
             base_path=TextSubstitution(text=tmpdir),
             events_kernel=[],
+            syscalls=[],
             events_ust=[
                 EnvironmentVariable(name='TestTraceAction__event_ust'),
                 TextSubstitution(text='*'),
@@ -252,7 +259,7 @@ class TestTraceAction(unittest.TestCase):
         self._check_trace_action(action, tmpdir)
 
         self.assertDictEqual(
-            action.context_fields,
+            action.context_fields,  # type: ignore[arg-type]
             {
                 'kernel': [],
                 'userspace': ['vpid', 'vtid'],
@@ -270,6 +277,7 @@ class TestTraceAction(unittest.TestCase):
             session_name='my-session-name',
             base_path=tmpdir,
             events_kernel=[],
+            syscalls=[],
             events_ust=[
                 'lttng_ust_cyg_profile_fast:*',
                 'lttng_ust_libc:*',
@@ -323,6 +331,7 @@ class TestTraceAction(unittest.TestCase):
             append_timestamp=True,
             base_path=tmpdir,
             events_kernel=[],
+            syscalls=[],
             events_ust=[
                 'ros2:*',
                 '*',
@@ -334,7 +343,8 @@ class TestTraceAction(unittest.TestCase):
         self._check_trace_action(action, tmpdir, session_name=None)
         # Session name should start with the given prefix and end with the timestamp, but don't
         # bother validating the timestamp here
-        self.assertTrue(action.session_name.startswith('my-session-name-'))
+        self.assertTrue(
+            action.session_name.startswith('my-session-name-'))  # type: ignore[attr-defined]
         self.assertNotEqual('my-session-name-', action.session_name)
 
         shutil.rmtree(tmpdir)
@@ -348,6 +358,7 @@ class TestTraceAction(unittest.TestCase):
             base_path=tmpdir,
             append_trace=False,
             events_kernel=[],
+            syscalls=[],
             events_ust=[
                 'ros2:*',
                 '*',
@@ -367,6 +378,7 @@ class TestTraceAction(unittest.TestCase):
             base_path=tmpdir,
             append_trace=True,
             events_kernel=[],
+            syscalls=[],
             events_ust=[
                 'ros2:*',
                 '*',
