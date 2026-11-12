@@ -5,7 +5,7 @@ package_name = 'tracetools_test'
 
 setup(
     name=package_name,
-    version='8.6.0',
+    version='8.6.1',
     packages=find_packages(exclude=['test']),
     data_files=[
         ('share/' + package_name, ['package.xml']),
@@ -27,5 +27,9 @@ setup(
     keywords=[],
     description='Utilities for tracing-related tests.',
     license='Apache 2.0',
-    tests_require=['pytest'],
+    extras_require={
+        'test': [
+            'pytest',
+        ],
+    },
 )
